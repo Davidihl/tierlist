@@ -5,7 +5,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
-import { getAllUsers } from '../../../database/database';
+import { getAllPlayers, getAllUsers } from '../../../database/database';
 
 const typeDefs = gql`
   type User {
@@ -18,8 +18,20 @@ const typeDefs = gql`
     last_update: String
   }
 
+  type Player {
+    id: ID!
+    user_id: User!
+    alias: String
+    first_name: String
+    last_name: String
+    contact: String
+    confirmed_residency: Boolean
+    leagueoflegends_id: [Int]
+  }
+
   type Query {
     users: [User]
+    players: [Player]
   }
 `;
 
@@ -27,6 +39,10 @@ const resolvers = {
   Query: {
     users: async () => {
       return await getAllUsers();
+    },
+
+    players: async () => {
+      return await getAllPlayers();
     },
   },
 };
