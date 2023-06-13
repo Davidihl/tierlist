@@ -5,7 +5,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
-import { getAllPlayers, getAllUsers } from '../../../database/database';
+import { getAllUsers } from '../../../database/database';
 
 const typeDefs = gql`
   type User {
@@ -39,3 +39,17 @@ const schema = makeExecutableSchema({
 const apolloServer = new ApolloServer({
   schema,
 });
+
+const handler = startServerAndCreateNextHandler<NextRequest>(apolloServer, {
+  context: async (req) => {
+    return await { req };
+  },
+});
+
+export async function GET(req: NextRequest) {
+  return await handler(req);
+}
+
+export async function POST(req: NextRequest) {
+  return await handler(req);
+}
