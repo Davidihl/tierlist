@@ -218,6 +218,6 @@ export function getAllUsers() {
   return users;
 }
 
-export function getAllplayers() {
+export function getAllPlayers() {
   return players;
 }
