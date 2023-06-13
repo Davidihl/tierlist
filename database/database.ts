@@ -7,6 +7,17 @@ export type User = {
   last_update: string;
 };
 
+export type Player = {
+  id: number;
+  user_id: number;
+  alias: string;
+  first_name: string;
+  last_name: string;
+  contact: string;
+  confirmed_residency: boolean;
+  leagueoflegends_id: Array<number> | null;
+};
+
 export const user = [
   {
     id: 1,
@@ -97,5 +108,108 @@ export const user = [
     is_player: false,
     created: '11/27/2022',
     last_update: '9/14/2022',
+  },
+];
+
+export const player = [
+  {
+    id: 1,
+    user_id: 1,
+    alias: 'Labetalol hydrochloride',
+    first_name: 'Eugene',
+    last_name: 'Canlin',
+    contact: 'ecanlin0@ucsd.edu',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 2,
+    user_id: 2,
+    alias: 'Fluvoxamine Maleate',
+    first_name: 'Tomkin',
+    last_name: 'Horney',
+    contact: 'thorney1@blogtalkradio.com',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 3,
+    user_id: 3,
+    alias: 'Asthmanefrin',
+    first_name: 'Joshia',
+    last_name: 'Antat',
+    contact: 'jantat2@plala.or.jp',
+    confirmed_residency: true,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 4,
+    user_id: 4,
+    alias: 'Nitrofurantoin Macrocrystals',
+    first_name: 'Ruben',
+    last_name: 'Littlechild',
+    contact: 'rlittlechild3@si.edu',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 5,
+    user_id: 5,
+    alias: 'HAND SANITIZER',
+    first_name: 'Keriann',
+    last_name: 'Bodycomb',
+    contact: 'kbodycomb4@fc2.com',
+    confirmed_residency: true,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 6,
+    user_id: 6,
+    alias: 'Soothix Acne Treatment and Blemish Prevention Formula',
+    first_name: 'Brynna',
+    last_name: 'Onians',
+    contact: 'bonians5@multiply.com',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 7,
+    user_id: 7,
+    alias: 'Clindamycin Hydrochloride',
+    first_name: 'Lesley',
+    last_name: 'Dwight',
+    contact: 'ldwight6@sciencedirect.com',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 8,
+    user_id: 8,
+    alias: 'Levofloxacin',
+    first_name: 'Natala',
+    last_name: 'Loblie',
+    contact: 'nloblie7@indiegogo.com',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 9,
+    user_id: 9,
+    alias: 'Aspirin',
+    first_name: 'Clayson',
+    last_name: 'Felgate',
+    contact: 'cfelgate8@clickbank.net',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
+  },
+  {
+    id: 10,
+    user_id: 10,
+    alias: 'Bisoprolol Fumarate and Hydrochlorothiazide',
+    first_name: 'Sollie',
+    last_name: 'Muddicliffe',
+    contact: 'smuddicliffe9@google.fr',
+    confirmed_residency: false,
+    leagueoflegends_id: null,
   },
 ];
