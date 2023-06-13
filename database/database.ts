@@ -18,7 +18,7 @@ export type Player = {
   leagueoflegends_id: Array<number> | null;
 };
 
-export const user = [
+export const users = [
   {
     id: 1,
     username: 'callcott0',
@@ -111,7 +111,7 @@ export const user = [
   },
 ];
 
-export const player = [
+export const players = [
   {
     id: 1,
     user_id: 1,
@@ -213,3 +213,11 @@ export const player = [
     leagueoflegends_id: null,
   },
 ];
+
+export function getAllUsers() {
+  return users;
+}
+
+export function getAllplayers() {
+  return players;
+}
