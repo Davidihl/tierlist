@@ -6,35 +6,20 @@ import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import { getAllPlayers } from '../../../database/players';
-import { getAllUsers, getUserByID } from '../../../database/users';
+import { getAllUsers } from '../../../database/users';
 
 const typeDefs = gql`
   type Query {
     users: [User]
-    user(id: ID!): User
-    players: [Player]
-    player(id: ID!): Player
   }
 
   type User {
     id: ID!
     username: String
-    password_hash: String
-    is_admin: Boolean
-    is_player: Boolean
+    isAdmin: Boolean
+    isPlayer: Boolean
     created: String
-    last_update: String
-  }
-
-  type Player {
-    id: ID!
-    user_id: User! # A player is always related to a user
-    alias: String
-    first_name: String
-    last_name: String
-    contact: String
-    confirmed_residency: Boolean
-    leagueoflegends_id: [Int] # Replace this with leagueoflegends schema type
+    lastUpdate: String
   }
 `;
 
@@ -42,10 +27,6 @@ const resolvers = {
   Query: {
     users: async () => {
       return await getAllUsers();
-    },
-
-    players: async () => {
-      return await getAllPlayers();
     },
   },
 };

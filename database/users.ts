@@ -3,6 +3,7 @@ import { sql } from './connect';
 
 export type User = {
   id: number;
+  username: string;
   isAdmin: boolean;
   isPlayer: boolean;
   created: Date;
@@ -17,6 +18,7 @@ export const getAllUsers = cache(async () => {
   const products = await sql<User[]>`
     SELECT
     id,
+    username,
     is_admin,
     is_player,
     created,
