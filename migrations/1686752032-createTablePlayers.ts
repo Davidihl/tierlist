@@ -16,7 +16,6 @@ export async function up(sql: Sql) {
       contact VARCHAR(100),
       slug VARCHAR(30),
       leagueoflegends_id integer[]
-
     )
   `;
 }
