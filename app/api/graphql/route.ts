@@ -5,13 +5,21 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
-import { getAllPlayers, getAllUsers } from '../../../database/database';
+import { getAllPlayers } from '../../../database/players';
+import { getAllUsers, getUserByID } from '../../../database/users';
 
 const typeDefs = gql`
+  type Query {
+    users: [User]
+    user(id: ID!): User
+    players: [Player]
+    player(id: ID!): Player
+  }
+
   type User {
     id: ID!
     username: String
-    password: String
+    password_hash: String
     is_admin: Boolean
     is_player: Boolean
     created: String
@@ -20,18 +28,13 @@ const typeDefs = gql`
 
   type Player {
     id: ID!
-    user_id: User!
+    user_id: User! # A player is always related to a user
     alias: String
     first_name: String
     last_name: String
     contact: String
     confirmed_residency: Boolean
-    leagueoflegends_id: [Int]
-  }
-
-  type Query {
-    users: [User]
-    players: [Player]
+    leagueoflegends_id: [Int] # Replace this with leagueoflegends schema type
   }
 `;
 
