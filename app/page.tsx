@@ -7,7 +7,7 @@ export default async function Home() {
   console.log(test);
   return (
     <main className={styles.main}>
-      <div>Hello World</div>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
     </main>
   );
 }
