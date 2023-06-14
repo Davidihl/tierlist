@@ -10,12 +10,12 @@ export async function up(sql: Sql) {
     CREATE TABLE players (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       user_id integer NOT NULL,
-      alias VARCHAR(30) NOT NULL,
+      alias VARCHAR(30) UNIQUE NOT NULL,
       first_name VARCHAR (30),
       last_name VARCHAR (30),
       contact VARCHAR(100),
       slug VARCHAR(30),
-      leagueoflegends_id integer[]
+      mainaccount_id integer
     )
   `;
 }

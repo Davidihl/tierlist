@@ -3,13 +3,12 @@ import { Sql } from 'postgres';
 export async function up(sql: Sql) {
   await sql`
     INSERT INTO users
-    (username, password_hash, is_admin, is_player, created, last_update)
+    (username, password_hash, is_admin, created, last_update)
     VALUES
     (
       'admin',
       'password',
       true,
-      false,
       CURRENT_TIMESTAMP,
       CURRENT_TIMESTAMP
     )
