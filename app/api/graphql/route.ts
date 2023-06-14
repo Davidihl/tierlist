@@ -17,7 +17,6 @@ const typeDefs = gql`
     id: ID!
     username: String
     isAdmin: Boolean
-    isPlayer: Boolean
     created: String
     lastUpdate: String
   }

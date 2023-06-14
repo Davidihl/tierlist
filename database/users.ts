@@ -20,7 +20,6 @@ export const getAllUsers = cache(async () => {
     id,
     username,
     is_admin,
-    is_player,
     created,
     last_update
     FROM
