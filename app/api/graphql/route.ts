@@ -11,6 +11,8 @@ import { getAllUsers } from '../../../database/users';
 const typeDefs = gql`
   type Query {
     users: [User]
+    players: [Player]
+    leagueAccounts: [LeagueAccount]
   }
 
   type User {
@@ -20,12 +22,33 @@ const typeDefs = gql`
     created: String
     lastUpdate: String
   }
+
+  type Player {
+    id: ID!
+    user: User
+    alias: String
+    firstName: String
+    lastName: String
+    contact: String
+    slug: String
+    mainaccountId: LeagueAccount
+  }
+
+  type LeagueAccount {
+    id: ID!
+    player: Player
+    name: String
+    rank: String
+  }
 `;
 
 const resolvers = {
   Query: {
     users: async () => {
       return await getAllUsers();
+    },
+    players: async () => {
+      return await getAllPlayers();
     },
   },
 };

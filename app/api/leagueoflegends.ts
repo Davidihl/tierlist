@@ -71,5 +71,5 @@ export async function getLeagueofLegendsData(summoner: string) {
   }
 
   const leagueData: any = await callLeagueApi(summonerData.id);
-  console.log('result', leagueData);
+  return leagueData;
 }

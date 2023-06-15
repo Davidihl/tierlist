@@ -1,27 +1,31 @@
+import { cache } from 'react';
+import { sql } from './connect';
+
 export type Player = {
   id: number;
-  user_id: number;
+  userId: number;
   alias: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   contact: string;
-  confirmed_residency: boolean;
-  leagueoflegends_id: Array<number> | null;
+  slug: string;
+  mainaccountId: number;
 };
 
-export const players = [
-  {
-    id: 1,
-    user_id: 1,
-    alias: 'Labetalol hydrochloride',
-    first_name: 'Eugene',
-    last_name: 'Canlin',
-    contact: 'ecanlin0@ucsd.edu',
-    confirmed_residency: false,
-    leagueoflegends_id: null,
-  },
-];
+export const getAllPlayers = cache(async () => {
+  const players = await sql<Player[]>`
+    SELECT
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
 
-export function getAllPlayers() {
+    FROM
+      players
+ `;
   return players;
-}
+});
