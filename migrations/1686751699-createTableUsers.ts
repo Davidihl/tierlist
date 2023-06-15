@@ -7,8 +7,8 @@ export async function up(sql: Sql) {
       username varchar(30) UNIQUE NOT NULL,
       password_hash varchar(80) NOT NULL,
       is_admin boolean NOT NULL,
-      created timestamp NOT NULL,
-      last_update timestamp NOT NULL
+      created timestamp NOT NULL DEFAULT NOW(),
+      last_update timestamp NOT NULL DEFAULT NOW()
     )
   `;
 }

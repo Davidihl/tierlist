@@ -5,7 +5,7 @@ export async function up(sql: Sql) {
     CREATE TABLE organisations (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       name VARCHAR(40) UNIQUE NOT NULL,
-      user_id integer NOT NULL,
+      user_id integer NOT NULL REFERENCES users (id),
       contact VARCHAR(50),
       slug VARCHAR(40) UNIQUE NOT NULL
     )

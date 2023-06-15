@@ -4,9 +4,10 @@ export async function up(sql: Sql) {
   await sql`
     CREATE TABLE leagueoflegends (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      player_id integer NOT NULL,
+      player_id integer NOT NULL REFERENCES players (id),
       name VARCHAR(30) UNIQUE NOT NULL,
-      rank integer NOT NULL,
+      tier integer REFERENCES tiers (id),
+      rank integer,
       league_points integer,
       last_update timestamp NOT NULL DEFAULT NOW()
     )
