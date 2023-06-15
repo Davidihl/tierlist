@@ -15,7 +15,7 @@ export type UserWithPassword = User & {
 };
 
 export const getAllUsers = cache(async () => {
-  const products = await sql<User[]>`
+  const users = await sql<User[]>`
     SELECT
     id,
     username,
@@ -26,9 +26,21 @@ export const getAllUsers = cache(async () => {
       users
 
  `;
-  return products;
+  return users;
 });
 
-export function getUserByID() {
-  return console.log('it works');
+export async function getUserByID(id: number) {
+  const [user] = await sql<User[]>`
+    SELECT
+    id,
+    username,
+    is_admin,
+    created,
+    last_update
+    FROM
+      users
+    WHERE
+      id = ${id}
+ `;
+  return user;
 }

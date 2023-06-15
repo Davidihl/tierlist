@@ -1,11 +1,17 @@
 import { RateLimiter } from 'limiter';
+import { headers } from 'next/headers';
 
 // import { headers } from 'next/headers';
 // import { NextRequest, NextResponse } from 'next/server';
 
-const apiHeader = new Headers();
-apiHeader.append('X-Riot-Token', process.env.RIOT_API_KEY);
+// const headersInstance = headers();
+// const riotAuthorization = headersInstance.get('X-Riot-Token');
 
+// Define API Authorization Header
+const riotAuthorization = new Headers();
+riotAuthorization.append('X-Riot-Token', process.env.RIOT_API_KEY || '');
+
+// Provide limiters for each endpoint used
 const summonerLimiter = new RateLimiter({
   tokensPerInterval: 10,
   interval: 'second',
@@ -16,6 +22,7 @@ const leagueLimiter = new RateLimiter({
   interval: 'second',
 });
 
+// Call Summoner Endpoint
 export async function callSummonerApi(summoner: string) {
   const remainingRequests = await summonerLimiter.removeTokens(1);
 
@@ -25,13 +32,21 @@ export async function callSummonerApi(summoner: string) {
 
   const response = await fetch(
     `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}`,
-    { method: 'GET', headers: apiHeader },
+    {
+      method: 'GET',
+      headers: riotAuthorization,
+    },
   );
+
+  // if ('status' in response) {
+  //   throw console.error(status.message);
+  // }
 
   const data = await response.json();
   return data;
 }
 
+// Call League of Legends Endpoint
 export async function callLeagueApi(encryptedSummoner: string) {
   const remainingRequests = await leagueLimiter.removeTokens(1);
 
@@ -41,13 +56,14 @@ export async function callLeagueApi(encryptedSummoner: string) {
 
   const response = await fetch(
     `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedSummoner}`,
-    { method: 'GET', headers: apiHeader },
+    { method: 'GET', headers: riotAuthorization },
   );
 
   const data = await response.json();
   return data;
 }
 
+// Fetch Summoner data and use result to fetch League of Legends data
 export async function getLeagueofLegendsData(summoner: string) {
   const summonerData: any = await callSummonerApi(summoner);
 

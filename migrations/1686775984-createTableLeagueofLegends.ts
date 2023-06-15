@@ -7,7 +7,8 @@ export async function up(sql: Sql) {
       player_id integer NOT NULL,
       name VARCHAR(30) UNIQUE NOT NULL,
       rank integer NOT NULL,
-      league_points integer
+      league_points integer,
+      last_update timestamp NOT NULL DEFAULT NOW()
     )
   `;
 }
