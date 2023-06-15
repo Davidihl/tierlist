@@ -7,7 +7,7 @@ export async function up(sql: Sql) {
       player_id integer NOT NULL REFERENCES players (id),
       name VARCHAR(30) UNIQUE NOT NULL,
       tier integer REFERENCES tiers (id),
-      rank integer,
+      rank VARCHAR(10),
       league_points integer,
       last_update timestamp NOT NULL DEFAULT NOW()
     )

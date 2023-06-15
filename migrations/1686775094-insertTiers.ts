@@ -1,16 +1,16 @@
 import { Sql } from 'postgres';
 
 const tiers = [
-  'Challenger',
-  'Grandmaster',
-  'Master',
-  'Diamond',
-  'Emerald',
-  'Platin',
-  'Gold',
-  'Silver',
-  'Bronze',
-  'Iron',
+  'CHALLENGER',
+  'GRANDMASTER',
+  'MASTER',
+  'DIAMOND',
+  'EMERALD',
+  'PLATINUM',
+  'GOLD',
+  'SILVER',
+  'BRONZE',
+  'IRON',
 ];
 
 export async function up(sql: Sql) {
