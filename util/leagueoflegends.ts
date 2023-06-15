@@ -1,5 +1,7 @@
 import { RateLimiter } from 'limiter';
 
+// eventuell mit GraphQL REST dataSource neu schreiben????
+
 // import { headers } from 'next/headers';
 // const headersInstance = headers();
 // const riotAuthorization = headersInstance.get('X-Riot-Token');
