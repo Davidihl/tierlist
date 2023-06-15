@@ -1,9 +1,6 @@
 import { RateLimiter } from 'limiter';
-import { headers } from 'next/headers';
 
 // import { headers } from 'next/headers';
-// import { NextRequest, NextResponse } from 'next/server';
-
 // const headersInstance = headers();
 // const riotAuthorization = headersInstance.get('X-Riot-Token');
 
