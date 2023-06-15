@@ -1,6 +1,10 @@
 import { RateLimiter } from 'limiter';
-import { headers } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+
+// import { headers } from 'next/headers';
+// import { NextRequest, NextResponse } from 'next/server';
+
+const apiHeader = new Headers();
+apiHeader.append('X-Riot-Token', process.env.RIOT_API_KEY);
 
 const summonerLimiter = new RateLimiter({
   tokensPerInterval: 10,
@@ -21,10 +25,10 @@ export async function callSummonerApi(summoner: string) {
 
   const response = await fetch(
     `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}`,
-    { headers: { 'X-Riot-Token': process.env.RIOT_API_KEY } },
+    { method: 'GET', headers: apiHeader },
   );
 
-  const data = await response.json;
+  const data = await response.json();
   return data;
 }
 
@@ -34,6 +38,14 @@ export async function callLeagueApi(encryptedSummoner: string) {
   if (remainingRequests === 0) {
     throw console.error('Too many requests on RIOT League API');
   }
+
+  const response = await fetch(
+    `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedSummoner}`,
+    { method: 'GET', headers: apiHeader },
+  );
+
+  const data = await response.json();
+  return data;
 }
 
 export async function getLeagueofLegendsData(summoner: string) {
@@ -44,5 +56,5 @@ export async function getLeagueofLegendsData(summoner: string) {
   }
 
   const leagueData: any = await callLeagueApi(summonerData.id);
-  console.log(leagueData);
+  console.log('result', leagueData);
 }
