@@ -19,3 +19,15 @@ export async function getAllLeagueAccounts() {
  `;
   return leagueoflegends;
 }
+
+export const getLeagueAccountById = cache(async (id: number) => {
+  const [leagueAccount] = await sql<LeagueofLegends[]>`
+    SELECT
+*
+    FROM
+      leagueoflegends
+    WHERE
+      id = ${id}
+ `;
+  return leagueAccount;
+});
