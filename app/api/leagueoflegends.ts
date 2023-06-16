@@ -3,6 +3,15 @@ import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????
 
+export type LeagueofLegends = {
+  summoner: string;
+  tier: string;
+  rank: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+};
+
 // import { headers } from 'next/headers';
 // const headersInstance = headers();
 // const riotAuthorization = headersInstance.get('X-Riot-Token');
@@ -74,5 +83,17 @@ export async function getLeagueofLegendsData(summoner: string) {
   }
 
   const leagueData: any = await callLeagueApi(summonerData.id);
-  return leagueData.filter((rank: any) => rank.queueType === 'RANKED_SOLO_5x5');
+  const [soloQData] = leagueData.filter(
+    (rank: any) => rank.queueType === 'RANKED_SOLO_5x5',
+  );
+  const fetchResponse: LeagueofLegends = {
+    summoner: soloQData.summonerName,
+    tier: soloQData.tier,
+    rank: soloQData.rank,
+    leaguePoints: soloQData.leaguePoints,
+    wins: soloQData.wins,
+    losses: soloQData.losses,
+  };
+
+  return fetchResponse;
 }
