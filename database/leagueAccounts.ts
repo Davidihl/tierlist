@@ -1,7 +1,7 @@
 import { cache } from 'react';
 import { sql } from './connect';
 
-export type LeagueofLegends = {
+export type LeagueAccount = {
   summoner: string;
   tier: string | '';
   rank: string | '';
@@ -11,21 +11,21 @@ export type LeagueofLegends = {
 };
 
 export async function getAllLeagueAccounts() {
-  const leagueoflegends = await sql<LeagueofLegends[]>`
+  const leagueAccounts = await sql<LeagueAccount[]>`
     SELECT
       *
     FROM
-      leagueoflegends
+      league_accounts
  `;
-  return leagueoflegends;
+  return leagueAccounts;
 }
 
 export const getLeagueAccountById = cache(async (id: number) => {
-  const [leagueAccount] = await sql<LeagueofLegends[]>`
+  const [leagueAccount] = await sql<LeagueAccount[]>`
     SELECT
 *
     FROM
-      leagueoflegends
+      league_accounts
     WHERE
       id = ${id}
  `;

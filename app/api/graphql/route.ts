@@ -8,7 +8,7 @@ import { NextRequest } from 'next/server';
 import {
   getAllLeagueAccounts,
   getLeagueAccountById,
-} from '../../../database/leagueoflegends';
+} from '../../../database/leagueAccounts';
 import {
   getAllPlayers,
   getPlayerById,

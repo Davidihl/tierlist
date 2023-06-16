@@ -36,7 +36,7 @@ const demoUser = [
 
 export async function up(sql: Sql) {
   await sql`
-    INSERT INTO leagueoflegends
+    INSERT INTO league_accounts
     (
       player_id,
       name,
@@ -61,6 +61,6 @@ export async function up(sql: Sql) {
 
 export async function down(sql: Sql) {
   await sql`
-      DELETE FROM leagueoflegends
+      DELETE FROM league_accounts
   `;
 }

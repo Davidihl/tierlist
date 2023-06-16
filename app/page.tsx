@@ -1,6 +1,6 @@
 import { debug } from 'console';
 import Image from 'next/image';
-import { LeagueofLegends } from '../database/leagueoflegends';
+import { LeagueAccount } from '../database/leagueAccounts';
 import { getPlayerById } from '../database/players';
 import esvoeLogo from '../public/esvoe_Logo.svg';
 import { getLeagueofLegendsData } from './api/leagueoflegends';
@@ -9,7 +9,7 @@ import styles from './page.module.css';
 export default async function Home() {
   // DEBUG RIOT API
   // const debugRiotObject = await getLeagueofLegendsData('AFW Nan0');
-  const debugRiotObject: LeagueofLegends = await getLeagueofLegendsData(
+  const debugRiotObject: LeagueAccount = await getLeagueofLegendsData(
     'Chaoslordi',
   );
   // console.log('result', debugRiotObject);

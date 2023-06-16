@@ -2,7 +2,7 @@ import { Sql } from 'postgres';
 
 export async function up(sql: Sql) {
   await sql`
-    CREATE TABLE leagueoflegends (
+    CREATE TABLE league_accounts (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       player_id integer NOT NULL REFERENCES players (id),
       name VARCHAR(30) UNIQUE NOT NULL,
@@ -18,6 +18,6 @@ export async function up(sql: Sql) {
 
 export async function down(sql: Sql) {
   await sql`
-    DROP TABLE leagueoflegends
+    DROP TABLE league_accounts
   `;
 }

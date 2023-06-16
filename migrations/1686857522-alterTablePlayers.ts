@@ -2,7 +2,7 @@ import { Sql } from 'postgres';
 
 export async function up(sql: Sql) {
   await sql`
-    ALTER TABLE players ADD COLUMN mainaccount_id integer REFERENCES leagueoflegends (id)
+    ALTER TABLE players ADD COLUMN mainaccount_id integer REFERENCES league_accounts (id)
   `;
 }
 

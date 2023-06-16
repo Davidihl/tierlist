@@ -1,5 +1,5 @@
 import { RateLimiter } from 'limiter';
-import { LeagueofLegends } from '../../database/leagueoflegends';
+import { LeagueAccount } from '../../database/leagueAccounts';
 import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????
@@ -80,7 +80,7 @@ export async function getLeagueofLegendsData(summoner: string) {
   );
 
   if (!soloQData) {
-    const unranked: LeagueofLegends = {
+    const unranked: LeagueAccount = {
       summoner,
       tier: 'UNRANKED',
       rank: '',
@@ -92,7 +92,7 @@ export async function getLeagueofLegendsData(summoner: string) {
     return unranked;
   }
 
-  const fetchResponse: LeagueofLegends = {
+  const fetchResponse: LeagueAccount = {
     summoner: soloQData?.summonerName,
     tier: soloQData?.tier,
     rank: soloQData?.rank,
