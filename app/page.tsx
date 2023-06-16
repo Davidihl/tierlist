@@ -8,7 +8,7 @@ export default async function Home() {
   // DEBUG RIOT API
   // const debugRiotObject = await getLeagueofLegendsData('AFW Nan0');
   const debugRiotObject: LeagueofLegends = await getLeagueofLegendsData(
-    'Chaoslordi',
+    'AFW Nan0',
   );
   console.log('result', debugRiotObject);
 
@@ -20,7 +20,7 @@ export default async function Home() {
       </div>
       <section className="flex flex-col gap-4 mt-8 flex-shrink-0">
         <h2 className="text-2xl pt-3">DEBUG</h2>
-        <div className="p-3 rounded bg-gray-300 drop-shadow-xl max-w-xs border-gray-700 flex flex-col items-center">
+        <div className="p-3 rounded bg-gray-300 drop-shadow-xl max-w-xs border-gray-700 flex flex-col items-center gap-1">
           <h3>RIOT API</h3>
           <div>
             <Image
