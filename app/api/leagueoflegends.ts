@@ -5,11 +5,11 @@ import { encodeString } from '../../util/encodeString';
 
 export type LeagueofLegends = {
   summoner: string;
-  tier: string;
-  rank: string;
-  leaguePoints: number;
-  wins: number;
-  losses: number;
+  tier: string | '';
+  rank: string | '';
+  leaguePoints: number | '';
+  wins: number | '';
+  losses: number | '';
 };
 
 // import { headers } from 'next/headers';
@@ -58,7 +58,10 @@ export async function callSummonerApi(summoner: string) {
 }
 
 // Call League of Legends Endpoint
-export async function callLeagueApi(encryptedSummoner: string) {
+export async function callLeagueApi(
+  encryptedSummoner: string,
+  summoner: string,
+) {
   const remainingRequests = await leagueLimiter.removeTokens(1);
 
   if (remainingRequests === 0) {
@@ -86,13 +89,27 @@ export async function getLeagueofLegendsData(summoner: string) {
   const [soloQData] = leagueData.filter(
     (rank: any) => rank.queueType === 'RANKED_SOLO_5x5',
   );
+
+  if (!soloQData) {
+    const unranked: LeagueofLegends = {
+      summoner,
+      tier: 'UNRANKED',
+      rank: '',
+      leaguePoints: '',
+      wins: '',
+      losses: '',
+    };
+
+    return unranked;
+  }
+
   const fetchResponse: LeagueofLegends = {
-    summoner: soloQData.summonerName,
-    tier: soloQData.tier,
-    rank: soloQData.rank,
-    leaguePoints: soloQData.leaguePoints,
-    wins: soloQData.wins,
-    losses: soloQData.losses,
+    summoner: soloQData?.summonerName,
+    tier: soloQData?.tier,
+    rank: soloQData?.rank,
+    leaguePoints: soloQData?.leaguePoints,
+    wins: soloQData?.wins,
+    losses: soloQData?.losses,
   };
 
   return fetchResponse;

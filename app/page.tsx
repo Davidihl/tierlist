@@ -1,10 +1,7 @@
 import { debug } from 'console';
 import Image from 'next/image';
-import {
-  callSummonerApi,
-  getLeagueofLegendsData,
-  LeagueofLegends,
-} from './api/leagueoflegends';
+import esvoeLogo from '../public/esvoe_Logo.svg';
+import { getLeagueofLegendsData, LeagueofLegends } from './api/leagueoflegends';
 import styles from './page.module.css';
 
 export default async function Home() {
@@ -17,11 +14,22 @@ export default async function Home() {
 
   return (
     <main className={styles.main}>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <section className="flex flex-col gap-4">
-        <h2 className="pt-3">DEV-Section</h2>
-        <div>
-          <h3 className="pt-3">RIOT API DEBUG</h3>
+      <div className="flex gap-4 items-center">
+        <Image src={esvoeLogo} className="w-48" />
+        <h1 className="text-3xl font-medium ">Player Database</h1>
+      </div>
+      <section className="flex flex-col gap-4 mt-8 flex-shrink-0">
+        <h2 className="text-2xl pt-3">DEBUG</h2>
+        <div className="p-3 rounded bg-gray-300 drop-shadow-xl max-w-xs border-gray-700 flex flex-col items-center">
+          <h3>RIOT API</h3>
+          <div>
+            <Image
+              src={`/leagueoflegends/tiers/${debugRiotObject.tier}.webp`}
+              alt={debugRiotObject.tier}
+              width={150}
+              height={150}
+            />
+          </div>
           <div>Account: {debugRiotObject.summoner}</div>
           <div>Tier: {debugRiotObject.tier}</div>
           <div>Rank: {debugRiotObject.rank}</div>
