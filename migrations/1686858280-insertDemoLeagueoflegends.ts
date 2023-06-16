@@ -42,7 +42,9 @@ export async function up(sql: Sql) {
       name,
       tier,
       rank,
-      league_points
+      league_points,
+      wins,
+      losses
     )
     VALUES
     (
@@ -50,7 +52,9 @@ export async function up(sql: Sql) {
       ${demoUser[0]!.summonerName},
       (SELECT id FROM tiers WHERE name = ${demoUser[0]!.tier}),
       ${demoUser[0]!.rank},
-      ${demoUser[0]!.leaguePoints}
+      ${demoUser[0]!.leaguePoints},
+      ${demoUser[0]!.wins},
+      ${demoUser[0]!.losses}
     )
   `;
 }

@@ -10,6 +10,8 @@ export async function up(sql: Sql) {
 
 export async function down(sql: Sql) {
   await sql`
-      DELETE FROM players
+    UPDATE players
+    SET mainaccount_id = NULL
+    WHERE id= 1
   `;
 }

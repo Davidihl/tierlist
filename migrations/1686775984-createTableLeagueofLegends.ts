@@ -9,6 +9,8 @@ export async function up(sql: Sql) {
       tier integer REFERENCES tiers (id),
       rank VARCHAR(10),
       league_points integer,
+      wins integer,
+      losses integer,
       last_update timestamp NOT NULL DEFAULT NOW()
     )
   `;

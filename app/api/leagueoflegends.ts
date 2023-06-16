@@ -1,4 +1,5 @@
 import { RateLimiter } from 'limiter';
+import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????
 
@@ -29,8 +30,10 @@ export async function callSummonerApi(summoner: string) {
     throw console.error('Too many requests on RIOT Summoner API');
   }
 
+  const encodedSummoner = encodeString(summoner);
+
   const response = await fetch(
-    `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner}`,
+    `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodedSummoner}`,
     {
       method: 'GET',
       headers: riotAuthorization,
@@ -71,5 +74,5 @@ export async function getLeagueofLegendsData(summoner: string) {
   }
 
   const leagueData: any = await callLeagueApi(summonerData.id);
-  return leagueData;
+  return leagueData.filter((rank: any) => rank.queueType === 'RANKED_SOLO_5x5');
 }
