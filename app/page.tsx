@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import queryString from 'query-string';
 import { callSummonerApi, getLeagueofLegendsData } from './api/leagueoflegends';
 import styles from './page.module.css';
 
