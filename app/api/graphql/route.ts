@@ -5,13 +5,15 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
-import { getAllPlayers } from '../../../database/players';
+import { getAllLeagueAccounts } from '../../../database/leagueoflegends';
+import { getAllPlayers, getPlayerById } from '../../../database/players';
 import { getAllUsers } from '../../../database/users';
 
 const typeDefs = gql`
   type Query {
     users: [User]
     players: [Player]
+    player(id: ID!): Player
     leagueAccounts: [LeagueAccount]
   }
 
@@ -25,7 +27,7 @@ const typeDefs = gql`
 
   type Player {
     id: ID!
-    user: User
+    userId: User
     alias: String
     firstName: String
     lastName: String
@@ -38,7 +40,11 @@ const typeDefs = gql`
     id: ID!
     player: Player
     name: String
+    tier: String
     rank: String
+    leaguePoints: String
+    wins: Int
+    losses: Int
   }
 `;
 
@@ -49,6 +55,16 @@ const resolvers = {
     },
     players: async () => {
       return await getAllPlayers();
+    },
+    leagueAccounts: async () => {
+      return await getAllLeagueAccounts();
+    },
+
+    player: async (parent: null, args: { id: string }) => {
+      console.log(args);
+      const player = await getPlayerById(Number(args.id));
+      console.log('const player:', player);
+      return player;
     },
   },
 };

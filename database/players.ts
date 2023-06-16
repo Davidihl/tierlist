@@ -29,3 +29,22 @@ export const getAllPlayers = cache(async () => {
  `;
   return players;
 });
+
+export const getPlayerById = cache(async (id: number) => {
+  const [player] = await sql<Player[]>`
+    SELECT
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
+    FROM
+      players
+    WHERE
+      id = ${id}
+ `;
+  return player;
+});

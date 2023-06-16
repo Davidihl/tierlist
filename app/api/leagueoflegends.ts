@@ -1,16 +1,8 @@
 import { RateLimiter } from 'limiter';
+import { LeagueofLegends } from '../../database/leagueoflegends';
 import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????
-
-export type LeagueofLegends = {
-  summoner: string;
-  tier: string | '';
-  rank: string | '';
-  leaguePoints: number | '';
-  wins: number | '';
-  losses: number | '';
-};
 
 // import { headers } from 'next/headers';
 // const headersInstance = headers();
