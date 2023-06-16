@@ -58,10 +58,7 @@ export async function callSummonerApi(summoner: string) {
 }
 
 // Call League of Legends Endpoint
-export async function callLeagueApi(
-  encryptedSummoner: string,
-  summoner: string,
-) {
+export async function callLeagueApi(encryptedSummoner: string) {
   const remainingRequests = await leagueLimiter.removeTokens(1);
 
   if (remainingRequests === 0) {
