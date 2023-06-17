@@ -5,7 +5,6 @@ export type User = {
   id: number;
   username: string;
   isAdmin: boolean;
-  isPlayer: boolean;
   created: Date;
   lastUpdate: Date;
 };
@@ -29,7 +28,7 @@ export const getAllUsers = cache(async () => {
   return users;
 });
 
-export async function getUserByID(id: number) {
+export const getUserByID = cache(async (id: number) => {
   const [user] = await sql<User[]>`
     SELECT
     id,
@@ -43,4 +42,4 @@ export async function getUserByID(id: number) {
       id = ${id}
  `;
   return user;
-}
+});

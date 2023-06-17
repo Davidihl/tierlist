@@ -10,7 +10,7 @@ export type LeagueAccount = {
   losses: number | '';
 };
 
-export async function getAllLeagueAccounts() {
+export const getAllLeagueAccounts = cache(async () => {
   const leagueAccounts = await sql<LeagueAccount[]>`
     SELECT
       *
@@ -18,7 +18,7 @@ export async function getAllLeagueAccounts() {
       league_accounts
  `;
   return leagueAccounts;
-}
+});
 
 export const getLeagueAccountById = cache(async (id: number) => {
   const [leagueAccount] = await sql<LeagueAccount[]>`

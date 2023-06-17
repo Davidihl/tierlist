@@ -6,6 +6,10 @@ import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import {
+  getAllAssociations,
+  getAssociationsByPlayer,
+} from '../../../database/associations';
+import {
   getAllLeagueAccounts,
   getLeagueAccountById,
 } from '../../../database/leagueAccounts';
@@ -18,13 +22,24 @@ import { getAllUsers, getUserByID } from '../../../database/users';
 
 const typeDefs = gql`
   type Query {
+    # Get all users
     users: [User]
+    # Get user data with certain id (no password information)
     user(id: ID!): User
+    # Get all players
     players: [Player]
+    # Get player data with certain id
     player(id: ID!): Player
+    # Get the league account thats marked as main account
     playerMainAccount: LeagueAccount
+    # Get all league accounts
     leagueAccounts: [LeagueAccount]
+    # Get league account data with certain id
     leagueAccount(id: ID!): LeagueAccount
+    # Get all associations
+    associations: [Association]
+    # Get the association of a player
+    associationsPlayer(id: ID!): Association
   }
 
   type User {
@@ -56,6 +71,20 @@ const typeDefs = gql`
     wins: Int
     losses: Int
   }
+
+  type Organisation {
+    id: ID!
+    name: String
+    contact: String
+    slug: String
+    user: User!
+  }
+
+  type Association {
+    id: ID!
+    player: Player
+    organisation: Organisation
+  }
 `;
 
 const resolvers = {
@@ -64,30 +93,39 @@ const resolvers = {
       return await getAllUsers();
     },
     user: async (parent: null, args: { id: string }) => {
-      const user = await getUserByID(Number(args.id));
-      return user;
+      return await getUserByID(Number(args.id));
     },
     players: async () => {
       return await getAllPlayers();
     },
     player: async (parent: null, args: { id: string }) => {
-      const player = await getPlayerById(Number(args.id));
-      return player;
+      return await getPlayerById(Number(args.id));
     },
     leagueAccounts: async () => {
       return await getAllLeagueAccounts();
     },
     leagueAccount: async (parent: null, args: { id: string }) => {
-      const account = await getLeagueAccountById(Number(args.id));
-      return account;
+      return await getLeagueAccountById(Number(args.id));
+    },
+    associations: async () => {
+      return await getAllAssociations();
+    },
+    associationsPlayer: async (parent: null, args: { id: string }) => {
+      return await getAssociationsByPlayer(Number(args.id));
     },
   },
+
   Player: {
     user: async (parent: any) => {
       return await getUserByID(Number(parent.userId));
     },
     mainAccount: async (parent: any) => {
       return await getLeagueAccountById(Number(parent.mainaccountId));
+    },
+  },
+  Association: {
+    player: async (parent: any) => {
+      return await getPlayerById(Number(parent.playerId));
     },
   },
 };

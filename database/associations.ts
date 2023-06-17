@@ -8,3 +8,56 @@ export type Association = {
   startDate: Date | null;
   endDate: Date | null;
 };
+
+export const getAllAssociations = cache(async () => {
+  const associations = await sql<Association[]>`
+    SELECT
+    id,
+    player_id,
+    organisation_id,
+    start_date,
+    end_date
+    FROM
+      associations
+    WHERE
+      end_date IS NULL;
+
+ `;
+  return associations;
+});
+
+export const getAssociationsByPlayer = cache(async (id: number) => {
+  const [associations] = await sql<Association[]>`
+    SELECT
+    id,
+    player_id,
+    organisation_id,
+    start_date,
+    end_date
+    FROM
+      associations
+    WHERE
+      player_id = ${id} AND
+      end_date IS NULL;
+
+ `;
+  return associations;
+});
+
+export const getAssociationsByOrganisation = cache(async (id: number) => {
+  const [associations] = await sql<Association[]>`
+    SELECT
+    id,
+    player_id,
+    organisation_id,
+    start_date,
+    end_date
+    FROM
+      associations
+    WHERE
+      organisation_id = ${id} AND
+      end_date IS NULL;
+
+ `;
+  return associations;
+});
