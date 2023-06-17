@@ -29,48 +29,50 @@ import { getAllUsers, getUserByID } from '../../../database/users';
 
 const typeDefs = gql`
   type Query {
-    # Get all users
+    "Get all users"
     users: [User]
 
-    # Get user data with certain id (no password information)
+    "Get user data with certain id (no password information)"
     user(id: ID!): User
 
-    # Get all players
+    "Get all players"
     players: [Player]
 
-    # Get player data with certain id
+    "Get player data with certain id"
     player(id: ID!): Player
 
-    # Get all league accounts of a player
+    "Get all league accounts of a player"
     playerLeagueAccounts(id: ID!): [PlayerLeagueAccount]
 
-    # Get the association of a player
+    "Get the association of a player"
     playerAssociations(id: ID!): Association
 
-    # Get associations of a player that have not been accepted yet
+    "Get associations of a player that have not been accepted yet"
     playersAssociationsPending(id: ID!): [Association]
 
-    # Get all league accounts
+    "Get all league accounts"
     leagueAccounts: [LeagueAccount]
 
-    # Get league account data with certain id
+    "Get league account data with certain id"
     leagueAccount(id: ID!): LeagueAccount
 
-    # Get all associations
+    "Get all associations"
     associations: [Association]
 
-    # Get all organisations
+    "Get all organisations"
     organisations: [Organisation]
 
-    # Get a single organisation with a certain id
+    "Get a single organisation with a certain id"
     organisation(id: ID!): Organisation
 
-    # Get the associations of an organisation
+    "Get the associations of an organisation"
     organisationAssociations(id: ID!): [Association]
   }
 
+  "Used to show timestamps YYYY-MM-DD hh:mm:ss"
   scalar Date
 
+  "User containing credentials"
   type User {
     id: ID!
     username: String
@@ -79,6 +81,7 @@ const typeDefs = gql`
     lastUpdate: Date
   }
 
+  "Extension to a user, contains contact information and league of legends account details"
   type Player {
     id: ID!
     user: User
@@ -91,6 +94,7 @@ const typeDefs = gql`
     leagueAccounts: [PlayerLeagueAccount]
   }
 
+  "Due to rate limiter of RIOT api, league account data are cached in database"
   type LeagueAccount {
     id: ID!
     player: Player
@@ -103,6 +107,7 @@ const typeDefs = gql`
     lastUpdate: Date
   }
 
+  "Displaying all league accounts of a player including a field that marks the main account"
   type PlayerLeagueAccount {
     id: ID!
     player: Player
@@ -116,6 +121,7 @@ const typeDefs = gql`
     isMainAccount: Boolean
   }
 
+  "If a user is not a player, he is an organisation"
   type Organisation {
     id: ID!
     name: String
@@ -124,6 +130,7 @@ const typeDefs = gql`
     user: User!
   }
 
+  "Organisations can suggest an association to a player, but it has to be accepted by the player before it is valid. Both sides can end an association at any time"
   type Association {
     id: ID!
     player: Player
