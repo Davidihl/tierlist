@@ -14,6 +14,10 @@ import {
   getLeagueAccountById,
 } from '../../../database/leagueAccounts';
 import {
+  getAllOrganisations,
+  getOrganisationById,
+} from '../../../database/organisations';
+import {
   getAllPlayers,
   getPlayerById,
   Player,
@@ -40,6 +44,8 @@ const typeDefs = gql`
     associations: [Association]
     # Get the association of a player
     associationsPlayer(id: ID!): Association
+    # Get all organisations
+    organisations: [Organisation]
   }
 
   type User {
@@ -113,6 +119,9 @@ const resolvers = {
     associationsPlayer: async (parent: null, args: { id: string }) => {
       return await getAssociationsByPlayer(Number(args.id));
     },
+    organisations: async () => {
+      return await getAllOrganisations();
+    },
   },
 
   Player: {
@@ -126,6 +135,14 @@ const resolvers = {
   Association: {
     player: async (parent: any) => {
       return await getPlayerById(Number(parent.playerId));
+    },
+    organisation: async (parent: any) => {
+      return await getOrganisationById(parent.organisationId);
+    },
+  },
+  Organisation: {
+    user: async (parent: any) => {
+      return await getUserByID(Number(parent.userId));
     },
   },
 };
