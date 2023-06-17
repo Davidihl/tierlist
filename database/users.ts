@@ -43,3 +43,19 @@ export const getUserByID = cache(async (id: number) => {
  `;
   return user;
 });
+
+export const createUser = cache(
+  async (username: string, passwordHash: string) => {
+    const [user] = await sql<User[]>`
+    INSERT INTO users
+      (username, password_hash)
+    VALUES
+      (${username.toLowerCase()}, ${passwordHash})
+    RETURNING
+      id,
+      username
+ `;
+
+    return user;
+  },
+);

@@ -13,6 +13,7 @@ import {
 import {
   getAllLeagueAccounts,
   getLeagueAccountById,
+  getLeagueAccountsByPlayerId,
 } from '../../../database/leagueAccounts';
 import {
   getAllOrganisations,
@@ -39,8 +40,8 @@ const typeDefs = gql`
     # Get player data with certain id
     player(id: ID!): Player
 
-    # Get the league account thats marked as main account
-    playerMainAccount: LeagueAccount
+    # Get all league accounts of a player
+    playerLeagueAccounts(id: ID!): [PlayerLeagueAccount]
 
     # Get the association of a player
     playerAssociations(id: ID!): Association
@@ -83,6 +84,7 @@ const typeDefs = gql`
     contact: String
     slug: String
     mainAccount: LeagueAccount
+    leagueAccounts: [PlayerLeagueAccount]
   }
 
   type LeagueAccount {
@@ -95,6 +97,19 @@ const typeDefs = gql`
     wins: Int
     losses: Int
     lastUpdate: Date
+  }
+
+  type PlayerLeagueAccount {
+    id: ID!
+    player: Player
+    name: String
+    tier: String
+    rank: String
+    leaguePoints: String
+    wins: Int
+    losses: Int
+    lastUpdate: Date
+    isMainAccount: Boolean
   }
 
   type Organisation {
@@ -164,6 +179,9 @@ const resolvers = {
     },
     mainAccount: async (parent: any) => {
       return await getLeagueAccountById(Number(parent.mainaccountId));
+    },
+    leagueAccounts: async (parent: any) => {
+      return await getLeagueAccountsByPlayerId(parent.id);
     },
   },
   Association: {

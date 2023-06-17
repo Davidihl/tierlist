@@ -10,6 +10,10 @@ export type LeagueAccount = {
   losses: number | '';
 };
 
+export type PlayerLeagueAccount = LeagueAccount & {
+  main: boolean;
+};
+
 export const getAllLeagueAccounts = cache(async () => {
   const leagueAccounts = await sql<LeagueAccount[]>`
     SELECT
@@ -30,4 +34,19 @@ export const getLeagueAccountById = cache(async (id: number) => {
       id = ${id}
  `;
   return leagueAccount;
+});
+
+export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
+  const leagueAccounts = await sql<PlayerLeagueAccount[]>`
+    SELECT
+      league_accounts.*,
+      CASE WHEN players.mainaccount_id = league_accounts.id THEN TRUE ELSE FALSE END AS is_main_account
+    FROM
+      league_accounts
+    INNER JOIN
+      players ON players.mainaccount_id = league_accounts.id
+    WHERE
+      league_accounts.player_id = ${id}
+  `;
+  return leagueAccounts;
 });
