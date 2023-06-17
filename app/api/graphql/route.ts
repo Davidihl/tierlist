@@ -48,12 +48,14 @@ const typeDefs = gql`
     organisations: [Organisation]
   }
 
+  scalar Date
+
   type User {
     id: ID!
     username: String
     isAdmin: Boolean
     created: String
-    lastUpdate: String
+    lastUpdate: Date
   }
 
   type Player {
@@ -76,6 +78,7 @@ const typeDefs = gql`
     leaguePoints: String
     wins: Int
     losses: Int
+    lastUpdate: Date
   }
 
   type Organisation {
@@ -124,6 +127,18 @@ const resolvers = {
     },
   },
 
+  Date: {
+    // The `serialize` function is used to convert the Date object to a string when sending the response
+    serialize(value: Date) {
+      const year = value.getFullYear();
+      const month = String(value.getMonth() + 1).padStart(2, '0');
+      const day = String(value.getDate()).padStart(2, '0');
+      const hours = String(value.getHours()).padStart(2, '0');
+      const minutes = String(value.getMinutes()).padStart(2, '0');
+      const seconds = String(value.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    },
+  },
   Player: {
     user: async (parent: any) => {
       return await getUserByID(Number(parent.userId));

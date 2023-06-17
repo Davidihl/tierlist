@@ -23,7 +23,7 @@ export const getAllLeagueAccounts = cache(async () => {
 export const getLeagueAccountById = cache(async (id: number) => {
   const [leagueAccount] = await sql<LeagueAccount[]>`
     SELECT
-*
+      *
     FROM
       league_accounts
     WHERE
