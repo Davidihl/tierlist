@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import {
   getAllAssociations,
+  getAssociationsByOrganisation,
   getAssociationsByPlayer,
 } from '../../../database/associations';
 import {
@@ -28,24 +29,39 @@ const typeDefs = gql`
   type Query {
     # Get all users
     users: [User]
+
     # Get user data with certain id (no password information)
     user(id: ID!): User
+
     # Get all players
     players: [Player]
+
     # Get player data with certain id
     player(id: ID!): Player
+
     # Get the league account thats marked as main account
     playerMainAccount: LeagueAccount
+
+    # Get the association of a player
+    playerAssociations(id: ID!): Association
+
     # Get all league accounts
     leagueAccounts: [LeagueAccount]
+
     # Get league account data with certain id
     leagueAccount(id: ID!): LeagueAccount
+
     # Get all associations
     associations: [Association]
-    # Get the association of a player
-    associationsPlayer(id: ID!): Association
+
     # Get all organisations
     organisations: [Organisation]
+
+    # Get a single organisation with a certain id
+    organisation(id: ID!): Organisation
+
+    # Get the associations of an organisation
+    organisationAssociations(id: ID!): [Association]
   }
 
   scalar Date
@@ -54,7 +70,7 @@ const typeDefs = gql`
     id: ID!
     username: String
     isAdmin: Boolean
-    created: String
+    created: Date
     lastUpdate: Date
   }
 
@@ -110,6 +126,9 @@ const resolvers = {
     player: async (parent: null, args: { id: string }) => {
       return await getPlayerById(Number(args.id));
     },
+    playerAssociations: async (parent: null, args: { id: string }) => {
+      return await getAssociationsByPlayer(Number(args.id));
+    },
     leagueAccounts: async () => {
       return await getAllLeagueAccounts();
     },
@@ -119,11 +138,11 @@ const resolvers = {
     associations: async () => {
       return await getAllAssociations();
     },
-    associationsPlayer: async (parent: null, args: { id: string }) => {
-      return await getAssociationsByPlayer(Number(args.id));
-    },
     organisations: async () => {
       return await getAllOrganisations();
+    },
+    organisationAssociations: async (parent: null, args: { id: string }) => {
+      return await getAssociationsByOrganisation(Number(args.id));
     },
   },
 

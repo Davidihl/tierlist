@@ -45,7 +45,7 @@ export const getAssociationsByPlayer = cache(async (id: number) => {
 });
 
 export const getAssociationsByOrganisation = cache(async (id: number) => {
-  const [associations] = await sql<Association[]>`
+  const associations = await sql<Association[]>`
     SELECT
     id,
     player_id,
