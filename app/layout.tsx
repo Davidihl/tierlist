@@ -1,6 +1,7 @@
 import './globals.css';
 import { gql } from '@apollo/client';
 import { Inter } from 'next/font/google';
+import Navigation from '../components/navigation';
 import { getClient } from '../util/apolloClient';
 import { ApolloClientProvider } from './ApolloClientProvider';
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApolloClientProvider>{children}</ApolloClientProvider>
+        <ApolloClientProvider>
+          <Navigation />
+          {children}
+        </ApolloClientProvider>
       </body>
     </html>
   );

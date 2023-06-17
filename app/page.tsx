@@ -2,9 +2,7 @@ import { debug } from 'console';
 import Image from 'next/image';
 import { LeagueAccount } from '../database/leagueAccounts';
 import { getPlayerById } from '../database/players';
-import esvoeLogo from '../public/esvoe_Logo.svg';
 import { getLeagueofLegendsData } from './api/leagueoflegends';
-import styles from './page.module.css';
 
 export default async function Home() {
   // DEBUG RIOT API
@@ -15,9 +13,8 @@ export default async function Home() {
   // console.log('result', debugRiotObject);
 
   return (
-    <main className={styles.main}>
+    <main className="p-4">
       <div className="flex gap-4 items-center">
-        <Image src={esvoeLogo} className="w-48" alt="ESVÖ Logo" />
         <h1 className="text-3xl font-medium ">Player Database</h1>
       </div>
       <section className="flex flex-col gap-4 mt-8 flex-shrink-0">
