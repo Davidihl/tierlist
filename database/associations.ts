@@ -56,8 +56,25 @@ export const getAssociationsByOrganisation = cache(async (id: number) => {
       associations
     WHERE
       organisation_id = ${id} AND
-      end_date IS NULL;
+      end_date IS NULL
+ `;
+  return associations;
+});
 
+export const getPendingAssociations = cache(async (id: number) => {
+  const associations = await sql<Association[]>`
+    SELECT
+    id,
+    player_id,
+    organisation_id,
+    start_date,
+    end_date
+    FROM
+      associations
+    WHERE
+      player_id = ${id} AND
+      start_date IS NULL AND
+      end_date IS NULL
  `;
   return associations;
 });

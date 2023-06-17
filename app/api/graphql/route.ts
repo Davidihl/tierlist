@@ -9,6 +9,7 @@ import {
   getAllAssociations,
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
+  getPendingAssociations,
 } from '../../../database/associations';
 import {
   getAllLeagueAccounts,
@@ -45,6 +46,9 @@ const typeDefs = gql`
 
     # Get the association of a player
     playerAssociations(id: ID!): Association
+
+    # Get associations of a player that have not been accepted yet
+    playersAssociationsPending(id: ID!): [Association]
 
     # Get all league accounts
     leagueAccounts: [LeagueAccount]
@@ -143,6 +147,9 @@ const resolvers = {
     },
     playerAssociations: async (parent: null, args: { id: string }) => {
       return await getAssociationsByPlayer(Number(args.id));
+    },
+    playersAssociationsPending: async (parent: null, args: { id: string }) => {
+      return await getPendingAssociations(Number(args.id));
     },
     leagueAccounts: async () => {
       return await getAllLeagueAccounts();
