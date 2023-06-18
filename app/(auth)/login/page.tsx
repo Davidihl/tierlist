@@ -14,7 +14,16 @@ export default function LoginPage() {
         Password
         <input type="password" placeholder="Password" className="p-2 block" />
       </label>
-      <button className="bg-red-200">Login</button>
+      <div className="flex gap-4 items-center">
+        <button className="btn btn-primary rounded-full">
+          <span className="loading loading-spinner loading-sm" />
+          Login
+        </button>
+        <button className="btn btn-secondary rounded-full group">
+          <span className="w-0 group-hover:loading loading-spinner loading-sm transition-all" />
+          Sign up
+        </button>
+      </div>
     </form>
   );
 }
