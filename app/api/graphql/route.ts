@@ -68,6 +68,16 @@ const typeDefs = gql`
 
     "Get the associations of an organisation"
     organisationAssociations(id: ID!): [Association]
+
+    "Fetch league account data from riot api"
+    riotGetLeagueAccount(summoner: String!): LeagueAccount
+  }
+
+  type Mutation {
+    "Create a new user"
+    createUser(username: String, password: String): User
+    "Add a new league account to a player"
+    addLeagueAccount(username: String): LeagueAccount
   }
 
   "Used to show timestamps YYYY-MM-DD hh:mm:ss"

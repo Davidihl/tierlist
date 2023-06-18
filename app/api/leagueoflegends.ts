@@ -4,10 +4,6 @@ import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????
 
-// import { headers } from 'next/headers';
-// const headersInstance = headers();
-// const riotAuthorization = headersInstance.get('X-Riot-Token');
-
 // Define API Authorization Header
 const riotAuthorization = new Headers();
 riotAuthorization.append('X-Riot-Token', process.env.RIOT_API_KEY || '');
