@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import bcrypt from 'bcrypt';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
@@ -26,7 +27,12 @@ import {
   getPlayerById,
   Player,
 } from '../../../database/players';
-import { getAllUsers, getUserByID } from '../../../database/users';
+import {
+  createUser,
+  getAllUsers,
+  getUserByID,
+  getUserByUsername,
+} from '../../../database/users';
 
 const typeDefs = gql`
   type Query {
@@ -150,6 +156,7 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+  // GraphQl Query Resolver
   Query: {
     users: async () => {
       return await getAllUsers();
@@ -185,7 +192,6 @@ const resolvers = {
       return await getAssociationsByOrganisation(Number(args.id));
     },
   },
-
   Date: {
     // The `serialize` function is used to convert the Date object to a string when sending the response
     serialize(value: Date) {
@@ -220,6 +226,47 @@ const resolvers = {
   Organisation: {
     user: async (parent: any) => {
       return await getUserByID(Number(parent.userId));
+    },
+  },
+
+  // GraphQl Mutation Resolver
+  Mutation: {
+    createUser: async (
+      parent: null,
+      args: { username: string; password: string },
+    ) => {
+      // Validate user input
+      if (!args.username || !args.password) {
+        throw new GraphQLError('All fields are required');
+      }
+
+      // Check if user exists
+      const checkUserName = await getUserByUsername(args.username);
+      if (checkUserName) {
+        throw new GraphQLError('Username has already been taken', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check password security
+      const securePassword = z
+        .string()
+        .nonempty()
+        .min(8)
+        .regex(
+          new RegExp(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/),
+        );
+
+      if (!securePassword.safeParse(args.password).success) {
+        throw new GraphQLError(
+          'Password must be at least 8 characters long and contain one special character',
+        );
+      }
+
+      // Create password hash
+      const passwordHash = await bcrypt.hash(args.password, 10);
+
+      return await createUser(args.username, passwordHash);
     },
   },
 };

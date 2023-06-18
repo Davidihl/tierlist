@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@ts-safeql/eslint-plugin": "^1.1.4",
+    "@types/bcrypt": "^5.0.0",
     "@types/dotenv-safe": "^8.1.2",
     "@types/react": "18.2.12",
     "@types/react-dom": "18.2.5",

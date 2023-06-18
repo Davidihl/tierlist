@@ -10,7 +10,7 @@ export type User = {
 };
 
 export type UserWithPassword = User & {
-  password_hash: string;
+  passwordHash: string;
 };
 
 export const getAllUsers = cache(async () => {
@@ -44,10 +44,26 @@ export const getUserByID = cache(async (id: number) => {
   return user;
 });
 
-export const getUserWithPasswordHash = cache(async (username: string) => {
+export const getUserByUsername = cache(async (username: string) => {
   const [user] = await sql<User[]>`
     SELECT
-     *
+    id,
+    username,
+    is_admin,
+    created,
+    last_update
+    FROM
+      users
+    WHERE
+      username = ${username.toLowerCase()}
+ `;
+  return user;
+});
+
+export const getUserWithPasswordHash = cache(async (username: string) => {
+  const [user] = await sql<UserWithPassword[]>`
+    SELECT
+      *
     FROM
       users
     WHERE
@@ -65,9 +81,11 @@ export const createUser = cache(
       (${username.toLowerCase()}, ${passwordHash})
     RETURNING
       id,
-      username
+      username,
+      is_admin,
+      created,
+      last_update
  `;
-
     return user;
   },
 );
