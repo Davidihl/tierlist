@@ -1,7 +1,7 @@
 import './globals.css';
 import { gql } from '@apollo/client';
 import { Inter } from 'next/font/google';
-import Navigation from '../components/navigation';
+import Navigation from '../components/Navigation';
 import { getClient } from '../util/apolloClient';
 import { ApolloClientProvider } from './ApolloClientProvider';
 

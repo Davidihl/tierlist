@@ -1,6 +1,6 @@
-'use client';
 import Image from 'next/image';
 import esvoeLogo from '../public/esvoe_Logo.svg';
+import LoginLink from './LoginLink';
 
 export default function Navigation() {
   return (
@@ -9,7 +9,9 @@ export default function Navigation() {
         <Image src={esvoeLogo} className="w-48" alt="ESVÖ Logo" />
       </div>
       <div className="bg-white grow p-4 flex justify-end items-center">
-        <div>Sign in</div>
+        <div>
+          <LoginLink />
+        </div>
       </div>
     </nav>
   );
