@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { gql } from '@apollo/client';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
@@ -27,11 +28,13 @@ import {
   getPlayerById,
   Player,
 } from '../../../database/players';
+import { createSession } from '../../../database/sessions';
 import {
   createUser,
   getAllUsers,
   getUserByID,
   getUserByUsername,
+  getUserWithPasswordHash,
 } from '../../../database/users';
 
 const typeDefs = gql`
@@ -289,9 +292,52 @@ const resolvers = {
     // deleteUserAndOrganisation
 
     // login
-    login: async (parent: null, args: { login: string; password: string }) => {
-      await console.log('username:', args.login);
+    login: async (
+      parent: null,
+      args: { username: string; password: string },
+    ) => {
+      await console.log('username:', args.username);
       await console.log('password:', args.password);
+
+      // Define login schema
+      const username = z.string().nonempty();
+      const password = z.string().nonempty();
+      if (
+        !args.username ||
+        !args.password ||
+        !username.safeParse(args.username).success ||
+        !password.safeParse(args.password).success ||
+        args.username == null
+      ) {
+        throw new GraphQLError('Username or password are not valid', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if user exists
+      const existingUser = await getUserWithPasswordHash(args.username);
+      if (!existingUser) {
+        throw new GraphQLError('User not found or password incorrect', {
+          extensions: { code: '418' },
+        });
+      }
+
+      // Compare password hash
+      const isPasswordValid = await bcrypt.compare(
+        args.password,
+        existingUser.passwordHash,
+      );
+      if (!isPasswordValid) {
+        throw new GraphQLError('User not found or password incorrect', {
+          extensions: { code: '418' },
+        });
+      }
+
+      // Create session token
+      const sessionToken = crypto.randomBytes(100).toString('base64');
+      const newSession = await createSession(sessionToken, existingUser.id);
+
+      console.log('logged in', newSession);
     },
     // logout
   },
