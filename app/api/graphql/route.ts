@@ -344,9 +344,10 @@ const resolvers = {
       });
 
       const isCookie = await getCookie('sessionToken');
+      console.log('cookie: ', isCookie);
 
       // Check if cookie was created
-      if (isCookie) {
+      if (!isCookie) {
         return console.log('no cookie');
       }
 

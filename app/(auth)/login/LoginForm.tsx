@@ -37,7 +37,7 @@ export default function LoginForm() {
           Login
         </button>
         <button
-          formAction={() => console.log('forward to signup form')}
+          formAction={() => login}
           className="btn btn-secondary rounded-full group"
         >
           <span className="w-0 group-hover:loading loading-spinner group-hover:loading-sm transition-all" />
