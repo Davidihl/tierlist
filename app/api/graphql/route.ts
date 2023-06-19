@@ -337,7 +337,7 @@ const resolvers = {
       }
 
       // Set cookie
-      cookies().set({
+      await cookies().set({
         name: 'sessionToken',
         value: newSession.token,
         ...secureCookieOptions,
