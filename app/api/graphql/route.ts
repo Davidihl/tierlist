@@ -23,11 +23,7 @@ import {
   getAllOrganisations,
   getOrganisationById,
 } from '../../../database/organisations';
-import {
-  getAllPlayers,
-  getPlayerById,
-  Player,
-} from '../../../database/players';
+import { getAllPlayers, getPlayerById } from '../../../database/players';
 import { createSession } from '../../../database/sessions';
 import {
   createUser,
@@ -36,6 +32,7 @@ import {
   getUserByUsername,
   getUserWithPasswordHash,
 } from '../../../database/users';
+import { getCookie, secureCookieOptions } from '../../../util/cookies';
 
 const typeDefs = gql`
   type Query {
@@ -296,9 +293,6 @@ const resolvers = {
       parent: null,
       args: { username: string; password: string },
     ) => {
-      await console.log('username:', args.username);
-      await console.log('password:', args.password);
-
       // Define login schema
       const username = z.string().nonempty();
       const password = z.string().nonempty();
@@ -306,8 +300,7 @@ const resolvers = {
         !args.username ||
         !args.password ||
         !username.safeParse(args.username).success ||
-        !password.safeParse(args.password).success ||
-        args.username == null
+        !password.safeParse(args.password).success
       ) {
         throw new GraphQLError('Username or password are not valid', {
           extensions: { code: '400' },
@@ -337,7 +330,29 @@ const resolvers = {
       const sessionToken = crypto.randomBytes(100).toString('base64');
       const newSession = await createSession(sessionToken, existingUser.id);
 
-      console.log('logged in', newSession);
+      if (!newSession) {
+        throw new GraphQLError('Creating session failed', {
+          extensions: { code: '500' },
+        });
+      }
+
+      // Set cookie
+      cookies().set({
+        name: 'sessionToken',
+        value: newSession.token,
+        ...secureCookieOptions,
+      });
+
+      const isCookie = await getCookie('sessionToken');
+
+      // Check if cookie was created
+      if (isCookie) {
+        return console.log('no cookie');
+      }
+
+      const loggedInAsUser = await getUserByUsername(args.username);
+      console.log('logged in', loggedInAsUser);
+      return loggedInAsUser;
     },
     // logout
   },
