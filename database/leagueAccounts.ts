@@ -2,22 +2,27 @@ import { cache } from 'react';
 import { sql } from './connect';
 
 export type LeagueAccount = {
-  summoner: string;
-  tier: string | '';
-  rank: string | '';
-  leaguePoints: number | '';
-  wins: number | '';
-  losses: number | '';
+  name: string;
+  tier: number | null;
+  rank: string | null;
+  leaguePoints: number | null;
+  wins: number | null;
+  losses: number | null;
 };
 
 export type PlayerLeagueAccount = LeagueAccount & {
-  main: boolean;
+  isMainAccount: boolean;
 };
 
 export const getAllLeagueAccounts = cache(async () => {
   const leagueAccounts = await sql<LeagueAccount[]>`
     SELECT
-      *
+      name,
+      tier,
+      rank,
+      league_points,
+      wins,
+      losses
     FROM
       league_accounts
  `;
@@ -27,7 +32,12 @@ export const getAllLeagueAccounts = cache(async () => {
 export const getLeagueAccountById = cache(async (id: number) => {
   const [leagueAccount] = await sql<LeagueAccount[]>`
     SELECT
-      *
+      name,
+      tier,
+      rank,
+      league_points,
+      wins,
+      losses
     FROM
       league_accounts
     WHERE
@@ -39,7 +49,12 @@ export const getLeagueAccountById = cache(async (id: number) => {
 export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
   const leagueAccounts = await sql<PlayerLeagueAccount[]>`
     SELECT
-      league_accounts.*,
+      league_accounts.name,
+      league_accounts.tier,
+      league_accounts.rank,
+      league_accounts.league_points,
+      league_accounts.wins,
+      league_accounts.losses,
       CASE WHEN players.mainaccount_id = league_accounts.id THEN TRUE ELSE FALSE END AS is_main_account
     FROM
       league_accounts

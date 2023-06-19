@@ -5,11 +5,11 @@ export type Player = {
   id: number;
   userId: number;
   alias: string;
-  firstName: string;
-  lastName: string;
-  contact: string;
+  firstName: string | null;
+  lastName: string | null;
+  contact: string | null;
   slug: string;
-  mainaccountId: number;
+  mainaccountId: number | null;
 };
 
 export const getAllPlayers = cache(async () => {

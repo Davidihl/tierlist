@@ -5,7 +5,7 @@ export type Organisation = {
   id: number;
   userId: number;
   name: string;
-  contact: string;
+  contact: string | null;
   slug: string;
 };
 

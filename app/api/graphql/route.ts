@@ -6,7 +6,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import bcrypt from 'bcrypt';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import {
   getAllAssociations,
@@ -24,7 +24,10 @@ import {
   getOrganisationById,
 } from '../../../database/organisations';
 import { getAllPlayers, getPlayerById } from '../../../database/players';
-import { createSession } from '../../../database/sessions';
+import {
+  createSession,
+  getValidSessionByToken,
+} from '../../../database/sessions';
 import {
   createUser,
   getAllUsers,
@@ -369,8 +372,13 @@ const apolloServer = new ApolloServer({
 });
 
 const handler = startServerAndCreateNextHandler<NextRequest>(apolloServer, {
-  context: async (req) => {
-    return await { req };
+  context: async (req, res) => {
+    const sessionTokenCookie = cookies().get('sessionToken');
+    const isLoggedIn =
+      sessionTokenCookie &&
+      (await getValidSessionByToken(sessionTokenCookie.value));
+
+    return { req, res, isLoggedIn };
   },
 });
 

@@ -1,5 +1,4 @@
 import { Sql } from 'postgres';
-import { getLeagueofLegendsData } from '../app/api/leagueoflegends';
 
 const demoUser = [
   {
