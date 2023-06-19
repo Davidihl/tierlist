@@ -84,6 +84,8 @@ const typeDefs = gql`
     createUser(username: String, password: String): User
     "Add a new league account to a player"
     addLeagueAccount(username: String): LeagueAccount
+    "Login to a dedicated user which is related to either a player or an organisation"
+    login(username: String!, password: String!): User
   }
 
   "Used to show timestamps YYYY-MM-DD hh:mm:ss"
@@ -268,6 +270,30 @@ const resolvers = {
 
       return await createUser(args.username, passwordHash);
     },
+    // createPlayer
+
+    // addLeagueAccount
+
+    // removeLeagueAccount
+
+    // createOrganisation
+
+    // createAssociationByOrganisation
+
+    // acceptAssociationByPlayer
+
+    // endAssociation
+
+    // deleteUserAndPlayer
+
+    // deleteUserAndOrganisation
+
+    // login
+    login: async (parent: null, args: { login: string; password: string }) => {
+      await console.log('username:', args.login);
+      await console.log('password:', args.password);
+    },
+    // logout
   },
 };
 
