@@ -6,7 +6,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import bcrypt from 'bcrypt';
 import { GraphQLError } from 'graphql';
 import { cookies } from 'next/headers';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
   getAllAssociations,
@@ -36,8 +36,11 @@ import {
   getUserByID,
   getUserByUsername,
   getUserWithPasswordHash,
+  User,
 } from '../../../database/users';
 import { getCookie, secureCookieOptions } from '../../../util/cookies';
+
+type GraphQlResponseBody = { user: User } | Error;
 
 const typeDefs = gql`
   type Query {
@@ -390,10 +393,14 @@ const handler = startServerAndCreateNextHandler<NextRequest>(apolloServer, {
   },
 });
 
-export async function GET(req: NextRequest) {
-  return await handler(req);
+export async function GET(
+  req: NextRequest,
+): Promise<NextResponse<GraphQlResponseBody>> {
+  return (await handler(req)) as NextResponse<GraphQlResponseBody>;
 }
 
-export async function POST(req: NextRequest) {
-  return await handler(req);
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GraphQlResponseBody>> {
+  return (await handler(req)) as NextResponse<GraphQlResponseBody>;
 }

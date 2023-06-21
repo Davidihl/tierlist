@@ -1,5 +1,7 @@
 import { cache } from 'react';
 import { sql } from './connect';
+import { Organisation } from './organisations';
+import { Player } from './players';
 
 export type Session = {
   id: number;
@@ -10,6 +12,10 @@ export type Session = {
 
 export type Token = {
   token: string;
+};
+
+export type Slug = {
+  slug: string;
 };
 
 // Housekeeping, delete expired sessions
@@ -72,4 +78,36 @@ export const getValidSessionByToken = cache(async (token: string) => {
   `;
 
   return session;
+});
+
+// Get slug from token
+export const getSlugFromToken = cache(async (userId: number) => {
+  const [player] = await sql<Player[]>`
+    SELECT
+      *
+    FROM
+      players
+    WHERE
+      user_id = ${userId}`;
+
+  if (!player) {
+    const [organisation] = await sql<Organisation[]>`
+    SELECT
+      *
+    FROM
+      organisations
+    WHERE
+      user_id = ${userId}`;
+
+    if (!organisation) {
+      throw new Error('404: No context for user in session');
+    }
+
+    const organisationSlug = { slug: 'organisations/' + organisation.slug };
+
+    return organisationSlug;
+  }
+
+  const playerSlug = { slug: 'players/' + player.slug };
+  return playerSlug;
 });

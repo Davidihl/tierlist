@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import esvoeLogo from '../public/esvoe_Logo.svg';
 import LoginLink from './LoginLink';
 
@@ -9,9 +10,15 @@ export default function Navigation() {
         <Image src={esvoeLogo} className="w-48" alt="ESVÖ Logo" />
       </div>
       <div className="bg-white grow p-4 flex justify-end items-center">
-        <div>
+        <ul>
+          <li>
+            <Link href="/players">Players</Link>
+          </li>
+          <li>
+            <Link href="/organisations">Organisations</Link>
+          </li>
           <LoginLink />
-        </div>
+        </ul>
       </div>
     </nav>
   );

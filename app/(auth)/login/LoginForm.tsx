@@ -31,7 +31,6 @@ export default function LoginForm() {
 
     onCompleted: () => {
       setOnError('');
-      router.replace(`/`);
       router.refresh();
     },
   });

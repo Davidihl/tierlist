@@ -30,7 +30,6 @@ export default function LogOutForm(props: Props) {
     },
 
     onCompleted: () => {
-      console.log('it works');
       router.refresh();
     },
   });

@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getValidSessionByToken } from '../../../database/sessions';
+import {
+  getSlugFromToken,
+  getValidSessionByToken,
+} from '../../../database/sessions';
 import LoginForm from './LoginForm';
 
 export default async function LoginPage() {
@@ -10,7 +13,10 @@ export default async function LoginPage() {
     (await getValidSessionByToken(sessionTokenCookie.value));
 
   // 3. Either redirect or render the login form
-  if (session) redirect('/');
-
+  if (session) {
+    const sessionData = await getValidSessionByToken(sessionTokenCookie.value);
+    const user = await getSlugFromToken(sessionData!.userId);
+    redirect(user.slug);
+  }
   return <LoginForm />;
 }
