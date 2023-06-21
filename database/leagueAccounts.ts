@@ -55,7 +55,8 @@ export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
       league_accounts.league_points,
       league_accounts.wins,
       league_accounts.losses,
-      CASE WHEN players.mainaccount_id = league_accounts.id THEN TRUE ELSE FALSE END AS is_main_account
+      CASE WHEN players.mainaccount_id = league_accounts.id THEN TRUE ELSE FALSE END AS is_main_account,
+      players.alias
     FROM
       league_accounts
     INNER JOIN

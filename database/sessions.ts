@@ -8,6 +8,10 @@ export type Session = {
   // csrfSecret: string;
 };
 
+export type Token = {
+  token: string;
+};
+
 // Housekeeping, delete expired sessions
 export const deleteExpiredSessions = cache(async () => {
   await sql`

@@ -8,7 +8,22 @@ export default async function LoginLink() {
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
 
-  if (session) return <Link href="/logout">Logout</Link>;
+  if (session) {
+    return (
+      <>
+        <li>
+          <Link href="/">My Profile</Link>
+        </li>
+        <li>
+          <Link href="/logout">Logout</Link>
+        </li>
+      </>
+    );
+  }
 
-  return <Link href="/login">Login</Link>;
+  return (
+    <li>
+      <Link href="/login">Login</Link>
+    </li>
+  );
 }

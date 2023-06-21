@@ -26,7 +26,9 @@ import {
 import { getAllPlayers, getPlayerById } from '../../../database/players';
 import {
   createSession,
+  deleteSessionByToken,
   getValidSessionByToken,
+  Token,
 } from '../../../database/sessions';
 import {
   createUser,
@@ -60,6 +62,8 @@ const typeDefs = gql`
     "Get associations of a player that have not been accepted yet"
     playersAssociationsPending(id: ID!): [Association]
 
+    #Get Player by slug/id
+
     "Get all league accounts"
     leagueAccounts: [LeagueAccount]
 
@@ -89,6 +93,12 @@ const typeDefs = gql`
     addLeagueAccount(username: String): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
+    "Logout with the token provided"
+    logout(token: String!): Token
+  }
+
+  type Token {
+    token: String
   }
 
   "Used to show timestamps YYYY-MM-DD hh:mm:ss"
@@ -346,19 +356,17 @@ const resolvers = {
         ...secureCookieOptions,
       });
 
-      const isCookie = await getCookie('sessionToken');
-      console.log('cookie: ', isCookie);
-
-      // Check if cookie was created
-      if (!isCookie) {
-        return console.log('no cookie');
-      }
-
       const loggedInAsUser = await getUserByUsername(args.username);
       console.log('logged in', loggedInAsUser);
       return loggedInAsUser;
     },
     // logout
+    logout: async (parent: string, args: Token) => {
+      await cookies().set('sessionToken', '', {
+        maxAge: -1,
+      });
+      return await deleteSessionByToken(args.token);
+    },
   },
 };
 

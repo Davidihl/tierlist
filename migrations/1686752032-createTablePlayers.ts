@@ -14,7 +14,7 @@ export async function up(sql: Sql) {
       first_name VARCHAR (30),
       last_name VARCHAR (30),
       contact VARCHAR(100),
-      slug VARCHAR(30) NOT NULL
+      slug VARCHAR(30) UNIQUE NOT NULL
     )
   `;
 }

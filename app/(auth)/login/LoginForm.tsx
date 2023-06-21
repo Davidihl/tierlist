@@ -1,5 +1,6 @@
 'use client';
 import { gql, useMutation } from '@apollo/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -34,6 +35,7 @@ export default function LoginForm() {
       router.refresh();
     },
   });
+
   return (
     <form>
       <label>
@@ -59,20 +61,13 @@ export default function LoginForm() {
         <button
           formAction={async () => {
             await loginHandler();
-            console.log('click');
           }}
           className="btn btn-primary rounded-full"
         >
           <span className="loading loading-spinner loading-sm" />
           Login
         </button>
-        <button
-          formAction={() => console.log('it works')}
-          className="btn btn-secondary rounded-full group"
-        >
-          <span className="w-0 group-hover:loading loading-spinner group-hover:loading-sm transition-all" />
-          Sign up
-        </button>
+        <Link href="/signup">No account yet? Sign up here instead!</Link>
       </div>
       <div>{onError}</div>
     </form>
