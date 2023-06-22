@@ -20,6 +20,7 @@ import {
   getLeagueAccountsByPlayerId,
 } from '../../../database/leagueAccounts';
 import {
+  createOrganisation,
   getAllOrganisations,
   getOrganisationById,
   getOrganisationBySlug,
@@ -112,6 +113,11 @@ const typeDefs = gql`
       lastName: String
       contact: String
     ): Player
+    createOrganisation(
+      userId: Int!
+      organisationName: String!
+      contact: String
+    ): Organisation
     "Add a new league account to a player"
     addLeagueAccount(username: String): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
@@ -307,7 +313,7 @@ const resolvers = {
       // Check if player or organisation exists
       const aliasTakenByPlayer = await getPlayerBySlug(args.alias);
       if (aliasTakenByPlayer) {
-        throw new GraphQLError('Alias already in use');
+        throw new GraphQLError('Alias already taken');
       }
 
       const aliasTakenByOrganisation = await getOrganisationBySlug(args.alias);
@@ -350,12 +356,6 @@ const resolvers = {
         });
       }
 
-      if (args.userId === 0) {
-        throw new GraphQLError('Player already assigned', {
-          extensions: { code: '400' },
-        });
-      }
-
       // Check if user is assigned to player
       const playerExists = await getPlayerByUserId(args.userId);
       if (playerExists) {
@@ -387,6 +387,57 @@ const resolvers = {
     // removeLeagueAccount
 
     // createOrganisation
+    createOrganisation: async (
+      parent: null,
+      args: {
+        userId: number;
+        organisationName: string;
+        contact: string;
+      },
+    ) => {
+      // Validate Input
+      const userId = z.number();
+      const name = z.string().nonempty();
+      const contact = z.string();
+
+      console.log(args.userId);
+      console.log(args.organisationName);
+      console.log(args.contact);
+
+      if (
+        !userId.safeParse(args.userId).success ||
+        !name.safeParse(args.organisationName).success ||
+        !contact.safeParse(args.contact).success
+      ) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      console.log('marker 2');
+      // Check if user is assigned to player
+      const playerExists = await getPlayerByUserId(args.userId);
+      if (playerExists) {
+        throw new GraphQLError('Player already assigned', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if user is assigned to organisation
+      const organisationExists = await getOrganisationByUserId(args.userId);
+      if (organisationExists) {
+        throw new GraphQLError('Organisation already assigned', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Create Organisation
+      return await createOrganisation(
+        args.userId,
+        args.organisationName,
+        args.contact,
+      );
+    },
 
     // createAssociationByOrganisation
 
@@ -454,7 +505,6 @@ const resolvers = {
       });
 
       const loggedInAsUser = await getUserByUsername(args.username);
-      console.log('logged in', loggedInAsUser);
       return loggedInAsUser;
     },
     // logout

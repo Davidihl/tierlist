@@ -71,3 +71,17 @@ export const getOrganisationByUserId = cache(async (id: number) => {
  `;
   return organisation;
 });
+
+export const createOrganisation = cache(
+  async (userId: number, name: string, contact: string | null) => {
+    const [organisation] = await sql<Organisation[]>`
+    INSERT INTO organisations
+    (user_id, name, contact, slug)
+  VALUES
+    (${userId}, ${name}, ${contact}, ${encodeString(name).toLowerCase()})
+  RETURNING
+  *`;
+
+    return organisation;
+  },
+);

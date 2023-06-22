@@ -104,8 +104,6 @@ export const createPlayer = cache(
     lastName: string | null,
     contact: string | null,
   ) => {
-    console.log('player created function called');
-
     const [player] = await sql<Player[]>`
     INSERT INTO players
       (user_id, alias, first_name, last_name, contact, slug)

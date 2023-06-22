@@ -42,12 +42,29 @@ const createPlayerMutation = gql`
   }
 `;
 
+const createOrganisationMutation = gql`
+  mutation CreateOrganisation(
+    $userId: Int!
+    $organisationName: String!
+    $contact: String
+  ) {
+    createOrganisation(
+      userId: $userId
+      organisationName: $organisationName
+      contact: $contact
+    ) {
+      id
+    }
+  }
+`;
+
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alias, setAlias] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [organisationName, setOrganisationName] = useState('');
   const [contact, setContact] = useState('');
   const [isPlayer, setIsPlayer] = useState(true);
   const [onError, setOnError] = useState('');
@@ -70,6 +87,17 @@ export default function SignUpForm() {
   });
 
   const [createPlayerHandler] = useMutation(createPlayerMutation, {
+    onError: (error) => {
+      setOnError(error.message);
+    },
+
+    onCompleted: async () => {
+      setOnError('');
+      await loginHandler();
+    },
+  });
+
+  const [createOrganisationHandler] = useMutation(createOrganisationMutation, {
     onError: (error) => {
       setOnError(error.message);
     },
@@ -103,6 +131,14 @@ export default function SignUpForm() {
             contact,
           },
         });
+      } else {
+        await createOrganisationHandler({
+          variables: {
+            userId: Number(data.createUser.id),
+            organisationName,
+            contact,
+          },
+        });
       }
     },
   });
@@ -124,7 +160,11 @@ export default function SignUpForm() {
           <input
             type="checkbox"
             checked={!isPlayer}
-            onChange={() => setIsPlayer(!isPlayer)}
+            onChange={() => {
+              setIsPlayer(!isPlayer);
+              setOrganisationName('');
+              setAlias('');
+            }}
             className="radio radio-primary"
           />
         </label>
@@ -188,7 +228,28 @@ export default function SignUpForm() {
           </label>
         </div>
       ) : (
-        <div>orgaform</div>
+        <div>
+          <label>
+            Alias
+            <input
+              value={organisationName}
+              onChange={(event) =>
+                setOrganisationName(event.currentTarget.value)
+              }
+              placeholder="Austrian Force"
+              className="p-2 block"
+            />
+          </label>
+          <label>
+            Email contact (optional)
+            <input
+              value={contact}
+              onChange={(event) => setContact(event.currentTarget.value)}
+              placeholder="user@email.com"
+              className="p-2 block"
+            />
+          </label>
+        </div>
       )}
       <div className="flex gap-4 items-center">
         <button

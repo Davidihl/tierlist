@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { getPlayerById, getPlayerBySlug } from '../database/players';
 import { getSlugFromToken, getValidSessionByToken } from '../database/sessions';
 
 export default async function LoginLink() {
@@ -11,11 +12,16 @@ export default async function LoginLink() {
   if (session) {
     const sessionData = await getValidSessionByToken(sessionTokenCookie.value);
     const user = await getSlugFromToken(sessionData!.userId);
+    const isPlayer = await getPlayerById(Number(sessionData!.userId));
 
     return (
       <>
         <li>
-          <Link href={{ pathname: user.slug }}>My Profile</Link>
+          <Link
+            href={`/${isPlayer ? 'players' : 'organisations'}/${user.slug}`}
+          >
+            My Profile
+          </Link>
         </li>
         <li>
           <Link href="/logout">Logout</Link>
