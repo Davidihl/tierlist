@@ -37,7 +37,7 @@ export default function AddLeagueAccount(props: Props) {
           }
 
           console.log(riotResponse);
-          // call add League of Legends mutation
+          // call add League of Legends mutation --- probably rework the whole formAction (see create user)
         }}
       >
         Search Account

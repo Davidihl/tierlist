@@ -119,7 +119,7 @@ const typeDefs = gql`
       contact: String
     ): Organisation
     "Add a new league account to a player"
-    addLeagueAccount(username: String): LeagueAccount
+    addLeagueAccount(summoner: String!, userId: Int!): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
     "Logout with the token provided"
@@ -383,8 +383,22 @@ const resolvers = {
     },
 
     // addLeagueAccount
+    addLeagueAccount: async (
+      parent: null,
+      args: { summoner: string; userId: number },
+    ) => {
+      await console.log(args);
+
+      // Validate input
+      // Check if league account exists
+      // Check authorization
+      // Add league account
+    },
 
     // removeLeagueAccount
+    // Validate input
+    // Check authorization
+    // Delete league account
 
     // createOrganisation
     createOrganisation: async (
