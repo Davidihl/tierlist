@@ -37,6 +37,7 @@ export default function LogOutForm(props: Props) {
     <form>
       <p>Are you sure you want to logout?</p>
       <button
+        className="btn btn-primary rounded-full"
         formAction={async () => {
           await logoutHandler();
         }}

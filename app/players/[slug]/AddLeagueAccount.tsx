@@ -11,7 +11,6 @@ type Props = {
 export default function AddLeagueAccount(props: Props) {
   const [summonerName, setSummonerName] = useState('');
   const [onError, setOnError] = useState('');
-  const [result, setResult] = useState({});
   const router = useRouter();
 
   return (
@@ -29,19 +28,19 @@ export default function AddLeagueAccount(props: Props) {
         />
       </label>
       <button
-        className="btn"
+        className="btn btn-secondary rounded-full"
         formAction={async () => {
           setOnError('');
           const riotResponse = await searchLeagueAccount(summonerName);
           if ('error' in riotResponse) {
             return setOnError(riotResponse.error);
           }
-          setResult(riotResponse);
-          console.log(result);
-          router.refresh();
+
+          console.log(riotResponse);
+          // call add League of Legends mutation
         }}
       >
-        Search
+        Search Account
       </button>
       {onError.length > 0 ? <p>{onError}</p> : ''}
     </form>
