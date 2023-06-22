@@ -1,7 +1,5 @@
-import { debug } from 'console';
 import Image from 'next/image';
-import { LeagueAccount, RiotResponse } from '../database/leagueAccounts';
-import { getPlayerById } from '../database/players';
+import { RiotResponse } from '../database/leagueAccounts';
 import { getLeagueofLegendsData } from './api/leagueoflegends';
 
 export default async function Home() {

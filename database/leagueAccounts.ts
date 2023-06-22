@@ -21,6 +21,7 @@ export type RiotResponse = {
 
 export type PlayerLeagueAccount = LeagueAccount & {
   isMainAccount: boolean;
+  alias: string;
 };
 
 export const getAllLeagueAccounts = cache(async () => {
@@ -51,6 +52,23 @@ export const getLeagueAccountById = cache(async (id: number) => {
       league_accounts
     WHERE
       id = ${id}
+ `;
+  return leagueAccount;
+});
+
+export const getLeagueAccountBySummoner = cache(async (summoner: string) => {
+  const [leagueAccount] = await sql<LeagueAccount[]>`
+    SELECT
+      summoner,
+      tier,
+      rank,
+      league_points,
+      wins,
+      losses
+    FROM
+      league_accounts
+    WHERE
+      summoner = ${summoner}
  `;
   return leagueAccount;
 });
