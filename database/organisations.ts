@@ -38,3 +38,19 @@ export const getOrganisationById = cache(async (id: number) => {
  `;
   return organisation;
 });
+
+export const getOrganisationByUserId = cache(async (id: number) => {
+  const [organisation] = await sql<Organisation[]>`
+    SELECT
+      id,
+      user_id,
+      name,
+      contact,
+      slug
+    FROM
+      organisations
+    WHERE
+      user_id = ${id}
+ `;
+  return organisation;
+});

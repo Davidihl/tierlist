@@ -48,3 +48,34 @@ export const getPlayerById = cache(async (id: number) => {
  `;
   return player;
 });
+
+export const getPlayerByUserId = cache(async (id: number) => {
+  const [player] = await sql<Player[]>`
+    SELECT
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
+    FROM
+      players
+    WHERE
+      user_id = ${id}
+ `;
+  return player;
+});
+
+export const createPlayer = cache(
+  async (
+    userId: number,
+    alias: string,
+    firstName: string | null,
+    lastName: string | null,
+    contact: string | null,
+  ) => {
+    console.log('player created function called');
+  },
+);

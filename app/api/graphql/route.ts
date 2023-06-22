@@ -22,8 +22,14 @@ import {
 import {
   getAllOrganisations,
   getOrganisationById,
+  getOrganisationByUserId,
 } from '../../../database/organisations';
-import { getAllPlayers, getPlayerById } from '../../../database/players';
+import {
+  createPlayer,
+  getAllPlayers,
+  getPlayerById,
+  getPlayerByUserId,
+} from '../../../database/players';
 import {
   createSession,
   deleteSessionByToken,
@@ -34,6 +40,7 @@ import {
   createUser,
   getAllUsers,
   getUserByID,
+  getUserByToken,
   getUserByUsername,
   getUserWithPasswordHash,
   User,
@@ -92,6 +99,14 @@ const typeDefs = gql`
   type Mutation {
     "Create a new user"
     createUser(username: String, password: String): User
+    "Create a new player"
+    createPlayer(
+      userId: Int!
+      alias: String!
+      firstName: String
+      lastName: String
+      contact: String
+    ): Player
     "Add a new league account to a player"
     addLeagueAccount(username: String): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
@@ -287,6 +302,67 @@ const resolvers = {
       return await createUser(args.username, passwordHash);
     },
     // createPlayer
+    createPlayer: async (
+      parent: null,
+      args: {
+        userId: number;
+        alias: string;
+        firstName: string;
+        lastName: string;
+        contact: string;
+      },
+    ) => {
+      // Validate Input
+      const userId = z.number();
+      const alias = z.string().nonempty().min(3);
+      const firstName = z.string();
+      const lastName = z.string();
+      const contact = z.string();
+
+      if (
+        !userId.safeParse(args.userId).success ||
+        !alias.safeParse(args.alias).success ||
+        !firstName.safeParse(args.firstName).success ||
+        !lastName.safeParse(args.lastName).success
+      ) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if user is assigned to player
+      const playerExists = await getPlayerByUserId(args.userId);
+      if (playerExists) {
+        throw new GraphQLError('Player already assigned', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if user is assigned to organisation
+      const organisationExists = await getOrganisationByUserId(args.userId);
+      if (organisationExists) {
+        throw new GraphQLError('Organisation already assigned', {
+          extensions: { code: '400' },
+        });
+      }
+
+      console.log(args);
+      console.log(playerExists);
+
+      // const playerExists = await getPlayerById(args.userId);
+      // if (playerExists) {
+      //   throw new GraphQLError('Player already assigned', {
+      //     extensions: { code: '400' },
+      //   });
+      // }
+      // return await createPlayer(
+      //   args.userId,
+      //   args.playerInput.alias,
+      //   args.playerInput.firstName,
+      //   args.playerInput.lastName,
+      //   args.playerInput.contact,
+      // );
+    },
 
     // addLeagueAccount
 
@@ -388,8 +464,11 @@ const handler = startServerAndCreateNextHandler<NextRequest>(apolloServer, {
     const isLoggedIn =
       sessionTokenCookie &&
       (await getValidSessionByToken(sessionTokenCookie.value));
+    const user = isLoggedIn
+      ? await getUserByToken(sessionTokenCookie.value)
+      : null;
 
-    return { req, res, isLoggedIn };
+    return { req, res, isLoggedIn, user };
   },
 });
 

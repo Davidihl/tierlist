@@ -72,6 +72,26 @@ export const getUserWithPasswordHash = cache(async (username: string) => {
   return user;
 });
 
+export const getUserByToken = cache(async (token: string) => {
+  const [user] = await sql<User[]>`
+  SELECT
+  users.id,
+  users.username,
+  users.is_admin,
+  users.created,
+  users.last_update
+  FROM
+    users
+    INNER JOIN
+    sessions ON (
+      sessions.token = ${token} AND
+      sessions.user_id = users.id AND
+      sessions.expiry_timestamp > now()
+    )
+  `;
+  return user;
+});
+
 export const createUser = cache(
   async (username: string, passwordHash: string) => {
     const [user] = await sql<User[]>`
