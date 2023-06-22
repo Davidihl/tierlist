@@ -1,4 +1,5 @@
 import { Sql } from 'postgres';
+import { encodeString } from '../util/encodeString';
 
 export async function up(sql: Sql) {
   await sql`
@@ -14,7 +15,7 @@ export async function up(sql: Sql) {
       'Austrian Force',
       2,
       'office@austrianforce.at',
-      'austrianforce'
+      ${encodeString('Austrian Force').toLowerCase()}
     )
 
   `;

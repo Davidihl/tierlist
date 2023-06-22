@@ -103,11 +103,11 @@ export const getSlugFromToken = cache(async (userId: number) => {
       throw new Error('404: No context for user in session');
     }
 
-    const organisationSlug = { slug: 'organisations/' + organisation.slug };
+    const organisationSlug = { slug: organisation.slug };
 
     return organisationSlug;
   }
 
-  const playerSlug = { slug: 'players/' + player.slug };
+  const playerSlug = { slug: player.slug };
   return playerSlug;
 });

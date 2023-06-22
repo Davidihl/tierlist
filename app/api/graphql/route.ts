@@ -22,12 +22,14 @@ import {
 import {
   getAllOrganisations,
   getOrganisationById,
+  getOrganisationBySlug,
   getOrganisationByUserId,
 } from '../../../database/organisations';
 import {
   createPlayer,
   getAllPlayers,
   getPlayerById,
+  getPlayerBySlug,
   getPlayerByUserId,
 } from '../../../database/players';
 import {
@@ -45,7 +47,7 @@ import {
   getUserWithPasswordHash,
   User,
 } from '../../../database/users';
-import { getCookie, secureCookieOptions } from '../../../util/cookies';
+import { secureCookieOptions } from '../../../util/cookies';
 
 type GraphQlResponseBody = { user: User } | Error;
 
@@ -62,6 +64,9 @@ const typeDefs = gql`
 
     "Get player data with certain id"
     player(id: ID!): Player
+
+    "Get player data by his username"
+    playerByUsername(username: String!): Player
 
     "Get all league accounts of a player"
     playerLeagueAccounts(id: ID!): [PlayerLeagueAccount]
@@ -98,7 +103,7 @@ const typeDefs = gql`
 
   type Mutation {
     "Create a new user"
-    createUser(username: String, password: String): User
+    createUser(username: String, password: String, alias: String!): User
     "Create a new player"
     createPlayer(
       userId: Int!
@@ -203,6 +208,9 @@ const resolvers = {
     player: async (parent: null, args: { id: string }) => {
       return await getPlayerById(Number(args.id));
     },
+    playerByUsername: async (parent: null, args: { username: string }) => {
+      return await getPlayerBySlug(args.username);
+    },
     playerAssociations: async (parent: null, args: { id: string }) => {
       return await getAssociationsByPlayer(Number(args.id));
     },
@@ -266,7 +274,7 @@ const resolvers = {
   Mutation: {
     createUser: async (
       parent: null,
-      args: { username: string; password: string },
+      args: { username: string; password: string; alias: string },
     ) => {
       // Validate user input
       if (!args.username || !args.password) {
@@ -294,6 +302,17 @@ const resolvers = {
         throw new GraphQLError(
           'Password must be at least 8 characters long and contain one special character',
         );
+      }
+
+      // Check if player or organisation exists
+      const aliasTakenByPlayer = await getPlayerBySlug(args.alias);
+      if (aliasTakenByPlayer) {
+        throw new GraphQLError('Alias already in use');
+      }
+
+      const aliasTakenByOrganisation = await getOrganisationBySlug(args.alias);
+      if (aliasTakenByOrganisation) {
+        throw new GraphQLError('Alias already in use');
       }
 
       // Create password hash

@@ -58,6 +58,25 @@ export const getPlayerById = cache(async (id: number) => {
   return player;
 });
 
+export const getPlayerBySlug = cache(async (slug: string) => {
+  const [player] = await sql<Player[]>`
+    SELECT
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
+    FROM
+      players
+    WHERE
+      slug = ${encodeString(slug).toLowerCase()}
+ `;
+  return player;
+});
+
 export const getPlayerByUserId = cache(async (id: number) => {
   const [player] = await sql<Player[]>`
     SELECT

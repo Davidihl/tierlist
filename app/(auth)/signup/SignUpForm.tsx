@@ -1,5 +1,5 @@
 'use client';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -14,8 +14,8 @@ const loginMutation = gql`
 `;
 
 const createUserMutation = gql`
-  mutation CreateUser($username: String, $password: String) {
-    createUser(username: $username, password: $password) {
+  mutation createUser($alias: String!, $username: String, $password: String) {
+    createUser(alias: $alias, username: $username, password: $password) {
       id
     }
   }
@@ -82,6 +82,7 @@ export default function SignUpForm() {
 
   const [createUserHandler] = useMutation(createUserMutation, {
     variables: {
+      alias,
       username,
       password,
     },
@@ -92,15 +93,17 @@ export default function SignUpForm() {
 
     onCompleted: async (data) => {
       setOnError('');
-      await createPlayerHandler({
-        variables: {
-          userId: Number(data.createUser.id),
-          alias,
-          firstName,
-          lastName,
-          contact,
-        },
-      });
+      if (isPlayer) {
+        await createPlayerHandler({
+          variables: {
+            userId: Number(data.createUser.id),
+            alias,
+            firstName,
+            lastName,
+            contact,
+          },
+        });
+      }
     },
   });
 
