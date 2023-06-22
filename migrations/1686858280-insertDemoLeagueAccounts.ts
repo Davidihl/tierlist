@@ -38,7 +38,7 @@ export async function up(sql: Sql) {
     INSERT INTO league_accounts
     (
       player_id,
-      name,
+      summoner,
       tier,
       rank,
       league_points,

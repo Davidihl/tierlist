@@ -5,7 +5,7 @@ export async function up(sql: Sql) {
     CREATE TABLE league_accounts (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       player_id integer NOT NULL REFERENCES players (id),
-      name VARCHAR(30) UNIQUE NOT NULL,
+      summoner VARCHAR(30) UNIQUE NOT NULL,
       tier integer REFERENCES tiers (id),
       rank VARCHAR(10),
       league_points integer,

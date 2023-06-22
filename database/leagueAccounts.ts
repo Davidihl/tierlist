@@ -2,8 +2,17 @@ import { cache } from 'react';
 import { sql } from './connect';
 
 export type LeagueAccount = {
-  name: string;
+  summoner: string;
   tier: number | null;
+  rank: string | null;
+  leaguePoints: number | null;
+  wins: number | null;
+  losses: number | null;
+};
+
+export type RiotResponse = {
+  summoner: string;
+  tier: string;
   rank: string | null;
   leaguePoints: number | null;
   wins: number | null;
@@ -17,7 +26,7 @@ export type PlayerLeagueAccount = LeagueAccount & {
 export const getAllLeagueAccounts = cache(async () => {
   const leagueAccounts = await sql<LeagueAccount[]>`
     SELECT
-      name,
+      summoner,
       tier,
       rank,
       league_points,
@@ -32,7 +41,7 @@ export const getAllLeagueAccounts = cache(async () => {
 export const getLeagueAccountById = cache(async (id: number) => {
   const [leagueAccount] = await sql<LeagueAccount[]>`
     SELECT
-      name,
+      summoner,
       tier,
       rank,
       league_points,
@@ -49,7 +58,7 @@ export const getLeagueAccountById = cache(async (id: number) => {
 export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
   const leagueAccounts = await sql<PlayerLeagueAccount[]>`
     SELECT
-      league_accounts.name,
+      league_accounts.summoner,
       league_accounts.tier,
       league_accounts.rank,
       league_accounts.league_points,

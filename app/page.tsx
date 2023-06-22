@@ -1,16 +1,16 @@
 import { debug } from 'console';
 import Image from 'next/image';
-import { LeagueAccount } from '../database/leagueAccounts';
+import { LeagueAccount, RiotResponse } from '../database/leagueAccounts';
 import { getPlayerById } from '../database/players';
 import { getLeagueofLegendsData } from './api/leagueoflegends';
 
 export default async function Home() {
   // DEBUG RIOT API
   // const debugRiotObject = await getLeagueofLegendsData('AFW Nan0');
-  const debugRiotObject: LeagueAccount = await getLeagueofLegendsData(
+  const debugRiotObject: RiotResponse = await getLeagueofLegendsData(
     'Chaoslordi',
   );
-  // console.log('result', debugRiotObject);
+  console.log('result', debugRiotObject);
 
   return (
     <main className="p-4">

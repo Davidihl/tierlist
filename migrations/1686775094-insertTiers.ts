@@ -11,6 +11,7 @@ const tiers = [
   'SILVER',
   'BRONZE',
   'IRON',
+  'UNRANKED',
 ];
 
 export async function up(sql: Sql) {

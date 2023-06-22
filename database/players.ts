@@ -72,7 +72,7 @@ export const getPlayerBySlug = cache(async (slug: string) => {
     FROM
       players
     WHERE
-      slug = ${encodeString(slug).toLowerCase()}
+      slug = ${slug}
  `;
   return player;
 });
