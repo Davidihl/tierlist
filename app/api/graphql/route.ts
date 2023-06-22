@@ -346,22 +346,14 @@ const resolvers = {
         });
       }
 
-      console.log(args);
-      console.log(playerExists);
-
-      // const playerExists = await getPlayerById(args.userId);
-      // if (playerExists) {
-      //   throw new GraphQLError('Player already assigned', {
-      //     extensions: { code: '400' },
-      //   });
-      // }
-      // return await createPlayer(
-      //   args.userId,
-      //   args.playerInput.alias,
-      //   args.playerInput.firstName,
-      //   args.playerInput.lastName,
-      //   args.playerInput.contact,
-      // );
+      // Create player
+      return await createPlayer(
+        args.userId,
+        args.alias,
+        args.firstName,
+        args.lastName,
+        args.contact,
+      );
     },
 
     // addLeagueAccount

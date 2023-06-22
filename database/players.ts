@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { encodeString } from '../util/encodeString';
 import { sql } from './connect';
 
 export type Player = {
@@ -10,6 +11,14 @@ export type Player = {
   contact: string | null;
   slug: string;
   mainaccountId: number | null;
+};
+
+export type PlayerInput = {
+  userId: number;
+  alias: string;
+  firstName: string | null;
+  lastName: string | null;
+  contact: string | null;
 };
 
 export const getAllPlayers = cache(async () => {
@@ -77,5 +86,18 @@ export const createPlayer = cache(
     contact: string | null,
   ) => {
     console.log('player created function called');
+
+    const [player] = await sql<Player[]>`
+    INSERT INTO players
+      (user_id, alias, first_name, last_name, contact, slug)
+    VALUES
+      (${userId}, ${alias}, ${firstName}, ${lastName}, ${contact}, ${encodeString(
+      alias,
+    ).toLowerCase()})
+    RETURNING
+    *
+    `;
+
+    return player;
   },
 );
