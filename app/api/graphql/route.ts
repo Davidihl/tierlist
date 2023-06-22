@@ -270,7 +270,7 @@ const resolvers = {
     ) => {
       // Validate user input
       if (!args.username || !args.password) {
-        throw new GraphQLError('All fields are required');
+        throw new GraphQLError('Please fill out all required fields');
       }
 
       // Check if user exists
@@ -323,9 +323,16 @@ const resolvers = {
         !userId.safeParse(args.userId).success ||
         !alias.safeParse(args.alias).success ||
         !firstName.safeParse(args.firstName).success ||
-        !lastName.safeParse(args.lastName).success
+        !lastName.safeParse(args.lastName).success ||
+        !contact.safeParse(args.contact).success
       ) {
         throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      if (args.userId === 0) {
+        throw new GraphQLError('Player already assigned', {
           extensions: { code: '400' },
         });
       }
