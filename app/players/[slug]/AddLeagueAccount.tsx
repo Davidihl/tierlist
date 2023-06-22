@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { searchLeagueAccount } from './actions';
 
@@ -9,8 +10,8 @@ type Props = {
 
 export default function AddLeagueAccount(props: Props) {
   const [summonerName, setSummonerName] = useState('');
-
-  console.log(props.userId);
+  const [onError, setOnError] = useState('');
+  const router = useRouter();
 
   return (
     <form>
@@ -29,12 +30,19 @@ export default function AddLeagueAccount(props: Props) {
       <button
         className="btn"
         formAction={async () => {
+          setOnError('');
           const result = await searchLeagueAccount(summonerName);
+          if ('error' in result) {
+            return setOnError(result.error);
+          }
+          setSummonerName('');
           console.log(result);
+          router.refresh();
         }}
       >
         Search
       </button>
+      {onError.length > 0 ? <p>{onError}</p> : ''}
     </form>
   );
 }
