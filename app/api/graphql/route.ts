@@ -15,8 +15,10 @@ import {
   getPendingAssociations,
 } from '../../../database/associations';
 import {
+  addLeagueAccount,
   getAllLeagueAccounts,
   getLeagueAccountById,
+  getLeagueAccountBySummoner,
   getLeagueAccountsByPlayerId,
 } from '../../../database/leagueAccounts';
 import {
@@ -39,6 +41,7 @@ import {
   getValidSessionByToken,
   Token,
 } from '../../../database/sessions';
+import { getTierIdByRiotResponse } from '../../../database/tiers';
 import {
   createUser,
   getAllUsers,
@@ -49,6 +52,7 @@ import {
   User,
 } from '../../../database/users';
 import { secureCookieOptions } from '../../../util/cookies';
+import { getLeagueofLegendsData } from '../leagueoflegends';
 
 type GraphQlResponseBody = { user: User } | Error;
 
@@ -386,13 +390,46 @@ const resolvers = {
     addLeagueAccount: async (
       parent: null,
       args: { summoner: string; userId: number },
+      context: { isLoggedIn: any; user: any },
     ) => {
-      await console.log(args);
-
       // Validate input
-      // Check if league account exists
+      const checkSummoner = z.string().nonempty();
+      const checkUserId = z.number();
+      if (
+        !checkSummoner.safeParse(args.summoner).success ||
+        !checkUserId.safeParse(args.userId).success
+      ) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if summoner exists
+      const summonerExists = await getLeagueAccountBySummoner(args.summoner);
+      if (summonerExists) {
+        throw new GraphQLError('League of Legends account already assigned', {
+          extensions: { code: '400' },
+        });
+      }
+
       // Check authorization
-      // Add league account
+      if (!context.isLoggedIn.userId === context.user.id) {
+        throw new GraphQLError('Authorization failed', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Prepare data
+      const riotData = await getLeagueofLegendsData(args.summoner);
+      const playerToAssign = await getPlayerByUserId(context.user.id);
+
+      if (!playerToAssign) {
+        throw new GraphQLError('Player not fou d', {
+          extensions: { code: '404' },
+        });
+      }
+
+      return await addLeagueAccount(riotData, playerToAssign.id);
     },
 
     // removeLeagueAccount
@@ -414,10 +451,6 @@ const resolvers = {
       const name = z.string().nonempty();
       const contact = z.string();
 
-      console.log(args.userId);
-      console.log(args.organisationName);
-      console.log(args.contact);
-
       if (
         !userId.safeParse(args.userId).success ||
         !name.safeParse(args.organisationName).success ||
@@ -428,7 +461,6 @@ const resolvers = {
         });
       }
 
-      console.log('marker 2');
       // Check if user is assigned to player
       const playerExists = await getPlayerByUserId(args.userId);
       if (playerExists) {
@@ -548,7 +580,7 @@ const handler = startServerAndCreateNextHandler<NextRequest>(apolloServer, {
       (await getValidSessionByToken(sessionTokenCookie.value));
     const user = isLoggedIn
       ? await getUserByToken(sessionTokenCookie.value)
-      : null;
+      : undefined;
 
     return { req, res, isLoggedIn, user };
   },

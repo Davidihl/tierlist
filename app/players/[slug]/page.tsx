@@ -25,9 +25,9 @@ export default async function PlayerPage(props: Props) {
     notFound();
   }
   const leagueData = await getLeagueAccountsByPlayerId(playerData.id);
-  console.log(playerData);
-  console.log(leagueData);
-  console.log(allowEdit);
+  // console.log(playerData);
+  // console.log(leagueData);
+  // console.log(allowEdit);
   return (
     <main className="p-4">
       <h1 className="font-medium text-xl">{playerData.alias}</h1>

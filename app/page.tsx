@@ -8,7 +8,7 @@ export default async function Home() {
   const debugRiotObject: RiotResponse = await getLeagueofLegendsData(
     'Chaoslordi',
   );
-  console.log('result', debugRiotObject);
+  // console.log('result', debugRiotObject);
 
   return (
     <main className="p-4">

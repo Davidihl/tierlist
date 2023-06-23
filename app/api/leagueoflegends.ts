@@ -78,7 +78,7 @@ export async function getLeagueofLegendsData(summoner: string) {
   if (!soloQData) {
     const unranked: RiotResponse = {
       summoner,
-      tier: '',
+      tier: 'UNRANKED',
       rank: '',
       leaguePoints: 0,
       wins: 0,
