@@ -7,6 +7,7 @@ import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 import { getPlayerBySlug } from '../../../database/players';
 import { getValidSessionByToken } from '../../../database/sessions';
 import deleteIcon from '../../../public/delete.svg';
+import markMainIcon from '../../../public/markmain.svg';
 import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
@@ -84,7 +85,7 @@ export default async function PlayerPage(props: Props) {
                       <Image src={deleteIcon} alt="Delete Icon" />
                     </button>
                     <button className="btn btn-circle mr-2">
-                      <Image src={deleteIcon} alt="Delete Icon" />
+                      <Image src={markMainIcon} alt="Mark Main Account Icon" />
                     </button>
                   </div>
                 ) : (
@@ -96,8 +97,12 @@ export default async function PlayerPage(props: Props) {
         </div>
       </div>
       <div className="mt-4">
-        <button className="flex items-center btn rounded-full">
-          <Image src={updateIcon} alt="Update Icon" />
+        <button className="flex items-center btn rounded-full group">
+          <Image
+            src={updateIcon}
+            alt="Update Icon"
+            className="group-hover:animate-spin"
+          />
           Update Riot Data
         </button>
       </div>

@@ -34,16 +34,18 @@ export default function LogOutForm(props: Props) {
     },
   });
   return (
-    <form>
+    <form className="flex flex-col gap-4">
       <p>Are you sure you want to logout?</p>
-      <button
-        className="btn btn-primary rounded-full"
-        formAction={async () => {
-          await logoutHandler();
-        }}
-      >
-        Confirm logout
-      </button>
+      <div>
+        <button
+          className="btn btn-primary rounded-full"
+          formAction={async () => {
+            await logoutHandler();
+          }}
+        >
+          Confirm logout
+        </button>
+      </div>
     </form>
   );
 }

@@ -558,6 +558,7 @@ const resolvers = {
   },
 };
 
+// GraphQL Server Setup Using Apollo
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,

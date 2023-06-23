@@ -12,7 +12,8 @@ export default async function LogoutPage() {
   // 3. Either redirect or render the login form
   if (!session) redirect('/');
   return (
-    <main>
+    <main className="p-4">
+      <h1 className="text-3xl font-medium mb-4">Logout</h1>
       <LogOutForm token={sessionTokenCookie.value} />
     </main>
   );
