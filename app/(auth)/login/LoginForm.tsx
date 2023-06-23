@@ -36,14 +36,14 @@ export default function LoginForm() {
   });
 
   return (
-    <form>
+    <form className="flex flex-col gap-4">
       <label>
         Username
         <input
           value={username}
           onChange={(event) => setUsername(event.currentTarget.value)}
           placeholder="Username"
-          className="p-2 block"
+          className="p-2 block input w-full max-w-xs"
         />
       </label>
       <label>
@@ -53,17 +53,16 @@ export default function LoginForm() {
           onChange={(event) => setPassword(event.currentTarget.value)}
           type="password"
           placeholder="Password"
-          className="p-2 block"
+          className="p-2 block input w-full max-w-xs"
         />
       </label>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 flex-col">
         <button
           formAction={async () => {
             await loginHandler();
           }}
-          className="btn btn-primary rounded-full"
+          className="btn btn-primary rounded-full btn-wide"
         >
-          <span className="loading loading-spinner loading-sm" />
           Login
         </button>
         <Link href="/signup">No account yet? Sign up here instead!</Link>

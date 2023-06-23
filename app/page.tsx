@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <main className="p-4">
       <div className="flex gap-4 items-center">
-        <h1 className="text-3xl font-medium ">Player Database</h1>
+        <h1 className="text-3xl font-medium">Player Database</h1>
       </div>
       <section className="flex flex-col gap-4 mt-8 flex-shrink-0">
         <h2 className="text-2xl pt-3">DEBUG</h2>

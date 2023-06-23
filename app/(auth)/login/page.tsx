@@ -20,5 +20,10 @@ export default async function LoginPage() {
     const isPlayer = await getPlayerById(Number(sessionData!.userId));
     redirect(`/${isPlayer ? 'players' : 'organisations'}/${user.slug}`);
   }
-  return <LoginForm />;
+  return (
+    <main className="p-4">
+      <h1 className="text-3xl font-medium mb-4">Login</h1>
+      <LoginForm />
+    </main>
+  );
 }

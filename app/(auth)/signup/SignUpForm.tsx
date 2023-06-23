@@ -144,7 +144,7 @@ export default function SignUpForm() {
   });
 
   return (
-    <form>
+    <form className="flex flex-col gap-4">
       <div className="flex gap-4">
         <label className="flex items gap-2">
           I am an athlete
@@ -175,7 +175,7 @@ export default function SignUpForm() {
           value={username}
           onChange={(event) => setUsername(event.currentTarget.value)}
           placeholder="Username"
-          className="p-2 block"
+          className="p-2 block input w-full max-w-xs"
         />
       </label>
       <label>
@@ -185,18 +185,18 @@ export default function SignUpForm() {
           onChange={(event) => setPassword(event.currentTarget.value)}
           type="password"
           placeholder="Password"
-          className="p-2 block"
+          className="p-2 block input w-full max-w-xs"
         />
       </label>
       {isPlayer ? (
-        <div>
+        <div className="flex flex-col gap-4">
           <label>
             Alias
             <input
               value={alias}
               onChange={(event) => setAlias(event.currentTarget.value)}
               placeholder="Gamertag"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
           <label>
@@ -205,7 +205,7 @@ export default function SignUpForm() {
               value={firstName}
               onChange={(event) => setFirstName(event.currentTarget.value)}
               placeholder="First name"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
           <label>
@@ -214,7 +214,7 @@ export default function SignUpForm() {
               value={lastName}
               onChange={(event) => setLastName(event.currentTarget.value)}
               placeholder="Last name"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
           <label>
@@ -223,12 +223,12 @@ export default function SignUpForm() {
               value={contact}
               onChange={(event) => setContact(event.currentTarget.value)}
               placeholder="user@email.com"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col gap-4">
           <label>
             Alias
             <input
@@ -237,7 +237,7 @@ export default function SignUpForm() {
                 setOrganisationName(event.currentTarget.value)
               }
               placeholder="Austrian Force"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
           <label>
@@ -246,19 +246,18 @@ export default function SignUpForm() {
               value={contact}
               onChange={(event) => setContact(event.currentTarget.value)}
               placeholder="user@email.com"
-              className="p-2 block"
+              className="p-2 block input w-full max-w-xs"
             />
           </label>
         </div>
       )}
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 flex-col">
         <button
           formAction={async () => {
             await createUserHandler();
           }}
-          className="btn btn-primary rounded-full"
+          className="btn btn-primary rounded-full btn-wide"
         >
-          <span className="loading loading-spinner loading-sm" />
           Sign up
         </button>
         <Link href="/login">Already have a login? Login here instead!</Link>
