@@ -4,15 +4,11 @@ import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-type Props = {
-  userId: number;
-};
-
 const addLeagueAccountMutation = gql`
   mutation AddLeagueAccount($summoner: String!) {
     addLeagueAccount(summoner: $summoner) {
       id
-      name
+      summoner
       tier
       rank
       leaguePoints
@@ -22,7 +18,7 @@ const addLeagueAccountMutation = gql`
   }
 `;
 
-export default function AddLeagueAccount(props: Props) {
+export default function AddLeagueAccount() {
   const [summonerName, setSummonerName] = useState('');
   const [onError, setOnError] = useState('');
   const router = useRouter();

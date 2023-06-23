@@ -17,9 +17,9 @@ import {
 import {
   addLeagueAccount,
   getAllLeagueAccounts,
+  getAllLeagueAccountsByPlayerId,
   getLeagueAccountById,
   getLeagueAccountBySummoner,
-  getLeagueAccountsByPlayerId,
 } from '../../../database/leagueAccounts';
 import {
   createOrganisation,
@@ -263,7 +263,7 @@ const resolvers = {
       return await getLeagueAccountById(Number(parent.mainaccountId));
     },
     leagueAccounts: async (parent: any) => {
-      return await getLeagueAccountsByPlayerId(parent.id);
+      return await getAllLeagueAccountsByPlayerId(parent.id);
     },
   },
   Association: {
@@ -385,7 +385,6 @@ const resolvers = {
         args.contact,
       );
     },
-
     // addLeagueAccount
     addLeagueAccount: async (
       parent: null,
