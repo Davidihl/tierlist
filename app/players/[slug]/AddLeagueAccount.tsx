@@ -39,8 +39,8 @@ export default function AddLeagueAccount() {
   });
 
   return (
-    <form>
-      <h2>Add League Of Legends Account</h2>
+    <form className="mt-4">
+      <h2 className="font-medium text-lg">Add League Of Legends Account</h2>
       <label>
         Summoner Name
         <input
@@ -49,7 +49,7 @@ export default function AddLeagueAccount() {
             setSummonerName(event.currentTarget.value);
           }}
           placeholder="Summoner"
-          className="p-2 block"
+          className="input input-bordered w-full max-w-xs block my-4"
         />
       </label>
       <button

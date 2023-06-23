@@ -1,10 +1,13 @@
 import { gql } from '@apollo/client';
 import { cookies } from 'next/headers';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import LeagueAccount from '../../../components/LeagueAccount';
 import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 import { getPlayerBySlug } from '../../../database/players';
 import { getValidSessionByToken } from '../../../database/sessions';
+import deleteIcon from '../../../public/delete.svg';
+import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
 
@@ -61,16 +64,42 @@ export default async function PlayerPage(props: Props) {
       ) : (
         ''
       )}
+
       {playerData.contact ? <p>Contact: {playerData.contact}</p> : ''}
       {allowEdit ? <AddLeagueAccount /> : ''}
-      <div>
-        <h2>Assigned Accounts:</h2>
-        {data.player.leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
-          <LeagueAccount
-            key={`league-account-${leagueAccount.id}`}
-            leagueAccount={leagueAccount}
-          />
-        ))}
+
+      <div className="mt-4">
+        <h2 className="font-medium text-lg">Assigned Accounts:</h2>
+        <div>
+          {data.player.leagueAccounts.map(
+            (leagueAccount: LeagueAccountQuery) => (
+              <div
+                className="flex gap-2 justify-between max-w-md border-b p-2 first:border-t"
+                key={`league-account-${leagueAccount.id}`}
+              >
+                <LeagueAccount leagueAccount={leagueAccount} />
+                {allowEdit ? (
+                  <div className="flex items-center">
+                    <button className="btn btn-circle mr-2">
+                      <Image src={deleteIcon} alt="Delete Icon" />
+                    </button>
+                    <button className="btn btn-circle mr-2">
+                      <Image src={deleteIcon} alt="Delete Icon" />
+                    </button>
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
+            ),
+          )}
+        </div>
+      </div>
+      <div className="mt-4">
+        <button className="flex items-center btn rounded-full">
+          <Image src={updateIcon} alt="Update Icon" />
+          Update Riot Data
+        </button>
       </div>
     </main>
   );
