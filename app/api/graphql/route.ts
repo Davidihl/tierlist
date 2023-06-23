@@ -123,7 +123,7 @@ const typeDefs = gql`
       contact: String
     ): Organisation
     "Add a new league account to a player"
-    addLeagueAccount(summoner: String!, userId: Int!): LeagueAccount
+    addLeagueAccount(summoner: String!): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
     "Logout with the token provided"
@@ -163,7 +163,7 @@ const typeDefs = gql`
   type LeagueAccount {
     id: ID!
     player: Player
-    name: String
+    summoner: String
     tier: String
     rank: String
     leaguePoints: String
@@ -176,7 +176,7 @@ const typeDefs = gql`
   type PlayerLeagueAccount {
     id: ID!
     player: Player
-    name: String
+    summoner: String
     tier: String
     rank: String
     leaguePoints: String
@@ -389,17 +389,13 @@ const resolvers = {
     // addLeagueAccount
     addLeagueAccount: async (
       parent: null,
-      args: { summoner: string; userId: number },
+      args: { summoner: string },
       context: { isLoggedIn: any; user: any },
     ) => {
       // Validate input
       const checkSummoner = z.string().nonempty();
-      const checkUserId = z.number();
-      if (
-        !checkSummoner.safeParse(args.summoner).success ||
-        !checkUserId.safeParse(args.userId).success
-      ) {
-        throw new GraphQLError('Invalid input', {
+      if (!checkSummoner.safeParse(args.summoner).success) {
+        throw new GraphQLError('Please add a summoner name', {
           extensions: { code: '400' },
         });
       }

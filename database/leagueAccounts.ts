@@ -61,7 +61,7 @@ export const getLeagueAccountBySummoner = cache(async (summoner: string) => {
   return leagueAccount;
 });
 
-export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
+export const getMainLeagueAccountByPlayerId = cache(async (id: number) => {
   const leagueAccounts = await sql<PlayerLeagueAccount[]>`
     SELECT
       league_accounts.*,
@@ -73,6 +73,20 @@ export const getLeagueAccountsByPlayerId = cache(async (id: number) => {
       players ON players.mainaccount_id = league_accounts.id
     WHERE
       league_accounts.player_id = ${id}
+  `;
+  return leagueAccounts;
+});
+
+export const getAllLeagueAccountsByPlayerId = cache(async () => {
+  const leagueAccounts = await sql<PlayerLeagueAccount[]>`
+  SELECT
+  league_accounts.*,
+  CASE WHEN players.mainaccount_id = league_accounts.id THEN TRUE ELSE FALSE END AS is_main_account,
+  players.alias
+FROM
+  league_accounts
+INNER JOIN
+  players ON players.mainaccount_id = league_accounts.id
   `;
   return leagueAccounts;
 });

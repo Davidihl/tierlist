@@ -24,10 +24,7 @@ export default async function PlayerPage(props: Props) {
   if (!playerData) {
     notFound();
   }
-  const leagueData = await getLeagueAccountsByPlayerId(playerData.id);
-  // console.log(playerData);
-  // console.log(leagueData);
-  // console.log(allowEdit);
+
   return (
     <main className="p-4">
       <h1 className="font-medium text-xl">{playerData.alias}</h1>
@@ -40,6 +37,9 @@ export default async function PlayerPage(props: Props) {
       )}
       {playerData.contact ? <p>Contact: {playerData.contact}</p> : ''}
       {allowEdit ? <AddLeagueAccount userId={playerData.userId} /> : ''}
+      <div>
+        <h2>Assigned Accounts:</h2>
+      </div>
     </main>
   );
 }

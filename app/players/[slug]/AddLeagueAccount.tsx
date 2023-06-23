@@ -1,17 +1,46 @@
 'use client';
 
+import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { searchLeagueAccount } from './actions';
 
 type Props = {
   userId: number;
 };
 
+const addLeagueAccountMutation = gql`
+  mutation AddLeagueAccount($summoner: String!) {
+    addLeagueAccount(summoner: $summoner) {
+      id
+      name
+      tier
+      rank
+      leaguePoints
+      wins
+      losses
+    }
+  }
+`;
+
 export default function AddLeagueAccount(props: Props) {
   const [summonerName, setSummonerName] = useState('');
   const [onError, setOnError] = useState('');
   const router = useRouter();
+
+  const [addLeagueAccountHandler] = useMutation(addLeagueAccountMutation, {
+    variables: {
+      summoner: summonerName,
+    },
+
+    onError: (error) => {
+      setOnError(error.message);
+    },
+
+    onCompleted: () => {
+      setOnError('');
+      router.refresh();
+    },
+  });
 
   return (
     <form>
@@ -31,16 +60,10 @@ export default function AddLeagueAccount(props: Props) {
         className="btn btn-secondary rounded-full"
         formAction={async () => {
           setOnError('');
-          const riotResponse = await searchLeagueAccount(summonerName);
-          if ('error' in riotResponse) {
-            return setOnError(riotResponse.error);
-          }
-
-          console.log(riotResponse);
-          // call add League of Legends mutation --- probably rework the whole formAction (see create user)
+          await addLeagueAccountHandler();
         }}
       >
-        Search Account
+        Add League Account
       </button>
       {onError.length > 0 ? <p>{onError}</p> : ''}
     </form>
