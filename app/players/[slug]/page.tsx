@@ -101,7 +101,7 @@ export default async function PlayerPage(props: Props) {
           <Image
             src={updateIcon}
             alt="Update Icon"
-            className="group-hover:animate-spin"
+            className="group-hover:animate-reverse-spin"
           />
           Update Riot Data
         </button>

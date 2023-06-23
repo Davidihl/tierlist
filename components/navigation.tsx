@@ -8,7 +8,7 @@ export default function Navigation() {
     <nav className="sticky top-0 left-0 right-0 w-full flex justify-between mb-4 drop-shadow">
       <div className="bg-white grow p-4 flex items-center">
         <Link href="/">
-          <Image src={esvoeLogo} className="w-48" alt="ESVÖ Logo" />
+          <Image src={esvoeLogo} className="w-32" alt="ESVÖ Logo" />
         </Link>
       </div>
       <div className="bg-white grow p-4 flex justify-end items-center">
