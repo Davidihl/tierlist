@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getPlayerById } from '../../../database/players';
+import { getPlayerByUserId } from '../../../database/players';
 import {
   getSlugFromToken,
   getValidSessionByToken,
@@ -17,7 +17,7 @@ export default async function LoginPage() {
   if (session) {
     const sessionData = await getValidSessionByToken(sessionTokenCookie.value);
     const user = await getSlugFromToken(sessionData!.userId);
-    const isPlayer = await getPlayerById(Number(sessionData!.userId));
+    const isPlayer = await getPlayerByUserId(Number(sessionData!.userId));
     redirect(`/${isPlayer ? 'players' : 'organisations'}/${user.slug}`);
   }
   return (
