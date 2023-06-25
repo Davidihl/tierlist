@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import LeagueAccount from '../../../components/LeagueAccount';
+import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 import { getPlayerBySlug } from '../../../database/players';
 import { getValidSessionByToken } from '../../../database/sessions';
 import deleteIcon from '../../../public/delete.svg';
@@ -28,6 +29,7 @@ export default async function PlayerPage(props: Props) {
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {
+          id
           alias
           firstName
           lastName
@@ -90,11 +92,15 @@ export default async function PlayerPage(props: Props) {
               <LeagueAccount leagueAccount={leagueAccount} />
               {allowEdit ? (
                 <div className="flex items-center">
+                  {data.playerBySlug.mainAccount.id !== leagueAccount.id ? (
+                    <button className="btn btn-circle mr-2">
+                      <Image src={markMainIcon} alt="Mark Main Account Icon" />
+                    </button>
+                  ) : (
+                    ''
+                  )}
                   <button className="btn btn-circle mr-2">
                     <Image src={deleteIcon} alt="Delete Icon" />
-                  </button>
-                  <button className="btn btn-circle mr-2">
-                    <Image src={markMainIcon} alt="Mark Main Account Icon" />
                   </button>
                 </div>
               ) : (
