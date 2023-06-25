@@ -57,12 +57,12 @@ export default async function PlayerPage(props: Props) {
       slug: props.params.slug,
     },
   });
-  const leagueAccounts = data.playerBySlug.leagueAccounts;
 
-  if (!data) {
+  if (!data.playerBySlug) {
     notFound();
   }
 
+  const leagueAccounts = data.playerBySlug.leagueAccounts;
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
   console.log(data);
   console.log(data.playerBySlug.leagueAccounts);
