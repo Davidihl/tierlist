@@ -70,12 +70,12 @@ export default async function PlayerPage(props: Props) {
 
   return (
     <main className="p-4">
-      <div className="flex">
+      <div className="flex gap-4 items-center">
         <Image
           src={`/leagueoflegends/tiers/${data.playerBySlug.mainAccount.tier}.webp`}
           alt={`Tier ${data.playerBySlug.mainAccount.tier}`}
-          width={50}
-          height={200}
+          width={100}
+          height={100}
         />
         <div>
           <h1 className="font-medium text-xl">{data.playerBySlug.alias}</h1>
@@ -90,7 +90,6 @@ export default async function PlayerPage(props: Props) {
         </div>
       </div>
       {data.contact ? <p>Contact: {data.contact}</p> : ''}
-      {allowEdit ? <AddLeagueAccount /> : ''}
       <div className="mt-4">
         <h2 className="font-medium text-lg">Assigned Accounts:</h2>
         <div>
@@ -130,6 +129,7 @@ export default async function PlayerPage(props: Props) {
           Update Riot Data
         </button>
       </div>
+      {allowEdit ? <AddLeagueAccount /> : ''}
     </main>
   );
 }

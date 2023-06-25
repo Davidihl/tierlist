@@ -39,7 +39,7 @@ export default function AddLeagueAccount() {
   });
 
   return (
-    <form className="mt-4">
+    <form className="mt-4 bg-slate-200 p-4 rounded">
       <h2 className="font-medium text-lg">Add League Of Legends Account</h2>
       <label>
         Summoner Name
