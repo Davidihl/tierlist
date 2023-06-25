@@ -40,33 +40,69 @@ export type PlayerLeagueAccount = LeagueAccount & {
 };
 
 export const getAllLeagueAccounts = cache(async () => {
-  const leagueAccounts = await sql<LeagueAccount[]>`
+  const leagueAccounts = await sql<LeagueAccountQuery[]>`
     SELECT
-      *
+      league_accounts.id,
+      player_Id,
+      summoner,
+      tiers.name AS tier,
+      rank,
+      league_points,
+      wins,
+      losses,
+      last_update
     FROM
       league_accounts
+    INNER JOIN
+      tiers
+    ON
+      league_accounts.tier= tiers.id
  `;
   return leagueAccounts;
 });
 
 export const getLeagueAccountById = cache(async (id: number) => {
-  const [leagueAccount] = await sql<LeagueAccount[]>`
+  const [leagueAccount] = await sql<LeagueAccountQuery[]>`
     SELECT
-      *
+      league_accounts.id,
+      player_Id,
+      summoner,
+      tiers.name AS tier,
+      rank,
+      league_points,
+      wins,
+      losses,
+      last_update
     FROM
       league_accounts
+    INNER JOIN
+      tiers
+    ON
+      league_accounts.tier= tiers.id
     WHERE
-      id = ${id}
+      league_accounts.id = ${id}
  `;
   return leagueAccount;
 });
 
 export const getLeagueAccountBySummoner = cache(async (summoner: string) => {
-  const [leagueAccount] = await sql<LeagueAccount[]>`
+  const [leagueAccount] = await sql<LeagueAccountQuery[]>`
     SELECT
-      *
+      league_accounts.id,
+      player_Id,
+      summoner,
+      tiers.name AS tier,
+      rank,
+      league_points,
+      wins,
+      losses,
+      last_update
     FROM
       league_accounts
+    INNER JOIN
+      tiers
+    ON
+      league_accounts.tier= tiers.id
     WHERE
       summoner = ${summoner}
  `;

@@ -70,15 +70,25 @@ export default async function PlayerPage(props: Props) {
 
   return (
     <main className="p-4">
-      <h1 className="font-medium text-xl">{data.playerBySlug.alias}</h1>
-      {data.playerBySlug.firstName && data.playerBySlug.lastName ? (
-        <p>
-          <span>{data.playerBySlug.firstName}</span>{' '}
-          <span>{data.playerBySlug.lastName}</span>
-        </p>
-      ) : (
-        ''
-      )}
+      <div className="flex">
+        <Image
+          src={`/leagueoflegends/tiers/${data.playerBySlug.mainAccount.tier}.webp`}
+          alt={`Tier ${data.playerBySlug.mainAccount.tier}`}
+          width={50}
+          height={200}
+        />
+        <div>
+          <h1 className="font-medium text-xl">{data.playerBySlug.alias}</h1>
+          {data.playerBySlug.firstName && data.playerBySlug.lastName ? (
+            <p>
+              <span>{data.playerBySlug.firstName}</span>{' '}
+              <span>{data.playerBySlug.lastName}</span>
+            </p>
+          ) : (
+            ''
+          )}
+        </div>
+      </div>
       {data.contact ? <p>Contact: {data.contact}</p> : ''}
       {allowEdit ? <AddLeagueAccount /> : ''}
       <div className="mt-4">
