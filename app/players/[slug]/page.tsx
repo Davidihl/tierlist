@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import LeagueAccount from '../../../components/LeagueAccount';
-import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 import { getPlayerBySlug } from '../../../database/players';
 import { getValidSessionByToken } from '../../../database/sessions';
 import deleteIcon from '../../../public/delete.svg';
@@ -21,79 +20,88 @@ type Props = {
 };
 
 export default async function PlayerPage(props: Props) {
-  const playerData = await getPlayerBySlug(props.params.slug);
   const sessionTokenCookie = cookies().get('sessionToken');
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
-  const allowEdit = session?.userId === playerData?.userId;
-
-  if (!playerData) {
-    notFound();
-  }
-
   const { data } = await getClient().query({
     query: gql`
-      query Player($playerId: ID!) {
-        player(id: $playerId) {
+      query PlayerBySlug($slug: String!) {
+        playerBySlug(slug: $slug) {
+          alias
+          firstName
+          lastName
+          contact
+          user {
+            id
+          }
+          mainAccount {
+            id
+            tier
+          }
           leagueAccounts {
             id
-            isMainAccount
-            lastUpdate
-            leaguePoints
-            losses
-            rank
             summoner
             tier
+            rank
+            leaguePoints
             wins
+            losses
           }
         }
       }
     `,
     variables: {
-      playerId: playerData.id,
+      slug: props.params.slug,
     },
   });
+  const leagueAccounts = data.playerBySlug.leagueAccounts;
+
+  if (!data) {
+    notFound();
+  }
+
+  const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
+  console.log(data);
+  console.log(data.playerBySlug.leagueAccounts);
+  console.log(data.playerBySlug.leagueAccounts[0].id);
 
   return (
     <main className="p-4">
-      <h1 className="font-medium text-xl">{playerData.alias}</h1>
-      {playerData.firstName && playerData.lastName ? (
+      <h1 className="font-medium text-xl">{data.playerBySlug.alias}</h1>
+      {data.playerBySlug.firstName && data.playerBySlug.lastName ? (
         <p>
-          <span>{playerData.firstName}</span> <span>{playerData.lastName}</span>
+          <span>{data.playerBySlug.firstName}</span>{' '}
+          <span>{data.playerBySlug.lastName}</span>
         </p>
       ) : (
         ''
       )}
-
-      {playerData.contact ? <p>Contact: {playerData.contact}</p> : ''}
+      {data.contact ? <p>Contact: {data.contact}</p> : ''}
       {allowEdit ? <AddLeagueAccount /> : ''}
-
       <div className="mt-4">
         <h2 className="font-medium text-lg">Assigned Accounts:</h2>
         <div>
-          {data.player.leagueAccounts.map(
-            (leagueAccount: LeagueAccountQuery) => (
-              <div
-                className="flex gap-2 justify-between max-w-md border-b p-2 first:border-t"
-                key={`league-account-${leagueAccount.id}`}
-              >
-                <LeagueAccount leagueAccount={leagueAccount} />
-                {allowEdit ? (
-                  <div className="flex items-center">
-                    <button className="btn btn-circle mr-2">
-                      <Image src={deleteIcon} alt="Delete Icon" />
-                    </button>
-                    <button className="btn btn-circle mr-2">
-                      <Image src={markMainIcon} alt="Mark Main Account Icon" />
-                    </button>
-                  </div>
-                ) : (
-                  ''
-                )}
-              </div>
-            ),
-          )}
+          {leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
+            <div
+              className="flex gap-2 justify-between max-w-md border-b p-2 first:border-t"
+              key={`league-account-${leagueAccount.id}`}
+            >
+              <LeagueAccount leagueAccount={leagueAccount} />
+              {allowEdit ? (
+                <div className="flex items-center">
+                  <button className="btn btn-circle mr-2">
+                    <Image src={deleteIcon} alt="Delete Icon" />
+                  </button>
+                  <button className="btn btn-circle mr-2">
+                    <Image src={markMainIcon} alt="Mark Main Account Icon" />
+                  </button>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          ))}
         </div>
       </div>
       <div className="mt-4">

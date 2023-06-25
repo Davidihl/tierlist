@@ -71,7 +71,7 @@ const typeDefs = gql`
     player(id: ID!): Player
 
     "Get player data by his username"
-    playerByUsername(username: String!): Player
+    playerBySlug(slug: String!): Player
 
     "Get all league accounts of a player"
     playerLeagueAccounts(id: ID!): [PlayerLeagueAccount]
@@ -218,8 +218,8 @@ const resolvers = {
     player: async (parent: null, args: { id: string }) => {
       return await getPlayerById(Number(args.id));
     },
-    playerByUsername: async (parent: null, args: { username: string }) => {
-      return await getPlayerBySlug(args.username);
+    playerBySlug: async (parent: null, args: { slug: string }) => {
+      return await getPlayerBySlug(args.slug);
     },
     playerAssociations: async (parent: null, args: { id: string }) => {
       return await getAssociationsByPlayer(Number(args.id));

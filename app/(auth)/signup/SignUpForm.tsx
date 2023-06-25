@@ -169,7 +169,7 @@ export default function SignUpForm() {
           />
         </label>
       </div>
-      <label>
+      <label className="text-sm">
         Username
         <input
           value={username}
@@ -178,7 +178,7 @@ export default function SignUpForm() {
           className="p-2 block input w-full max-w-xs"
         />
       </label>
-      <label>
+      <label className="text-sm">
         Password
         <input
           value={password}
@@ -190,7 +190,7 @@ export default function SignUpForm() {
       </label>
       {isPlayer ? (
         <div className="flex flex-col gap-4">
-          <label>
+          <label className="text-sm">
             Alias
             <input
               value={alias}
@@ -199,7 +199,7 @@ export default function SignUpForm() {
               className="p-2 block input w-full max-w-xs"
             />
           </label>
-          <label>
+          <label className="text-sm">
             First name (optional)
             <input
               value={firstName}
@@ -208,7 +208,7 @@ export default function SignUpForm() {
               className="p-2 block input w-full max-w-xs"
             />
           </label>
-          <label>
+          <label className="text-sm">
             Last name (optional)
             <input
               value={lastName}
@@ -217,7 +217,7 @@ export default function SignUpForm() {
               className="p-2 block input w-full max-w-xs"
             />
           </label>
-          <label>
+          <label className="text-sm">
             Email contact (optional)
             <input
               value={contact}
@@ -229,7 +229,7 @@ export default function SignUpForm() {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <label>
+          <label className="text-sm">
             Alias
             <input
               value={organisationName}
@@ -240,7 +240,7 @@ export default function SignUpForm() {
               className="p-2 block input w-full max-w-xs"
             />
           </label>
-          <label>
+          <label className="text-sm">
             Email contact (optional)
             <input
               value={contact}
