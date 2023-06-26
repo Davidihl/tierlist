@@ -70,7 +70,7 @@ const typeDefs = gql`
     "Get player data with certain id"
     player(id: ID!): Player
 
-    "Get player data by his username"
+    "Get player data by his slug/url-path segment"
     playerBySlug(slug: String!): Player
 
     "Get all league accounts of a player"
@@ -81,8 +81,6 @@ const typeDefs = gql`
 
     "Get associations of a player that have not been accepted yet"
     playersAssociationsPending(id: ID!): [Association]
-
-    #Get Player by slug/id
 
     "Get all league accounts"
     leagueAccounts: [LeagueAccount]
@@ -124,6 +122,8 @@ const typeDefs = gql`
     ): Organisation
     "Add a new league account to a player"
     addLeagueAccount(summoner: String!): LeagueAccount
+    "Delete a league of legends account with a certain id"
+    deleteLeagueAccount(id: ID!): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
     "Logout with the token provided"
@@ -426,12 +426,38 @@ const resolvers = {
 
       return await addLeagueAccount(riotData, playerToAssign.id);
     },
-
     // removeLeagueAccount
-    // Validate input
-    // Check authorization
-    // Delete league account
+    deleteLeagueAccount: async (
+      parent: null,
+      args: { id: number },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate input
+      const id = z.string().nonempty();
+      if (!id.safeParse(args.id).success) {
+        throw new GraphQLError('Please add a valid id', {
+          extensions: { code: '400' },
+        });
+      }
 
+      // Check if leagueAccount exists
+      const accountExists = await getLeagueAccountById(args.id);
+      if (!accountExists) {
+        throw new GraphQLError('League of Legends account does not exist', {
+          extensions: { code: '404' },
+        });
+      }
+
+      // Check authorization
+      if (!context.isLoggedIn.userId === context.user.id) {
+        throw new GraphQLError('Authorization failed', {
+          extensions: { code: '400' },
+        });
+      }
+
+      console.log('account deleted');
+    },
+    // updateLeagueAccounts
     // createOrganisation
     createOrganisation: async (
       parent: null,

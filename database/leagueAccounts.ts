@@ -154,3 +154,14 @@ export const addLeagueAccount = cache(
     return newAccount;
   },
 );
+
+export const deleteLeagueAccount = cache(async (id: number) => {
+  const [deletedAccount] = await sql<LeagueAccount[]>`
+    DELETE FROM
+      league_Accounts
+    WHERE
+      id = ${id}
+    RETURNING
+      *`;
+  return deletedAccount;
+});
