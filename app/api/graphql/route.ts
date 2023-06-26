@@ -32,7 +32,7 @@ import {
 import {
   createPlayer,
   getAllPlayers,
-  getLeagueMainAccountIdByPlayerId,
+  getPlayerByAlias,
   getPlayerById,
   getPlayerBySlug,
   getPlayerByUserId,
@@ -309,7 +309,7 @@ const resolvers = {
         !args.alias
       ) {
         throw new GraphQLError('Please fill out all required fields', {
-          extensions: { code: '400' },
+          extensions: { code: '40001' },
         });
       }
 
@@ -317,13 +317,15 @@ const resolvers = {
       const checkUserName = await getUserByUsername(args.username);
       if (checkUserName) {
         throw new GraphQLError('Username has already been taken', {
-          extensions: { code: '400' },
+          extensions: { code: '40002' },
         });
       }
 
       // Check if password is identical
       if (args.password !== args.repeatPassword) {
-        throw new GraphQLError('Passwords do not match');
+        throw new GraphQLError('Passwords do not match', {
+          extensions: { code: '40003' },
+        });
       }
 
       // Check password security
@@ -338,18 +340,40 @@ const resolvers = {
       if (!securePassword.safeParse(args.password).success) {
         throw new GraphQLError(
           'Password must be at least 8 characters long and contain one special character',
+          {
+            extensions: { code: '40003' },
+          },
         );
       }
 
       // Check if player or organisation exists
-      const aliasTakenByPlayer = await getPlayerBySlug(args.alias);
+      const aliasTakenByPlayer = await getPlayerByAlias(args.alias);
       if (aliasTakenByPlayer) {
-        throw new GraphQLError('Alias already taken');
+        throw new GraphQLError('Alias already taken', {
+          extensions: { code: '40004' },
+        });
       }
 
-      const aliasTakenByOrganisation = await getOrganisationBySlug(args.alias);
+      const aliasTakenByOrganisation = await getPlayerByAlias(args.alias);
       if (aliasTakenByOrganisation) {
-        throw new GraphQLError('Alias already in use');
+        throw new GraphQLError('Alias already in use', {
+          extensions: { code: '40004' },
+        });
+      }
+
+      // Check if conflict with slug can happen
+      const slugTakenByPlayer = await getPlayerBySlug(args.alias);
+      if (slugTakenByPlayer) {
+        throw new GraphQLError('Alias already taken', {
+          extensions: { code: '40004' },
+        });
+      }
+
+      const slugTakenByOrganisation = await getPlayerBySlug(args.alias);
+      if (slugTakenByOrganisation) {
+        throw new GraphQLError('Alias already in use', {
+          extensions: { code: '40004' },
+        });
       }
 
       // Create password hash
@@ -383,7 +407,7 @@ const resolvers = {
         !contact.safeParse(args.contact).success
       ) {
         throw new GraphQLError('Invalid input', {
-          extensions: { code: '400' },
+          extensions: { code: '40005' },
         });
       }
 
@@ -391,7 +415,7 @@ const resolvers = {
       const playerExists = await getPlayerByUserId(args.userId);
       if (playerExists) {
         throw new GraphQLError('Player already assigned', {
-          extensions: { code: '400' },
+          extensions: { code: '40006' },
         });
       }
 

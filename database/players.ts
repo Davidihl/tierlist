@@ -37,7 +37,6 @@ export const getAllPlayers = cache(async () => {
      contact,
      slug,
      mainaccount_id
-
     FROM
       players
  `;
@@ -78,6 +77,25 @@ export const getPlayerBySlug = cache(async (slug: string) => {
       players
     WHERE
       slug = ${slug}
+ `;
+  return player;
+});
+
+export const getPlayerByAlias = cache(async (alias: string) => {
+  const [player] = await sql<Player[]>`
+    SELECT
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
+    FROM
+      players
+    WHERE
+      alias = ${alias}
  `;
   return player;
 });

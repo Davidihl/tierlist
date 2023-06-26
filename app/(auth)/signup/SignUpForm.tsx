@@ -74,6 +74,7 @@ export default function SignUpForm() {
   const [contact, setContact] = useState('');
   const [isPlayer, setIsPlayer] = useState(true);
   const [onError, setOnError] = useState('');
+  const [graphQlError, setGraphQlError] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
 
@@ -133,6 +134,8 @@ export default function SignUpForm() {
 
     onError: (error) => {
       setOnError(error.message);
+      const errorCode: any = error.graphQLErrors[0]?.extensions.code;
+      setGraphQlError(errorCode);
       setShowNotification(true);
     },
 
@@ -168,7 +171,9 @@ export default function SignUpForm() {
           value={username}
           onChange={(event) => setUsername(event.currentTarget.value)}
           placeholder="Username"
-          className="p-2 block input w-full max-w-xs"
+          className={`p-2 block input w-full max-w-xs ${
+            graphQlError === '40001' ? 'input-error' : ''
+          } ${graphQlError === '40002' ? 'input-error' : ''}`}
         />
       </label>
       <label className="text-sm">
@@ -178,7 +183,9 @@ export default function SignUpForm() {
           onChange={(event) => setPassword(event.currentTarget.value)}
           type="password"
           placeholder="Password"
-          className="p-2 block input w-full max-w-xs"
+          className={`p-2 block input w-full max-w-xs ${
+            graphQlError === '40001' ? 'input-error' : ''
+          } ${graphQlError === '40003' ? 'input-error' : ''}`}
         />
       </label>
       <label className="text-sm">
@@ -188,7 +195,9 @@ export default function SignUpForm() {
           onChange={(event) => setRepeatPassword(event.currentTarget.value)}
           type="password"
           placeholder="Repeat password"
-          className="p-2 block input w-full max-w-xs"
+          className={`p-2 block input w-full max-w-xs ${
+            graphQlError === '40001' ? 'input-error' : ''
+          } ${graphQlError === '40003' ? 'input-error' : ''}`}
         />
       </label>
       <div className="flex gap-4 mt-4">
@@ -222,7 +231,11 @@ export default function SignUpForm() {
               value={alias}
               onChange={(event) => setAlias(event.currentTarget.value)}
               placeholder="Gamertag"
-              className="p-2 block input w-full max-w-xs"
+              className={`p-2 block input w-full max-w-xs ${
+                graphQlError === '40001' ? 'input-error' : ''
+              } ${graphQlError === '40004' ? 'input-error' : ''} ${
+                graphQlError === '40006' ? 'input-error' : ''
+              }`}
             />
           </label>
           <label className="text-sm">
@@ -261,7 +274,9 @@ export default function SignUpForm() {
               value={alias}
               onChange={(event) => setAlias(event.currentTarget.value)}
               placeholder="Austrian Force"
-              className="p-2 block input w-full max-w-xs"
+              className={`p-2 block input w-full max-w-xs ${
+                graphQlError === '40001' ? 'input-error' : ''
+              } ${graphQlError === '40004' ? 'input-error' : ''}`}
             />
           </label>
           <label className="text-sm">
@@ -278,6 +293,7 @@ export default function SignUpForm() {
       <div className="flex gap-4 flex-col">
         <button
           formAction={async () => {
+            setGraphQlError('');
             await createUserHandler();
           }}
           className="btn btn-primary rounded-full btn-wide"
