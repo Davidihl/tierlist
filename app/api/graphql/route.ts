@@ -423,7 +423,7 @@ const resolvers = {
       const organisationExists = await getOrganisationByUserId(args.userId);
       if (organisationExists) {
         throw new GraphQLError('Organisation already assigned', {
-          extensions: { code: '400' },
+          extensions: { code: '40006' },
         });
       }
 
@@ -446,7 +446,7 @@ const resolvers = {
       const checkSummoner = z.string().nonempty();
       if (!checkSummoner.safeParse(args.summoner).success) {
         throw new GraphQLError('Please add a summoner name', {
-          extensions: { code: '400' },
+          extensions: { code: '40007' },
         });
       }
 
@@ -470,9 +470,28 @@ const resolvers = {
       const playerToAssign = await getPlayerByUserId(context.user.id);
 
       if (!playerToAssign) {
-        throw new GraphQLError('Player not fou d', {
+        throw new GraphQLError('Player not found', {
           extensions: { code: '404' },
         });
+      }
+
+      if (!playerToAssign.mainaccountId) {
+        const firstAccount = await addLeagueAccount(
+          riotData,
+          playerToAssign.id,
+        );
+
+        if (!firstAccount) {
+          throw new GraphQLError('Riot Api Request failed', {
+            extensions: { code: '500' },
+          });
+        }
+
+        await setLeagueMainAccount(
+          Number(firstAccount.id),
+          Number(firstAccount.playerId),
+        );
+        return getLeagueAccountById(firstAccount.id);
       }
 
       return await addLeagueAccount(riotData, playerToAssign.id);

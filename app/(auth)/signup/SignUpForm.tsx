@@ -93,6 +93,7 @@ export default function SignUpForm() {
 
     onError: (error) => {
       setOnError(error.message);
+      setShowNotification(true);
     },
 
     onCompleted: () => {
@@ -116,6 +117,7 @@ export default function SignUpForm() {
   const [createOrganisationHandler] = useMutation(createOrganisationMutation, {
     onError: (error) => {
       setOnError(error.message);
+      setShowNotification(true);
     },
 
     onCompleted: async () => {
