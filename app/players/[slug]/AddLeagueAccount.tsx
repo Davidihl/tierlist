@@ -25,12 +25,12 @@ export default function AddLeagueAccount() {
   const [graphQlError, setGraphQlError] = useState('');
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowNotification(false);
-  //   }, 2000);
-  //   return () => clearTimeout(timer);
-  // }, [showNotification]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showNotification]);
 
   const [addLeagueAccountHandler] = useMutation(addLeagueAccountMutation, {
     variables: {
