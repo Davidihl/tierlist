@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import LeagueAccount from '../components/LeagueAccount';
 import { encodeString } from '../util/encodeString';
 import { sql } from './connect';
 
@@ -135,3 +136,20 @@ export const getLeagueMainAccountIdByPlayerId = cache(async (id: number) => {
 
   return leagueAccountId;
 });
+
+export const setLeagueMainAccount = cache(
+  async (LeagueAccountId: number, playerId: number) => {
+    const updatedPlayer = sql<Player[]>`
+  UPDATE
+    players
+  SET
+    mainaccount_id = ${LeagueAccountId}
+  WHERE
+    id = ${playerId}
+  RETURNING
+   *
+  `;
+
+    return updatedPlayer;
+  },
+);
