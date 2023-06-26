@@ -2,7 +2,7 @@
 import { gql, useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const loginMutation = gql`
   mutation Login($username: String!, $password: String!) {
@@ -14,8 +14,18 @@ const loginMutation = gql`
 `;
 
 const createUserMutation = gql`
-  mutation createUser($alias: String!, $username: String, $password: String) {
-    createUser(alias: $alias, username: $username, password: $password) {
+  mutation CreateUser(
+    $alias: String!
+    $username: String
+    $password: String
+    $repeatPassword: String
+  ) {
+    createUser(
+      alias: $alias
+      username: $username
+      password: $password
+      repeatPassword: $repeatPassword
+    ) {
       id
     }
   }
@@ -45,14 +55,10 @@ const createPlayerMutation = gql`
 const createOrganisationMutation = gql`
   mutation CreateOrganisation(
     $userId: Int!
-    $organisationName: String!
+    $alias: String!
     $contact: String
   ) {
-    createOrganisation(
-      userId: $userId
-      organisationName: $organisationName
-      contact: $contact
-    ) {
+    createOrganisation(userId: $userId, alias: $alias, contact: $contact) {
       id
     }
   }
@@ -61,14 +67,22 @@ const createOrganisationMutation = gql`
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [alias, setAlias] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [organisationName, setOrganisationName] = useState('');
   const [contact, setContact] = useState('');
   const [isPlayer, setIsPlayer] = useState(true);
   const [onError, setOnError] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showNotification]);
 
   const [loginHandler] = useMutation(loginMutation, {
     variables: {
@@ -89,6 +103,7 @@ export default function SignUpForm() {
   const [createPlayerHandler] = useMutation(createPlayerMutation, {
     onError: (error) => {
       setOnError(error.message);
+      setShowNotification(true);
     },
 
     onCompleted: async () => {
@@ -110,13 +125,15 @@ export default function SignUpForm() {
 
   const [createUserHandler] = useMutation(createUserMutation, {
     variables: {
-      alias,
       username,
       password,
+      repeatPassword,
+      alias,
     },
 
     onError: (error) => {
       setOnError(error.message);
+      setShowNotification(true);
     },
 
     onCompleted: async (data) => {
@@ -135,7 +152,7 @@ export default function SignUpForm() {
         await createOrganisationHandler({
           variables: {
             userId: Number(data.createUser.id),
-            organisationName,
+            alias,
             contact,
           },
         });
@@ -145,30 +162,6 @@ export default function SignUpForm() {
 
   return (
     <form className="flex flex-col gap-4">
-      <div className="flex gap-4">
-        <label className="flex items gap-2">
-          I am an athlete
-          <input
-            type="checkbox"
-            checked={isPlayer}
-            onChange={() => setIsPlayer(!isPlayer)}
-            className="radio radio-primary"
-          />
-        </label>
-        <label className="flex items gap-2">
-          I am an organisation
-          <input
-            type="checkbox"
-            checked={!isPlayer}
-            onChange={() => {
-              setIsPlayer(!isPlayer);
-              setOrganisationName('');
-              setAlias('');
-            }}
-            className="radio radio-primary"
-          />
-        </label>
-      </div>
       <label className="text-sm">
         Username
         <input
@@ -188,6 +181,39 @@ export default function SignUpForm() {
           className="p-2 block input w-full max-w-xs"
         />
       </label>
+      <label className="text-sm">
+        Repeat Password
+        <input
+          value={repeatPassword}
+          onChange={(event) => setRepeatPassword(event.currentTarget.value)}
+          type="password"
+          placeholder="Repeat password"
+          className="p-2 block input w-full max-w-xs"
+        />
+      </label>
+      <div className="flex gap-4 mt-4">
+        <label className="flex items gap-2">
+          I am an athlete
+          <input
+            type="checkbox"
+            checked={isPlayer}
+            onChange={() => setIsPlayer(!isPlayer)}
+            className="radio radio-primary"
+          />
+        </label>
+        <label className="flex items gap-2">
+          I am an organisation
+          <input
+            type="checkbox"
+            checked={!isPlayer}
+            onChange={() => {
+              setIsPlayer(!isPlayer);
+              setAlias('');
+            }}
+            className="radio radio-primary"
+          />
+        </label>
+      </div>
       {isPlayer ? (
         <div className="flex flex-col gap-4">
           <label className="text-sm">
@@ -232,10 +258,8 @@ export default function SignUpForm() {
           <label className="text-sm">
             Alias
             <input
-              value={organisationName}
-              onChange={(event) =>
-                setOrganisationName(event.currentTarget.value)
-              }
+              value={alias}
+              onChange={(event) => setAlias(event.currentTarget.value)}
               placeholder="Austrian Force"
               className="p-2 block input w-full max-w-xs"
             />
@@ -261,8 +285,16 @@ export default function SignUpForm() {
           Sign up
         </button>
         <Link href="/login">Already have a login? Login here instead!</Link>
+        {showNotification ? (
+          <div className="toast toast-center ">
+            <div className="alert alert-error">
+              <span>{onError}</span>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
-      <div>{onError}</div>
     </form>
   );
 }

@@ -2,7 +2,7 @@
 import { gql, useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const loginMutation = gql`
   mutation Login($username: String!, $password: String!) {
@@ -17,7 +17,15 @@ export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [onError, setOnError] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showNotification]);
 
   const [loginHandler] = useMutation(loginMutation, {
     variables: {
@@ -27,6 +35,7 @@ export default function LoginForm() {
 
     onError: (error) => {
       setOnError(error.message);
+      setShowNotification(true);
     },
 
     onCompleted: () => {
@@ -67,7 +76,15 @@ export default function LoginForm() {
         </button>
         <Link href="/signup">No account yet? Sign up here instead!</Link>
       </div>
-      <div>{onError}</div>
+      {showNotification ? (
+        <div className="toast toast-center ">
+          <div className="alert alert-error">
+            <span>{onError}</span>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </form>
   );
 }

@@ -22,7 +22,7 @@ export default async function SignUpPage() {
   }
   return (
     <main className="p-4">
-      <h1 className="text-3xl font-medium mb-4">Login</h1>
+      <h1 className="text-3xl font-medium mb-4">Sign up</h1>
       <SignUpForm />
     </main>
   );

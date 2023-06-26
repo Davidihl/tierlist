@@ -60,6 +60,12 @@ export async function up(sql: Sql) {
 
 export async function down(sql: Sql) {
   await sql`
+  UPDATE
+    players
+  SET
+    mainaccount_id = NULL
+  `;
+  await sql`
       DELETE FROM league_accounts
   `;
 }

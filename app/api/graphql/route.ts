@@ -109,7 +109,12 @@ const typeDefs = gql`
 
   type Mutation {
     "Create a new user"
-    createUser(username: String, password: String, alias: String!): User
+    createUser(
+      username: String
+      password: String
+      repeatPassword: String
+      alias: String!
+    ): User
     "Create a new player"
     createPlayer(
       userId: Int!
@@ -120,7 +125,7 @@ const typeDefs = gql`
     ): Player
     createOrganisation(
       userId: Int!
-      organisationName: String!
+      alias: String!
       contact: String
     ): Organisation
     "Add a new league account to a player"
@@ -289,11 +294,23 @@ const resolvers = {
   Mutation: {
     createUser: async (
       parent: null,
-      args: { username: string; password: string; alias: string },
+      args: {
+        username: string;
+        password: string;
+        repeatPassword: string;
+        alias: string;
+      },
     ) => {
       // Validate user input
-      if (!args.username || !args.password) {
-        throw new GraphQLError('Please fill out all required fields');
+      if (
+        !args.username ||
+        !args.password ||
+        !args.repeatPassword ||
+        !args.alias
+      ) {
+        throw new GraphQLError('Please fill out all required fields', {
+          extensions: { code: '400' },
+        });
       }
 
       // Check if user exists
@@ -302,6 +319,11 @@ const resolvers = {
         throw new GraphQLError('Username has already been taken', {
           extensions: { code: '400' },
         });
+      }
+
+      // Check if password is identical
+      if (args.password !== args.repeatPassword) {
+        throw new GraphQLError('Passwords do not match');
       }
 
       // Check password security
@@ -557,18 +579,18 @@ const resolvers = {
       parent: null,
       args: {
         userId: number;
-        organisationName: string;
+        alias: string;
         contact: string;
       },
     ) => {
       // Validate Input
       const userId = z.number();
-      const name = z.string().nonempty();
+      const alias = z.string().nonempty();
       const contact = z.string();
 
       if (
         !userId.safeParse(args.userId).success ||
-        !name.safeParse(args.organisationName).success ||
+        !alias.safeParse(args.alias).success ||
         !contact.safeParse(args.contact).success
       ) {
         throw new GraphQLError('Invalid input', {
@@ -593,11 +615,7 @@ const resolvers = {
       }
 
       // Create Organisation
-      return await createOrganisation(
-        args.userId,
-        args.organisationName,
-        args.contact,
-      );
+      return await createOrganisation(args.userId, args.alias, args.contact);
     },
 
     // createAssociation(ByOrganisation?)
