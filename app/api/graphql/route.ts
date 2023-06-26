@@ -16,6 +16,7 @@ import {
 } from '../../../database/associations';
 import {
   addLeagueAccount,
+  deleteLeagueAccount,
   getAllLeagueAccounts,
   getAllLeagueAccountsByPlayerId,
   getLeagueAccountById,
@@ -31,6 +32,7 @@ import {
 import {
   createPlayer,
   getAllPlayers,
+  getLeagueMainAccountIdByPlayerId,
   getPlayerById,
   getPlayerBySlug,
   getPlayerByUserId,
@@ -123,7 +125,7 @@ const typeDefs = gql`
     "Add a new league account to a player"
     addLeagueAccount(summoner: String!): LeagueAccount
     "Delete a league of legends account with a certain id"
-    deleteLeagueAccount(id: ID!): LeagueAccount
+    deleteLeagueAccount(id: Int!): LeagueAccount
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
     "Logout with the token provided"
@@ -433,7 +435,7 @@ const resolvers = {
       context: { isLoggedIn: any; user: any },
     ) => {
       // Validate input
-      const id = z.string().nonempty();
+      const id = z.number();
       if (!id.safeParse(args.id).success) {
         throw new GraphQLError('Please add a valid id', {
           extensions: { code: '400' },
@@ -451,11 +453,24 @@ const resolvers = {
       // Check authorization
       if (!context.isLoggedIn.userId === context.user.id) {
         throw new GraphQLError('Authorization failed', {
-          extensions: { code: '400' },
+          extensions: { code: '401' },
         });
       }
 
-      console.log('account deleted');
+      // Get Player context
+      const player = await getPlayerByUserId(context.user.id);
+
+      if (player?.mainaccountId === Number(args.id)) {
+        throw new GraphQLError(
+          'Please mark another league of legends account as your main account first',
+          {
+            extensions: { code: '400' },
+          },
+        );
+      }
+
+      const deletedAccount = await deleteLeagueAccount(Number(args.id));
+      return deletedAccount;
     },
     // updateLeagueAccounts
     // createOrganisation
@@ -506,7 +521,7 @@ const resolvers = {
       );
     },
 
-    // createAssociationByOrganisation
+    // createAssociation(ByOrganisation?)
 
     // acceptAssociationByPlayer
 

@@ -21,6 +21,10 @@ export type PlayerInput = {
   contact: string | null;
 };
 
+export type MainAccountId = {
+  mainaccountId: number | null;
+};
+
 export const getAllPlayers = cache(async () => {
   const players = await sql<Player[]>`
     SELECT
@@ -118,3 +122,16 @@ export const createPlayer = cache(
     return player;
   },
 );
+
+export const getLeagueMainAccountIdByPlayerId = cache(async (id: number) => {
+  const leagueAccountId = sql<MainAccountId[]>`
+  SELECT
+    mainaccount_id
+  FROM
+    players
+  WHERE
+    id = ${id}
+  `;
+
+  return leagueAccountId;
+});

@@ -11,6 +11,7 @@ import markMainIcon from '../../../public/markmain.svg';
 import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
+import DeleteLeagueAccount from './DeleteLeagueAccount';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,9 +65,6 @@ export default async function PlayerPage(props: Props) {
 
   const leagueAccounts = data.playerBySlug.leagueAccounts;
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
-  console.log(data);
-  console.log(data.playerBySlug.leagueAccounts);
-  console.log(data.playerBySlug.leagueAccounts[0].id);
 
   return (
     <main className="p-4">
@@ -108,9 +106,7 @@ export default async function PlayerPage(props: Props) {
                   ) : (
                     ''
                   )}
-                  <button className="btn btn-circle mr-2">
-                    <Image src={deleteIcon} alt="Delete Icon" />
-                  </button>
+                  <DeleteLeagueAccount leagueAccountId={leagueAccount.id} />
                 </div>
               ) : (
                 ''
