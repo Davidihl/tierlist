@@ -36,6 +36,7 @@ import {
   getPlayerById,
   getPlayerBySlug,
   getPlayerByUserId,
+  setLeagueMainAccount,
 } from '../../../database/players';
 import {
   createSession,
@@ -126,6 +127,8 @@ const typeDefs = gql`
     addLeagueAccount(summoner: String!): LeagueAccount
     "Delete a league of legends account with a certain id"
     deleteLeagueAccount(id: Int!): LeagueAccount
+    "Set main league of legends account"
+    setMainAccount(leagueAccountId: Int!, playerId: Int!): Player
     "Login to a dedicated user which is related to either a player or an organisation"
     login(username: String!, password: String!): User
     "Logout with the token provided"
@@ -469,8 +472,84 @@ const resolvers = {
         );
       }
 
-      const deletedAccount = await deleteLeagueAccount(Number(args.id));
-      return deletedAccount;
+      return await deleteLeagueAccount(Number(args.id));
+    },
+    // assignMainAccount
+    setMainAccount: async (
+      parent: null,
+      args: { leagueAccountId: number; playerId: number },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate input
+      const leagueAccountId = z.number();
+      const playerId = z.number();
+      if (
+        !leagueAccountId.safeParse(args.leagueAccountId).success ||
+        !playerId.safeParse(args.playerId).success
+      ) {
+        throw new GraphQLError('Please add a valid arguments', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if leagueAccount exists
+      const accountExists = await getLeagueAccountById(args.leagueAccountId);
+      if (!accountExists) {
+        throw new GraphQLError('League of Legends account does not exist', {
+          extensions: { code: '404' },
+        });
+      }
+
+      // Check authorization
+      if (!context.isLoggedIn.userId === context.user.id) {
+        throw new GraphQLError('Authorization failed', {
+          extensions: { code: '401' },
+        });
+      }
+
+      // Only allow admin to change the main account
+      const playerToEdit = await getPlayerByUserId(context.user.id);
+      if (
+        context.user.isAdmin === false &&
+        Number(playerToEdit?.id) !== Number(args.playerId)
+      ) {
+        throw new GraphQLError(
+          'You are not allowed to set this players main account',
+          {
+            extensions: { code: '401' },
+          },
+        );
+      }
+      // Check if league account to be the new main is among assigned accounts
+      const leagueAccountExisting = await getLeagueAccountById(
+        args.leagueAccountId,
+      );
+
+      if (Number(leagueAccountExisting?.playerId) !== Number(args.playerId)) {
+        throw new GraphQLError(
+          'The account you try to mark as main is not assigned to the player in question',
+          {
+            extensions: { code: '400' },
+          },
+        );
+      }
+
+      // Check if already assigned as main
+      const player = await getPlayerByUserId(context.user.id);
+      if (player?.mainaccountId === Number(args.leagueAccountId)) {
+        throw new GraphQLError('Account already marked as main', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Update Main account
+      await setLeagueMainAccount(
+        Number(args.leagueAccountId),
+        Number(args.playerId),
+      );
+
+      // Return the updated Player
+      return await getPlayerById(args.playerId);
     },
     // updateLeagueAccounts
     // createOrganisation

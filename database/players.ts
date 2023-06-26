@@ -139,7 +139,7 @@ export const getLeagueMainAccountIdByPlayerId = cache(async (id: number) => {
 
 export const setLeagueMainAccount = cache(
   async (LeagueAccountId: number, playerId: number) => {
-    const updatedPlayer = sql<Player[]>`
+    const updatedPlayer = await sql<Player[]>`
   UPDATE
     players
   SET
@@ -147,7 +147,14 @@ export const setLeagueMainAccount = cache(
   WHERE
     id = ${playerId}
   RETURNING
-   *
+     id,
+     user_id,
+     alias,
+     first_name,
+     last_name,
+     contact,
+     slug,
+     mainaccount_id
   `;
 
     return updatedPlayer;

@@ -12,6 +12,7 @@ import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
 import DeleteLeagueAccount from './DeleteLeagueAccount';
+import SetMainAccount from './SetMainAccount';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +27,7 @@ export default async function PlayerPage(props: Props) {
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {
@@ -69,12 +70,21 @@ export default async function PlayerPage(props: Props) {
   return (
     <main className="p-4">
       <div className="flex gap-4 items-center">
-        <Image
-          src={`/leagueoflegends/tiers/${data.playerBySlug.mainAccount.tier}.webp`}
-          alt={`Tier ${data.playerBySlug.mainAccount.tier}`}
-          width={100}
-          height={100}
-        />
+        {data.playerBySlug.mainAccount?.tier ? (
+          <Image
+            src={`/leagueoflegends/tiers/${data.playerBySlug.mainAccount.tier}.webp`}
+            alt={`Tier ${data.playerBySlug.mainAccount.tier}`}
+            width={100}
+            height={100}
+          />
+        ) : (
+          <Image
+            src="/leagueoflegends/tiers/UNRANKED.webp"
+            alt="Unranked"
+            width={100}
+            height={100}
+          />
+        )}
         <div>
           <h1 className="font-medium text-xl">{data.playerBySlug.alias}</h1>
           {data.playerBySlug.firstName && data.playerBySlug.lastName ? (
@@ -99,10 +109,11 @@ export default async function PlayerPage(props: Props) {
               <LeagueAccount leagueAccount={leagueAccount} />
               {allowEdit ? (
                 <div className="flex items-center">
-                  {data.playerBySlug.mainAccount.id !== leagueAccount.id ? (
-                    <button className="btn btn-circle mr-2">
-                      <Image src={markMainIcon} alt="Mark Main Account Icon" />
-                    </button>
+                  {data.playerBySlug.mainAccount?.id !== leagueAccount.id ? (
+                    <SetMainAccount
+                      leagueAccountId={leagueAccount.id}
+                      playerId={data.playerBySlug.id}
+                    />
                   ) : (
                     ''
                   )}
