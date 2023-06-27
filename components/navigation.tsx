@@ -12,7 +12,7 @@ export default function Navigation() {
         </Link>
       </div>
       <div className="bg-white grow p-4 flex justify-end items-center">
-        <ul className="flex gap-4">
+        <ul className="menu-horizontal flex items-center gap-4">
           <li>
             <Link href="/players">Players</Link>
           </li>
