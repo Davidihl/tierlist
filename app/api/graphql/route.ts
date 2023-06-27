@@ -251,6 +251,9 @@ const resolvers = {
     organisations: async () => {
       return await getAllOrganisations();
     },
+    organisation: async (parent: null, args: { id: string }) => {
+      return await getOrganisationById(args.id);
+    },
     organisationBySlug: async (parent: null, args: { slug: string }) => {
       return await getOrganisationBySlug(args.slug);
     },
