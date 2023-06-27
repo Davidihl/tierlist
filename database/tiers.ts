@@ -3,7 +3,7 @@ import { sql } from './connect';
 
 export type Tier = {
   id: number;
-  name: string;
+  name: string | null;
 };
 
 export const getTierIdByRiotResponse = cache(async (riotResponse: string) => {

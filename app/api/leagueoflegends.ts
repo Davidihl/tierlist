@@ -1,5 +1,5 @@
 import { RateLimiter } from 'limiter';
-import { LeagueAccount, RiotResponse } from '../../database/leagueAccounts';
+import { RiotResponse } from '../../database/leagueAccounts';
 import { encodeString } from '../../util/encodeString';
 
 // eventuell mit GraphQL REST dataSource neu schreiben????

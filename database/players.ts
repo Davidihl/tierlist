@@ -142,7 +142,7 @@ export const createPlayer = cache(
 );
 
 export const getLeagueMainAccountIdByPlayerId = cache(async (id: number) => {
-  const leagueAccountId = sql<MainAccountId[]>`
+  const leagueAccountId = await sql<MainAccountId[]>`
   SELECT
     mainaccount_id
   FROM

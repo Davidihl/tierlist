@@ -1,11 +1,7 @@
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  getPlayerById,
-  getPlayerBySlug,
-  getPlayerByUserId,
-} from '../database/players';
+import { getPlayerByUserId } from '../database/players';
 import { getSlugFromToken, getValidSessionByToken } from '../database/sessions';
 import loginIcon from '../public/login.svg';
 import logoutIcon from '../public/logout.svg';

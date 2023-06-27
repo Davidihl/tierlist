@@ -4,10 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import LeagueAccount from '../../../components/LeagueAccount';
 import { LeagueAccountQuery } from '../../../database/leagueAccounts';
-import { getPlayerBySlug } from '../../../database/players';
 import { getValidSessionByToken } from '../../../database/sessions';
-import deleteIcon from '../../../public/delete.svg';
-import markMainIcon from '../../../public/markmain.svg';
 import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
@@ -47,15 +44,6 @@ export async function generateMetadata(props: Props) {
     title: `Player Profile for ${data.playerBySlug.alias}`,
     description: `This is the player profile page for ${data.playerBySlug.alias}. You can look up contact information or the various league of legends accounts he claims to have access to.`,
   };
-
-  // const product = await getProductById(Number(props.params.id));
-  // if (product) {
-  //   return {
-  //     title: product.name,
-  //     description: product.description,
-  //   };
-  // }
-  // throw new Error(`Product with id ${props.params.id} not found`);
 }
 
 export default async function PlayerPage(props: Props) {

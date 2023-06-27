@@ -45,6 +45,7 @@ export default function LogOutForm(props: Props) {
         >
           Confirm logout
         </button>
+        {onError}
       </div>
     </form>
   );

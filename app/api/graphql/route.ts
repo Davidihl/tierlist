@@ -44,7 +44,6 @@ import {
   getValidSessionByToken,
   Token,
 } from '../../../database/sessions';
-import { getTierIdByRiotResponse } from '../../../database/tiers';
 import {
   createUser,
   getAllUsers,
