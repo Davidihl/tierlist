@@ -6,7 +6,6 @@ import { getSlugFromToken, getValidSessionByToken } from '../database/sessions';
 import loginIcon from '../public/login.svg';
 import logoutIcon from '../public/logout.svg';
 import profileIcon from '../public/profile.svg';
-import ProfileNavigation from './ProfileNavigation';
 
 export default async function LoginLink() {
   const sessionTokenCookie = cookies().get('sessionToken');

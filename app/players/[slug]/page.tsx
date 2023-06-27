@@ -90,6 +90,7 @@ export default async function PlayerPage(props: Props) {
 
   const leagueAccounts = data.playerBySlug.leagueAccounts;
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
+  console.log(leagueAccounts.length);
 
   return (
     <main className="p-4">
@@ -130,7 +131,7 @@ export default async function PlayerPage(props: Props) {
       <div className="mt-4">
         <h2 className="font-medium text-lg">Assigned Accounts:</h2>
         <div>
-          {!data.playerBySlug.mainAccount?.tier && (
+          {!data.playerBySlug.mainAccount?.tier && allowEdit && (
             <div className="alert alert-warning mt-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,14 +175,37 @@ export default async function PlayerPage(props: Props) {
         </div>
       </div>
       <div className="mt-4">
-        <button className="flex items-center btn rounded-full group">
-          <Image
-            src={updateIcon}
-            alt="Update Icon"
-            className="group-hover:animate-reverse-spin"
-          />
-          Update Riot Data
-        </button>
+        {leagueAccounts.length > 0 ? (
+          <button className="flex items-center btn rounded-full group">
+            <Image
+              src={updateIcon}
+              alt="Update Icon"
+              className="group-hover:animate-reverse-spin"
+            />
+            Update Riot Data
+          </button>
+        ) : !allowEdit ? (
+          <div className="alert">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="stroke-current shrink-0 w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>
+              This player has not assigned any League of Legends account yet.
+            </span>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
       {allowEdit ? <AddLeagueAccount /> : ''}
     </main>
