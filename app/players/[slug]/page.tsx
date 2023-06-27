@@ -119,9 +119,14 @@ export default async function PlayerPage(props: Props) {
           ) : (
             ''
           )}
+          {data.playerBySlug.contact ? (
+            <p>Contact: {data.playerBySlug.contact}</p>
+          ) : (
+            ''
+          )}
         </div>
       </div>
-      {data.contact ? <p>Contact: {data.contact}</p> : ''}
+
       <div className="mt-4">
         <h2 className="font-medium text-lg">Assigned Accounts:</h2>
         <div>
@@ -145,7 +150,7 @@ export default async function PlayerPage(props: Props) {
           )}
           {leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
             <div
-              className="flex gap-2 justify-between max-w-md border-b p-2 first:border-t"
+              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
               key={`league-account-${leagueAccount.id}`}
             >
               <LeagueAccount leagueAccount={leagueAccount} />
