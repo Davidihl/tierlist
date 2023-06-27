@@ -5,7 +5,7 @@ export async function up(sql: Sql) {
   await sql`
     INSERT INTO organisations
     (
-      name,
+      alias,
       user_id,
       contact,
       slug

@@ -5,7 +5,7 @@ import { sql } from './connect';
 export type Organisation = {
   id: number;
   userId: number;
-  name: string;
+  alias: string;
   contact: string | null;
   slug: string;
 };
@@ -15,7 +15,7 @@ export const getAllOrganisations = cache(async () => {
     SELECT
       id,
       user_id,
-      name,
+      alias,
       contact,
       slug
     FROM
@@ -29,7 +29,7 @@ export const getOrganisationById = cache(async (id: number) => {
     SELECT
       id,
       user_id,
-      name,
+      alias,
       contact,
       slug
     FROM
@@ -45,13 +45,13 @@ export const getOrganisationBySlug = cache(async (slug: string) => {
     SELECT
       id,
       user_id,
-      name,
+      alias,
       contact,
       slug
     FROM
       organisations
     WHERE
-      slug = ${encodeString(slug).toLowerCase()}
+      slug = ${slug}
  `;
   return organisation;
 });
@@ -61,7 +61,7 @@ export const getOrganisationByUserId = cache(async (id: number) => {
     SELECT
       id,
       user_id,
-      name,
+      alias,
       contact,
       slug
     FROM
@@ -73,12 +73,12 @@ export const getOrganisationByUserId = cache(async (id: number) => {
 });
 
 export const createOrganisation = cache(
-  async (userId: number, name: string, contact: string | null) => {
+  async (userId: number, alias: string, contact: string | null) => {
     const [organisation] = await sql<Organisation[]>`
     INSERT INTO organisations
-    (user_id, name, contact, slug)
+    (user_id, alias, contact, slug)
   VALUES
-    (${userId}, ${name}, ${contact}, ${encodeString(name).toLowerCase()})
+    (${userId}, ${alias}, ${contact}, ${encodeString(alias).toLowerCase()})
   RETURNING
   *`;
 

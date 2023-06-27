@@ -100,6 +100,9 @@ const typeDefs = gql`
     "Get a single organisation with a certain id"
     organisation(id: ID!): Organisation
 
+    "Get a single organisation by its slug/url-path segment"
+    organisationBySlug(slug: String!): Organisation
+
     "Get the associations of an organisation"
     organisationAssociations(id: ID!): [Association]
 
@@ -199,7 +202,7 @@ const typeDefs = gql`
   "If a user is not a player, he is an organisation"
   type Organisation {
     id: ID!
-    name: String
+    alias: String
     contact: String
     slug: String
     user: User!
@@ -248,6 +251,9 @@ const resolvers = {
     },
     organisations: async () => {
       return await getAllOrganisations();
+    },
+    organisationBySlug: async (parent: null, args: { slug: string }) => {
+      return await getOrganisationBySlug(args.slug);
     },
     organisationAssociations: async (parent: null, args: { id: string }) => {
       return await getAssociationsByOrganisation(Number(args.id));

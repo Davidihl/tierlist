@@ -36,7 +36,7 @@ export async function generateMetadata(props: Props) {
     },
   });
 
-  if (!data) {
+  if (!data.playerBySlug) {
     return {
       title: 'Player not found',
       description: 'Could not find the player you are looking for',
