@@ -46,35 +46,37 @@ export default async function PlayersPage() {
   const players: PlayerQuery[] = data.players;
 
   return (
-    <main className="p-4">
-      <h1 className="font-medium text-xl">Players</h1>
-      {players.map((player) => {
-        return (
-          <div
-            key={`player-${player.alias}`}
-            className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
-          >
-            <div className="flex gap-2 items-center ">
-              {player.mainAccount ? (
-                <Image
-                  src={`/leagueoflegends/tiers/${player.mainAccount.tier}.webp`}
-                  alt={`Tier ${player.mainAccount?.tier}`}
-                  width={50}
-                  height={50}
-                />
-              ) : (
-                <Image
-                  src="/leagueoflegends/tiers/UNRANKED.webp"
-                  alt="Unranked"
-                  width={50}
-                  height={50}
-                />
-              )}
-              <Link href={`/players/${player.slug}`}>{player.alias}</Link>
+    <main className="p-4 flex flex-col items-center">
+      <div className="w-full max-w-lg">
+        <h1 className="font-medium text-xl">Players</h1>
+        {players.map((player) => {
+          return (
+            <div
+              key={`player-${player.alias}`}
+              className="flex gap-2 justify-between border-b p-2 first:border-t"
+            >
+              <div className="flex gap-2 items-center ">
+                {player.mainAccount ? (
+                  <Image
+                    src={`/leagueoflegends/tiers/${player.mainAccount.tier}.webp`}
+                    alt={`Tier ${player.mainAccount?.tier}`}
+                    width={50}
+                    height={50}
+                  />
+                ) : (
+                  <Image
+                    src="/leagueoflegends/tiers/UNRANKED.webp"
+                    alt="Unranked"
+                    width={50}
+                    height={50}
+                  />
+                )}
+                <Link href={`/players/${player.slug}`}>{player.alias}</Link>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </main>
   );
 }
