@@ -1,44 +1,20 @@
-import Image from 'next/image';
-import { RiotResponse } from '../database/leagueAccounts';
-import { getLeagueofLegendsData } from './api/leagueoflegends';
+import Link from 'next/link';
 
-export default async function Home() {
-  // DEBUG RIOT API
-  // const debugRiotObject = await getLeagueofLegendsData('AFW Nan0');
-  const debugRiotObject: RiotResponse = await getLeagueofLegendsData(
-    'Chaoslordi',
-  );
-  // console.log('result', debugRiotObject);
-
+export default function Home() {
   return (
-    <main className="p-4">
-      <div className="flex gap-4 items-center">
-        <h1 className="text-3xl font-medium">Player Database</h1>
-      </div>
-      <section className="flex flex-col gap-4 mt-8 flex-shrink-0">
-        <h2 className="text-2xl pt-3">DEBUG</h2>
-        <div className="p-3 rounded bg-gray-300 drop-shadow-xl max-w-xs border-gray-700 flex flex-col items-center gap-1">
-          <h3>RIOT API</h3>
-          <div>
-            <Image
-              src={`/leagueoflegends/tiers/${debugRiotObject.tier}.webp`}
-              alt={debugRiotObject.tier}
-              width={150}
-              height={150}
-            />
+    <main>
+      <div className="hero min-h-screen bg-base-200">
+        <div className="hero-content">
+          <div className="max-w-md">
+            <h1 className="text-5xl font-bold mb-5">
+              Connecting Talent. Amplifying Recognition. Shaping Esports.
+            </h1>
+            <Link href="/players" className="btn btn-primary rounded-full">
+              Browser Players
+            </Link>
           </div>
-          <div>Account: {debugRiotObject.summoner}</div>
-          <div>Tier: {debugRiotObject.tier}</div>
-          <div>Rank: {debugRiotObject.rank}</div>
-          <div>LeaguePoints: {debugRiotObject.leaguePoints}</div>
-          <div>Wins: {debugRiotObject.wins}</div>
-          <div>Losses: {debugRiotObject.losses}</div>
         </div>
-        <div>
-          <h3>Components</h3>
-          <div>Placeholder</div>
-        </div>
-      </section>
+      </div>
     </main>
   );
 }

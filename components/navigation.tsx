@@ -5,7 +5,7 @@ import LoginLink from './LoginLink';
 
 export default function Navigation() {
   return (
-    <nav className="sticky top-0 left-0 right-0 w-full flex justify-between mb-4 drop-shadow">
+    <nav className="sticky top-0 left-0 right-0 w-full flex justify-between drop-shadow">
       <div className="bg-white grow p-4 flex items-center">
         <Link href="/">
           <Image src={esvoeLogo} className="w-32" alt="ESVÖ Logo" />

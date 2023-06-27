@@ -252,7 +252,7 @@ const resolvers = {
       return await getAllOrganisations();
     },
     organisation: async (parent: null, args: { id: string }) => {
-      return await getOrganisationById(args.id);
+      return await getOrganisationById(Number(args.id));
     },
     organisationBySlug: async (parent: null, args: { slug: string }) => {
       return await getOrganisationBySlug(args.slug);
