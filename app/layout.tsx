@@ -6,7 +6,10 @@ import { ApolloClientProvider } from './ApolloClientProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'ESVÖ Playerdatabase',
+  title: {
+    default: 'ESVÖ Playerdatabase',
+    template: '%s | ESVÖ Playerdatabase',
+  },
   description: 'Elevating players and organisations',
 };
 

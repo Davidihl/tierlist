@@ -23,6 +23,7 @@ export default function AddLeagueAccount() {
   const [showNotification, setShowNotification] = useState(false);
   const [onError, setOnError] = useState('');
   const [graphQlError, setGraphQlError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -69,12 +70,16 @@ export default function AddLeagueAccount() {
       <button
         className="btn btn-secondary rounded-full"
         formAction={async () => {
+          setIsLoading(true);
           setOnError('');
           await addLeagueAccountHandler();
+          setSummonerName('');
+          setIsLoading(false);
         }}
       >
         Add League Account
       </button>
+      {isLoading ? 'x' : ''}
       {showNotification ? (
         <div className="toast toast-center ">
           <div className="alert alert-error">

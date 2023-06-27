@@ -7,6 +7,11 @@ import {
 } from '../../../database/sessions';
 import SignUpForm from './SignUpForm';
 
+export const metadata = {
+  title: 'Sign up',
+  description: 'Create your own account as a player or organisation',
+};
+
 export default async function SignUpPage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   const session =

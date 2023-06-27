@@ -381,7 +381,6 @@ const resolvers = {
 
       return await createUser(args.username, passwordHash);
     },
-    // createPlayer
     createPlayer: async (
       parent: null,
       args: {
@@ -436,7 +435,6 @@ const resolvers = {
         args.contact,
       );
     },
-    // addLeagueAccount
     addLeagueAccount: async (
       parent: null,
       args: { summoner: string },
@@ -496,7 +494,6 @@ const resolvers = {
 
       return await addLeagueAccount(riotData, playerToAssign.id);
     },
-    // removeLeagueAccount
     deleteLeagueAccount: async (
       parent: null,
       args: { id: number },
@@ -539,7 +536,6 @@ const resolvers = {
 
       return await deleteLeagueAccount(Number(args.id));
     },
-    // assignMainAccount
     setMainAccount: async (
       parent: null,
       args: { leagueAccountId: number; playerId: number },
@@ -617,7 +613,6 @@ const resolvers = {
       return await getPlayerById(args.playerId);
     },
     // updateLeagueAccounts
-    // createOrganisation
     createOrganisation: async (
       parent: null,
       args: {
@@ -660,18 +655,11 @@ const resolvers = {
       // Create Organisation
       return await createOrganisation(args.userId, args.alias, args.contact);
     },
-
     // createAssociation(ByOrganisation?)
-
     // acceptAssociationByPlayer
-
     // endAssociation
-
-    // deleteUserAndPlayer
-
+    // deleteUserAndPlayerAndLeagueAccounts
     // deleteUserAndOrganisation
-
-    // login
     login: async (
       parent: null,
       args: { username: string; password: string },
@@ -729,7 +717,6 @@ const resolvers = {
       const loggedInAsUser = await getUserByUsername(args.username);
       return loggedInAsUser;
     },
-    // logout
     logout: async (parent: string, args: Token) => {
       await cookies().set('sessionToken', '', {
         maxAge: -1,

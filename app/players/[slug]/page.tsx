@@ -22,12 +22,48 @@ type Props = {
   };
 };
 
+export async function generateMetadata(props: Props) {
+  const { data } = await getClient().query({
+    query: gql`
+      query PlayerBySlug($slug: String!) {
+        playerBySlug(slug: $slug) {
+          alias
+        }
+      }
+    `,
+    variables: {
+      slug: props.params.slug,
+    },
+  });
+
+  if (!data) {
+    return {
+      title: 'Player not found',
+      description: 'Could not find the player you are looking for',
+    };
+  }
+
+  return {
+    title: `Player Profile for ${data.playerBySlug.alias}`,
+    description: `This is the player profile page for ${data.playerBySlug.alias}. You can look up contact information or the various league of legends accounts he claims to have access to.`,
+  };
+
+  // const product = await getProductById(Number(props.params.id));
+  // if (product) {
+  //   return {
+  //     title: product.name,
+  //     description: product.description,
+  //   };
+  // }
+  // throw new Error(`Product with id ${props.params.id} not found`);
+}
+
 export default async function PlayerPage(props: Props) {
   const sessionTokenCookie = cookies().get('sessionToken');
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
-  const { data, loading } = await getClient().query({
+  const { data } = await getClient().query({
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {

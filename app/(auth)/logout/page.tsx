@@ -3,6 +3,11 @@ import { redirect } from 'next/navigation';
 import { getValidSessionByToken } from '../../../database/sessions';
 import LogOutForm from './LogOutForm';
 
+export const metadata = {
+  title: 'Logout',
+  description: 'Logout of your ESVÖ playerdatabase account',
+};
+
 export default async function LogoutPage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   const session =

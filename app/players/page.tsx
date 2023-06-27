@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Players',
+  description: 'Explore players registered in the ESVÖ playerdatabase',
+};
+
 export default function PlayersPage() {
   return (
     <main>

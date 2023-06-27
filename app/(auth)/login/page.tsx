@@ -7,6 +7,11 @@ import {
 } from '../../../database/sessions';
 import LoginForm from './LoginForm';
 
+export const metadata = {
+  title: 'Sign in',
+  description: 'Sign in to your personal account',
+};
+
 export default async function LoginPage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   const session =
