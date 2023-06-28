@@ -85,9 +85,10 @@ export default async function OrganisationPage(props: Props) {
           )}
         </div>
       </div>
+      <h2 className="font-medium text-lg">Associations</h2>
+      <p>Placeholder</p>
       {allowEdit && (
         <div>
-          <h2 className="font-medium text-lg">Request association</h2>
           <AssociationRequestForm isPlayer={false} />
         </div>
       )}
