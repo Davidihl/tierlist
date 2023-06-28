@@ -140,7 +140,7 @@ export default async function OrganisationPage(props: Props) {
       )}
       {allowEdit && (
         <div>
-          <AssociationRequestForm isPlayer={false} />
+          <AssociationRequestForm isPlayer={false} userId={session.userId} />
         </div>
       )}
     </main>

@@ -13,6 +13,7 @@ import {
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
   getPendingAssociationsByPlayer,
+  requestAssociation,
 } from '../../../database/associations';
 import {
   addLeagueAccount,
@@ -144,8 +145,7 @@ const typeDefs = gql`
     requestAssociationByOrganisation(
       userId: Int!
       playerAlias: String!
-      organisationId: Int!
-      playerRequest: Boolean
+      playerRequest: Boolean!
     ): Association
   }
 
@@ -681,19 +681,24 @@ const resolvers = {
       args: {
         userId: number;
         playerAlias: string;
-        organisationId: number;
         playerRequest: boolean;
       },
       context: { isLoggedIn: any; user: any },
     ) => {
       // Validate Input
       const playerAlias = z.string().nonempty();
-      const organisationId = z.number();
+      const userId = z.number();
       const playerRequest = z.boolean();
+
+      if (args.playerAlias === '') {
+        throw new GraphQLError('Please fill out alias', {
+          extensions: { code: '400' },
+        });
+      }
 
       if (
         !playerAlias.safeParse(args.playerAlias).success ||
-        !organisationId.safeParse(args.organisationId).success ||
+        !userId.safeParse(Number(args.userId)).success ||
         !playerRequest.safeParse(args.playerRequest).success
       ) {
         throw new GraphQLError('Invalid input', {
@@ -708,18 +713,44 @@ const resolvers = {
         });
       }
 
-      const organisation = await getOrganisationById(
-        Number(args.organisationId),
-      );
+      const organisation = await getOrganisationByUserId(Number(args.userId));
       if (!organisation) {
         throw new GraphQLError('Organisation not found', {
           extensions: { code: '404' },
         });
       }
 
+      // Check authorization
+      if (!context.isLoggedIn.userId === context.user.id) {
+        throw new GraphQLError('Authorization failed', {
+          extensions: { code: '401' },
+        });
+      }
+
+      // Check if logged in user is requesting for another organisation
+      if (!args.userId === context.user.id) {
+        throw new GraphQLError('Authorization failed', {
+          extensions: { code: '401' },
+        });
+      }
+
+      // Check if association exists
+      const association = await getAssociationsByPlayer(player.id);
+      if (association) {
+        throw new GraphQLError('Player already associated', {
+          extensions: { code: '400' },
+        });
+      }
+
       console.log('args', args);
       console.log('isLoggedIn', context.isLoggedIn);
       console.log('user', context.user);
+
+      return await requestAssociation(
+        player.id,
+        organisation.id,
+        args.playerRequest,
+      );
 
       // Request association
     },

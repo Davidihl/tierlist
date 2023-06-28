@@ -31,7 +31,6 @@ export const getAssociationsByPlayer = cache(async (id: number) => {
     FROM
       associations
     WHERE
-      start_date IS NOT NULL AND
       player_id = ${id} AND
       end_date IS NULL;
 

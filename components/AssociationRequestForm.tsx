@@ -6,19 +6,18 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   isPlayer: boolean;
+  userId: number;
 };
 
 const requestAssociationByOrganisation = gql`
   mutation RequestAssociationByOrganisation(
     $userId: Int!
     $playerAlias: String!
-    $organisationId: Int!
-    $playerRequest: Boolean
+    $playerRequest: Boolean!
   ) {
     requestAssociationByOrganisation(
       userId: $userId
       playerAlias: $playerAlias
-      organisationId: $organisationId
       playerRequest: $playerRequest
     ) {
       id
@@ -43,9 +42,8 @@ export default function AssociationRequestForm(props: Props) {
     requestAssociationByOrganisation,
     {
       variables: {
-        userId: 2,
+        userId: Number(props.userId),
         playerAlias: alias,
-        organisationId: 1,
         playerRequest: false,
       },
 
