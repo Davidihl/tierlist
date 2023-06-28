@@ -75,10 +75,36 @@ export const getPendingAssociationsByOrganisation = cache(
     FROM
       associations
     WHERE
-      Organisation_id = ${id} AND
+      organisation_id = ${id} AND
       start_date IS NULL AND
-      end_date IS NULL AND
+      end_date IS NULL
  `;
     return associations;
   },
 );
+
+export const askForAssociation = cache(
+  async (
+    playerId: number,
+    organisationId: number,
+    playerRequest: boolean = false,
+  ) => {
+    const [association] = await sql<Association[]>`
+    INSERT INTO associations
+      (player_id,organisation_id,player_request)
+    VALUES
+      (${playerId},
+      ${organisationId},
+      ${playerRequest})
+    RETURNING
+      *
+    `;
+    return association;
+  },
+);
+
+export const acceptAssociationRequest = cache(async () => {});
+
+export const denyAssociationRequest = cache(async () => {});
+
+export const endAssociation = cache(async () => {});

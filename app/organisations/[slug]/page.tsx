@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
+import AssociationRequestForm from '../../../components/AssociationRequestForm';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
 
@@ -66,6 +67,8 @@ export default async function OrganisationPage(props: Props) {
     notFound();
   }
 
+  console.log(data.organisationBySlug);
+
   const allowEdit = session?.userId === Number(data.organisationBySlug.user.id);
 
   return (
@@ -85,7 +88,7 @@ export default async function OrganisationPage(props: Props) {
       {allowEdit && (
         <div>
           <h2 className="font-medium text-lg">Request association</h2>
-          <p>Placeholder</p>
+          <AssociationRequestForm isPlayer={false} />
         </div>
       )}
     </main>

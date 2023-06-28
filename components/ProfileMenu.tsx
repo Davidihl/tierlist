@@ -28,18 +28,16 @@ export default function ProfileMenu(props: Props) {
   useOnClickOutside(ref, handleClickOutside);
 
   return (
-    <>
-      <button
-        className="flex items-center justify-center"
-        onClick={() => handleClickInside()}
-        ref={ref}
-      >
-        <Image src={profileIcon} alt="Profile" />
-      </button>
+    <button
+      className="flex items-center justify-center relative"
+      onClick={() => handleClickInside()}
+      ref={ref}
+    >
+      <Image src={profileIcon} alt="Profile" />
       <ul
         className={`${
           show ? '' : 'hidden'
-        } absolute right-0 mr-3 mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52`}
+        } absolute right-0 top-9 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52`}
       >
         <li>
           <Link
@@ -62,6 +60,6 @@ export default function ProfileMenu(props: Props) {
           </Link>
         </li>
       </ul>
-    </>
+    </button>
   );
 }
