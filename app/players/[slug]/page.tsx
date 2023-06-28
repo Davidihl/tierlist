@@ -84,6 +84,8 @@ export default async function PlayerPage(props: Props) {
     },
   });
 
+  console.log(session);
+
   if (!data.playerBySlug) {
     notFound();
   }
@@ -124,6 +126,7 @@ export default async function PlayerPage(props: Props) {
           ) : (
             ''
           )}
+          <div className="badge badge-primary">Austrian Force</div>
         </div>
       </div>
 

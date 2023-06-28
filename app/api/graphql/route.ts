@@ -12,7 +12,7 @@ import {
   getAllAssociations,
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
-  getPendingAssociations,
+  getPendingAssociationsByPlayer,
 } from '../../../database/associations';
 import {
   addLeagueAccount,
@@ -140,6 +140,13 @@ const typeDefs = gql`
     login(username: String!, password: String!): User
     "Logout with the token provided"
     logout(token: String!): Token
+    "Request an association"
+    requestAssociationByOrganisation(
+      userId: Int!
+      playerAlias: String!
+      organisationId: Int!
+      playerRequest: Boolean
+    ): Association
   }
 
   type Token {
@@ -205,6 +212,7 @@ const typeDefs = gql`
     contact: String
     slug: String
     user: User!
+    associations: [Association]
   }
 
   "Organisations can suggest an association to a player, but it has to be accepted by the player before it is valid. Both sides can end an association at any time"
@@ -212,6 +220,7 @@ const typeDefs = gql`
     id: ID!
     player: Player
     organisation: Organisation
+    playerRequest: Boolean
   }
 `;
 
@@ -237,7 +246,7 @@ const resolvers = {
       return await getAssociationsByPlayer(Number(args.id));
     },
     playersAssociationsPending: async (parent: null, args: { id: string }) => {
-      return await getPendingAssociations(Number(args.id));
+      return await getPendingAssociationsByPlayer(Number(args.id));
     },
     leagueAccounts: async () => {
       return await getAllLeagueAccounts();
@@ -295,6 +304,9 @@ const resolvers = {
   Organisation: {
     user: async (parent: any) => {
       return await getUserByID(Number(parent.userId));
+    },
+    associations: async (parent: any) => {
+      return await getAssociationsByOrganisation(parent.id);
     },
   },
 
@@ -663,7 +675,54 @@ const resolvers = {
       // Create Organisation
       return await createOrganisation(args.userId, args.alias, args.contact);
     },
-    // createAssociation(ByOrganisation?)
+    // createAssociation
+    requestAssociationByOrganisation: async (
+      parent: null,
+      args: {
+        userId: number;
+        playerAlias: string;
+        organisationId: number;
+        playerRequest: boolean;
+      },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const playerAlias = z.string().nonempty();
+      const organisationId = z.number();
+      const playerRequest = z.boolean();
+
+      if (
+        !playerAlias.safeParse(args.playerAlias).success ||
+        !organisationId.safeParse(args.organisationId).success ||
+        !playerRequest.safeParse(args.playerRequest).success
+      ) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+      // Check if User and Organisation exist
+      const player = await getPlayerByAlias(args.playerAlias);
+      if (!player) {
+        throw new GraphQLError('Player not found', {
+          extensions: { code: '404' },
+        });
+      }
+
+      const organisation = await getOrganisationById(
+        Number(args.organisationId),
+      );
+      if (!organisation) {
+        throw new GraphQLError('Organisation not found', {
+          extensions: { code: '404' },
+        });
+      }
+
+      console.log('args', args);
+      console.log('isLoggedIn', context.isLoggedIn);
+      console.log('user', context.user);
+
+      // Request association
+    },
     // acceptAssociationByPlayer
     // endAssociation
     // deleteUserAndPlayerAndLeagueAccounts

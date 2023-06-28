@@ -2,8 +2,11 @@ import { gql } from '@apollo/client';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import AssociationRequestForm from '../../../components/AssociationRequestForm';
+import EndAssociation from '../../../components/EndAssociation';
+import Player from '../../../components/Player';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
+import { PlayerQuery } from '../../players/page';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +14,11 @@ type Props = {
   params: {
     slug: string;
   };
+};
+
+type Association = {
+  id: number;
+  player: PlayerQuery;
 };
 
 export async function generateMetadata(props: Props) {
@@ -55,6 +63,27 @@ export default async function OrganisationPage(props: Props) {
           user {
             id
           }
+          associations {
+            id
+            player {
+              alias
+              slug
+              mainAccount {
+                id
+                summoner
+                tier
+                rank
+                leaguePoints
+                wins
+                losses
+                lastUpdate
+              }
+            }
+            playerRequest
+            organisation {
+              id
+            }
+          }
         }
       }
     `,
@@ -67,9 +96,9 @@ export default async function OrganisationPage(props: Props) {
     notFound();
   }
 
-  console.log(data.organisationBySlug);
-
   const allowEdit = session?.userId === Number(data.organisationBySlug.user.id);
+  const associations: Association[] | undefined =
+    data.organisationBySlug.associations;
 
   return (
     <main className="p-4">
@@ -85,8 +114,30 @@ export default async function OrganisationPage(props: Props) {
           )}
         </div>
       </div>
-      <h2 className="font-medium text-lg">Associations</h2>
-      <p>Placeholder</p>
+      <h2 className="font-medium text-lg">
+        Players associated with {data.organisationBySlug.alias}
+      </h2>
+      {associations ? (
+        associations.map((association) => {
+          return (
+            <div
+              key={`player-${association.player.alias}`}
+              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
+            >
+              <Player player={association.player} showOrganisation={false} />
+              {allowEdit ? (
+                <div className="flex items-center">
+                  <EndAssociation something="test" />
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          );
+        })
+      ) : (
+        <p>No players associated yet</p>
+      )}
       {allowEdit && (
         <div>
           <AssociationRequestForm isPlayer={false} />

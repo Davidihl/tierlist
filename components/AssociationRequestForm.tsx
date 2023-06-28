@@ -1,13 +1,66 @@
 'use client';
 
-import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type Props = {
   isPlayer: boolean;
 };
 
+const requestAssociationByOrganisation = gql`
+  mutation RequestAssociationByOrganisation(
+    $userId: Int!
+    $playerAlias: String!
+    $organisationId: Int!
+    $playerRequest: Boolean
+  ) {
+    requestAssociationByOrganisation(
+      userId: $userId
+      playerAlias: $playerAlias
+      organisationId: $organisationId
+      playerRequest: $playerRequest
+    ) {
+      id
+    }
+  }
+`;
+
 export default function AssociationRequestForm(props: Props) {
   const [alias, setAlias] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
+  const [onError, setOnError] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showNotification]);
+
+  const [requestAssociationByOrganisationHandler]: any = useMutation(
+    requestAssociationByOrganisation,
+    {
+      variables: {
+        userId: 2,
+        playerAlias: alias,
+        organisationId: 1,
+        playerRequest: false,
+      },
+
+      onError: (error) => {
+        setOnError(error.message);
+        setShowNotification(true);
+      },
+
+      onCompleted: () => {
+        setOnError('');
+        setAlias('');
+        router.refresh();
+      },
+    },
+  );
 
   return (
     <form className="mt-4 bg-slate-200 p-4 rounded">
@@ -29,10 +82,22 @@ export default function AssociationRequestForm(props: Props) {
       </label>
       <button
         className="btn btn-secondary rounded-full w-32"
-        formAction={() => console.log('click')}
+        formAction={async () => {
+          await console.log('click');
+          await requestAssociationByOrganisationHandler();
+        }}
       >
         Ask
       </button>
+      {showNotification ? (
+        <div className="toast toast-center ">
+          <div className="alert alert-error">
+            <span>{onError}</span>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </form>
   );
 }

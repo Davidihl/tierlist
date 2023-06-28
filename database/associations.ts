@@ -83,7 +83,7 @@ export const getPendingAssociationsByOrganisation = cache(
   },
 );
 
-export const askForAssociation = cache(
+export const requestAssociation = cache(
   async (
     playerId: number,
     organisationId: number,
