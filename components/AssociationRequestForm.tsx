@@ -79,13 +79,13 @@ export default function AssociationRequestForm(props: Props) {
         />
       </label>
       <button
-        className="btn btn-secondary rounded-full w-32"
+        className="btn btn-secondary rounded-full "
         formAction={async () => {
           await console.log('click');
           await requestAssociationByOrganisationHandler();
         }}
       >
-        Ask
+        Send request
       </button>
       {showNotification ? (
         <div className="toast toast-center ">
