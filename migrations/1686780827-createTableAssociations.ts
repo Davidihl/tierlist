@@ -6,6 +6,7 @@ export async function up(sql: Sql) {
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       player_id integer NOT NULL REFERENCES players (id),
       organisation_id integer NOT NULL REFERENCES organisations (id),
+      player_request BOOLEAN NOT NULL DEFAULT FALSE,
       start_date timestamp,
       end_date timestamp
     )

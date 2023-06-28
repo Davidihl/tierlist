@@ -6,12 +6,14 @@ export async function up(sql: Sql) {
     (
       player_id,
       organisation_id,
+      player_request,
       start_date
     )
     VALUES
     (
       1,
       1,
+      false,
       CURRENT_TIMESTAMP
     )
 

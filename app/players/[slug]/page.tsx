@@ -90,7 +90,6 @@ export default async function PlayerPage(props: Props) {
 
   const leagueAccounts = data.playerBySlug.leagueAccounts;
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
-  console.log(leagueAccounts.length);
 
   return (
     <main className="p-4">

@@ -5,6 +5,7 @@ export type Association = {
   id: number;
   playerId: number;
   organisationId: number;
+  playerRequest: boolean;
   startDate: Date | null;
   endDate: Date | null;
 };
@@ -12,15 +13,12 @@ export type Association = {
 export const getAllAssociations = cache(async () => {
   const associations = await sql<Association[]>`
     SELECT
-    id,
-    player_id,
-    organisation_id,
-    start_date,
-    end_date
+      *
     FROM
       associations
     WHERE
-      end_date IS NULL;
+      start_date IS NOT NULL AND
+      end_date IS NULL
 
  `;
   return associations;
@@ -29,14 +27,11 @@ export const getAllAssociations = cache(async () => {
 export const getAssociationsByPlayer = cache(async (id: number) => {
   const [associations] = await sql<Association[]>`
     SELECT
-    id,
-    player_id,
-    organisation_id,
-    start_date,
-    end_date
+      *
     FROM
       associations
     WHERE
+      start_date IS NOT NULL AND
       player_id = ${id} AND
       end_date IS NULL;
 
@@ -47,28 +42,21 @@ export const getAssociationsByPlayer = cache(async (id: number) => {
 export const getAssociationsByOrganisation = cache(async (id: number) => {
   const associations = await sql<Association[]>`
     SELECT
-    id,
-    player_id,
-    organisation_id,
-    start_date,
-    end_date
+      *
     FROM
       associations
     WHERE
+      start_date IS NOT NULL AND
       organisation_id = ${id} AND
       end_date IS NULL
  `;
   return associations;
 });
 
-export const getPendingAssociations = cache(async (id: number) => {
+export const getPendingAssociationsByPlayer = cache(async (id: number) => {
   const associations = await sql<Association[]>`
     SELECT
-    id,
-    player_id,
-    organisation_id,
-    start_date,
-    end_date
+      *
     FROM
       associations
     WHERE
@@ -78,3 +66,19 @@ export const getPendingAssociations = cache(async (id: number) => {
  `;
   return associations;
 });
+
+export const getPendingAssociationsByOrganisation = cache(
+  async (id: number) => {
+    const associations = await sql<Association[]>`
+    SELECT
+      *
+    FROM
+      associations
+    WHERE
+      Organisation_id = ${id} AND
+      start_date IS NULL AND
+      end_date IS NULL AND
+ `;
+    return associations;
+  },
+);

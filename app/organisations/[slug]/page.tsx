@@ -26,7 +26,7 @@ export async function generateMetadata(props: Props) {
       slug: props.params.slug,
     },
   });
-  console.log(data);
+
   if (!data.organisationBySlug) {
     return {
       title: 'Organisation not found',
