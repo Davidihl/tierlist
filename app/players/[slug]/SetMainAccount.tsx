@@ -14,6 +14,19 @@ const setMainAccountMutation = gql`
   mutation SetMainAccount($leagueAccountId: Int!, $playerId: Int!) {
     setMainAccount(leagueAccountId: $leagueAccountId, playerId: $playerId) {
       id
+      mainAccount {
+        id
+        summoner
+        tier
+        rank
+        leaguePoints
+        wins
+        losses
+        lastUpdate
+        player {
+          alias
+        }
+      }
     }
   }
 `;

@@ -37,6 +37,7 @@ export default async function PlayersPage() {
   });
 
   const players: PlayerQuery[] = data.players;
+  console.log(data.players);
 
   return (
     <main className="p-4 flex flex-col items-center">
