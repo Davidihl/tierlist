@@ -12,6 +12,7 @@ import {
   getAllAssociations,
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
+  getPendingAssociationsByOrganisation,
   getPendingAssociationsByPlayer,
   requestAssociation,
 } from '../../../database/associations';
@@ -105,6 +106,9 @@ const typeDefs = gql`
 
     "Get the associations of an organisation"
     organisationAssociations(id: ID!): [Association]
+
+    "Get pending association requests of an organisation"
+    organisationAssociationsPending(id: ID!): [Association]
 
     "Fetch league account data from riot api"
     riotGetLeagueAccount(summoner: String!): LeagueAccount
@@ -268,6 +272,12 @@ const resolvers = {
     },
     organisationAssociations: async (parent: null, args: { id: string }) => {
       return await getAssociationsByOrganisation(Number(args.id));
+    },
+    organisationAssociationsPending: async (
+      parent: null,
+      args: { id: string },
+    ) => {
+      return await getPendingAssociationsByOrganisation(Number(args.id));
     },
   },
   Date: {
@@ -737,7 +747,12 @@ const resolvers = {
       // Check if association exists
       const association = await getAssociationsByPlayer(player.id);
       if (association) {
-        throw new GraphQLError('Player already associated', {
+        if (association.startDate) {
+          throw new GraphQLError('Player already associated', {
+            extensions: { code: '400' },
+          });
+        }
+        throw new GraphQLError('Request already sent', {
           extensions: { code: '400' },
         });
       }

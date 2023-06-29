@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import removeIcon from '../public/remove.svg';
 
 type Props = {
-  something: string;
+  id: number;
 };
 
 // const endAssociation = gql``;
@@ -43,7 +43,7 @@ export default function DeleteLeagueAccount(props: Props) {
         className="btn btn-circle mr-2"
         onClick={() => {
           setOnError('');
-          console.log('click');
+          console.log(props.id);
         }}
       >
         <Image src={removeIcon} alt="Delete Icon" />

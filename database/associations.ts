@@ -104,6 +104,19 @@ export const requestAssociation = cache(
 
 export const acceptAssociationRequest = cache(async () => {});
 
-export const denyAssociationRequest = cache(async () => {});
+export const denyAssociationRequest = cache(async (id: number) => {
+  const [association] = await sql<Association[]>`
+  UPDATE
+    associations
+  SET
+    end_date = now()
+  WHERE
+    id=${id}
+  RETURNING
+    *
+  `;
+
+  return association;
+});
 
 export const endAssociation = cache(async () => {});

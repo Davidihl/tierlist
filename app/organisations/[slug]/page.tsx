@@ -7,6 +7,7 @@ import Player from '../../../components/Player';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
 import { PlayerQuery } from '../../players/page';
+import PendingQueries from './PendingQueries';
 
 export const dynamic = 'force-dynamic';
 
@@ -139,9 +140,12 @@ export default async function OrganisationPage(props: Props) {
         <p>No players associated yet</p>
       )}
       {allowEdit && (
-        <div>
-          <AssociationRequestForm isPlayer={false} userId={session.userId} />
-        </div>
+        <>
+          <div>
+            <AssociationRequestForm isPlayer={false} userId={session.userId} />
+          </div>
+          <PendingQueries organisationId={Number(data.organisationBySlug.id)} />
+        </>
       )}
     </main>
   );
