@@ -4,6 +4,7 @@ import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
 import acceptIcon from '../../../public/accept.svg';
 import { getClient } from '../../../util/apolloClient';
+import AcceptAssociation from './AcceptAssociation';
 import DenyAssociation from './DenyAssociation';
 
 export const dynamic = 'force-dynamic';
@@ -33,8 +34,10 @@ export default async function AssociationRequestsList(props: Props) {
 
   return (
     <div className="mt-4">
-      <h2 className="font-medium text-lg">Association invites:</h2>
-      {data.playersAssociationsPending ? (
+      {data.playersAssociationsPending.length !== 0 && (
+        <h2 className="font-medium text-lg">Association invites:</h2>
+      )}
+      {data.playersAssociationsPending.length !== 0 &&
         data.playersAssociationsPending.map((association: any) => {
           return (
             <div
@@ -44,6 +47,7 @@ export default async function AssociationRequestsList(props: Props) {
               <div className="alert flex justify-between">
                 <div>
                   <Link
+                    className="font-medium"
                     href={`/organisations/${association.organisation.slug}`}
                   >
                     {association.organisation.alias}
@@ -51,17 +55,15 @@ export default async function AssociationRequestsList(props: Props) {
                 </div>
                 <div className="flex gap-2">
                   <DenyAssociation id={association.id} />
-                  <button className="btn btn-sm btn-primary rounded-full">
-                    Accept
-                  </button>
+                  <AcceptAssociation
+                    id={association.id}
+                    playerId={props.playerId}
+                  />
                 </div>
               </div>
             </div>
           );
-        })
-      ) : (
-        <p>No association invites</p>
-      )}
+        })}
     </div>
   );
 }

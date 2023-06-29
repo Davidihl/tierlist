@@ -19,7 +19,7 @@ export const getAllAssociations = cache(async () => {
     WHERE
       start_date IS NOT NULL AND
       end_date IS NULL
-
+    RETURNING *
  `;
   return associations;
 });
@@ -32,6 +32,7 @@ export const getAssocationById = cache(async (id: number) => {
       associations
     WHERE
       id = ${id}
+
  `;
   return associations;
 });
@@ -44,7 +45,7 @@ export const getAssociationsByPlayer = cache(async (id: number) => {
       associations
     WHERE
       player_id = ${id} AND
-      end_date IS NULL;
+      end_date IS NULL
 
  `;
   return associations;
@@ -59,7 +60,7 @@ export const getCurrentAssociationsByPlayer = cache(async (id: number) => {
     WHERE
       start_date IS NOT NULL AND
       player_id = ${id} AND
-      end_date IS NULL;
+      end_date IS NULL
 
  `;
   return associations;
@@ -75,6 +76,7 @@ export const getAssociationsByOrganisation = cache(async (id: number) => {
       start_date IS NOT NULL AND
       organisation_id = ${id} AND
       end_date IS NULL
+
  `;
   return associations;
 });
@@ -89,6 +91,7 @@ export const getPendingAssociationsByPlayer = cache(async (id: number) => {
       player_id = ${id} AND
       start_date IS NULL AND
       end_date IS NULL
+
  `;
   return associations;
 });

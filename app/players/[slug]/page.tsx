@@ -8,6 +8,7 @@ import { getValidSessionByToken } from '../../../database/sessions';
 import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
+import AssociationBadge from './AssociationBadge';
 import AssociationRequestsList from './AssociationRequestsList';
 import DeleteLeagueAccount from './DeleteLeagueAccount';
 import SetMainAccount from './SetMainAccount';
@@ -125,11 +126,11 @@ export default async function PlayerPage(props: Props) {
           ) : (
             ''
           )}
-          <div className="badge badge-primary">Austrian Force</div>
+          <AssociationBadge />
         </div>
       </div>
       {allowEdit && (
-        <AssociationRequestsList playerId={data.playerBySlug.user.id} />
+        <AssociationRequestsList playerId={Number(data.playerBySlug.id)} />
       )}
 
       <div className="mt-4">

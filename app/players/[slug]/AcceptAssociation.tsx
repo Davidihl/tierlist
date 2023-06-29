@@ -5,11 +5,18 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   id: number;
+  playerId: number;
 };
 
-const endAssociation = gql`
-  mutation EndAssociation($endAssociationId: ID!) {
-    endAssociation(id: $endAssociationId) {
+const acceptAssociation = gql`
+  mutation acceptAssociation(
+    $acceptAssociationByPlayerId: ID!
+    $playerId: Int!
+  ) {
+    acceptAssociationByPlayer(
+      id: $acceptAssociationByPlayerId
+      playerId: $playerId
+    ) {
       id
     }
   }
@@ -27,8 +34,11 @@ export default function DenyAssociation(props: Props) {
     return () => clearTimeout(timer);
   }, [showNotification]);
 
-  const [endAssociationHandler] = useMutation(endAssociation, {
-    variables: { endAssociationId: props.id },
+  const [acceptAssociationHandler] = useMutation(acceptAssociation, {
+    variables: {
+      acceptAssociationByPlayerId: props.id,
+      playerId: props.playerId,
+    },
 
     onError: (error) => {
       setShowNotification(true);
@@ -44,13 +54,13 @@ export default function DenyAssociation(props: Props) {
   return (
     <>
       <button
-        className="btn btn-sm rounded-full"
+        className="btn btn-sm btn-primary rounded-full"
         onClick={async () => {
           setOnError('');
-          await endAssociationHandler();
+          await acceptAssociationHandler();
         }}
       >
-        Deny
+        Accept
       </button>
       {showNotification ? (
         <div className="toast toast-center ">
