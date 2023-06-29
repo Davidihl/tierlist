@@ -1,5 +1,5 @@
 import 'server-only';
-import { config } from 'dotenv';
+import { config } from 'dotenv-safe';
 import { headers } from 'next/headers';
 import postgres, { Sql } from 'postgres';
 
