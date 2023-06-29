@@ -18,18 +18,18 @@ export default async function LoginLink() {
     const isPlayer = await getPlayerByUserId(Number(sessionData!.userId));
 
     return (
-      <li>
+      <div>
         <ProfileMenu slug={user.slug} isPlayer={isPlayer} />
-      </li>
+      </div>
     );
   }
 
   return (
-    <li>
+    <div>
       <Link href="/login" className="flex items-center gap-1">
         Login
         <Image src={loginIcon} alt="Login" />
       </Link>
-    </li>
+    </div>
   );
 }

@@ -2,26 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import esvoeLogo from '../public/esvoe_Logo.svg';
 import LoginLink from './LoginLink';
+import Menu from './Menu';
 
 export default function Navigation() {
   return (
-    <nav className="sticky top-0 left-0 right-0 w-full flex justify-between drop-shadow">
-      <div className="bg-white grow p-4 flex items-center">
+    <nav className="navbar bg-base-100 drop-shadow sticky top-0 z-40">
+      <div className="flex-none">
+        <Menu />
+      </div>
+      <div className="flex-1 mr-1">
         <Link href="/">
           <Image src={esvoeLogo} className="w-32" alt="ESVÖ Logo" />
         </Link>
       </div>
-      <div className="bg-white grow p-4 flex justify-end items-center">
-        <ul className="menu-horizontal flex items-center gap-4">
-          <li>
-            <Link href="/players">Players</Link>
-          </li>
-          <li>
-            <Link href="/organisations">Organisations</Link>
-          </li>
-          <LoginLink />
-        </ul>
-      </div>
+      <LoginLink />
     </nav>
   );
 }

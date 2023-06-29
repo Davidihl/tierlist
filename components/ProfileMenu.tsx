@@ -29,15 +29,16 @@ export default function ProfileMenu(props: Props) {
 
   return (
     <button
-      className="flex items-center justify-center relative"
+      className="btn btn-ghost rounded-full normal-case font-normal relative"
       onClick={() => handleClickInside()}
       ref={ref}
     >
-      <Image src={profileIcon} alt="Profile" />
+      <span className="text-xs mr-1">Logged in</span>
+      <Image src={profileIcon} alt="Profile" width={28} />
       <ul
         className={`${
           show ? '' : 'hidden'
-        } absolute right-0 top-9 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52`}
+        } absolute right-0 top-12 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52`}
       >
         <li>
           <Link
