@@ -81,7 +81,6 @@ export default function AssociationRequestForm(props: Props) {
       <button
         className="btn btn-secondary rounded-full "
         formAction={async () => {
-          await console.log('click');
           await requestAssociationByOrganisationHandler();
         }}
       >

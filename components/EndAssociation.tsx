@@ -9,7 +9,13 @@ type Props = {
   id: number;
 };
 
-// const endAssociation = gql``;
+const endAssociation = gql`
+  mutation EndAssociation($endAssociationId: ID!) {
+    endAssociation(id: $endAssociationId) {
+      id
+    }
+  }
+`;
 
 export default function DeleteLeagueAccount(props: Props) {
   const [onError, setOnError] = useState('');
@@ -23,27 +29,27 @@ export default function DeleteLeagueAccount(props: Props) {
     return () => clearTimeout(timer);
   }, [showNotification]);
 
-  // const [endAssociationHandler] = useMutation(endAssociation, {
-  //   variables: {},
+  const [endAssociationHandler] = useMutation(endAssociation, {
+    variables: { endAssociationId: props.id },
 
-  //   onError: (error) => {
-  //     setShowNotification(true);
-  //     setOnError(error.message);
-  //   },
+    onError: (error) => {
+      setShowNotification(true);
+      setOnError(error.message);
+    },
 
-  //   onCompleted: () => {
-  //     setOnError('');
-  //     router.refresh();
-  //   },
-  // });
+    onCompleted: () => {
+      setOnError('');
+      router.refresh();
+    },
+  });
 
   return (
     <>
       <button
         className="btn btn-circle mr-2"
-        onClick={() => {
+        onClick={async () => {
           setOnError('');
-          console.log(props.id);
+          await endAssociationHandler();
         }}
       >
         <Image src={removeIcon} alt="Delete Icon" />

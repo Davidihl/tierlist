@@ -9,9 +9,11 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
+  endAssociation,
   getAllAssociations,
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
+  getCurrentAssociationsByPlayer,
   getPendingAssociationsByOrganisation,
   getPendingAssociationsByPlayer,
   requestAssociation,
@@ -151,6 +153,8 @@ const typeDefs = gql`
       playerAlias: String!
       playerRequest: Boolean!
     ): Association
+    "Deny a request or end an association"
+    endAssociation(id: ID!): Association
   }
 
   type Token {
@@ -225,6 +229,7 @@ const typeDefs = gql`
     player: Player
     organisation: Organisation
     playerRequest: Boolean
+    startDate: Date
   }
 `;
 
@@ -247,7 +252,7 @@ const resolvers = {
       return await getPlayerBySlug(args.slug);
     },
     playerAssociations: async (parent: null, args: { id: string }) => {
-      return await getAssociationsByPlayer(Number(args.id));
+      return await getCurrentAssociationsByPlayer(Number(args.id));
     },
     playersAssociationsPending: async (parent: null, args: { id: string }) => {
       return await getPendingAssociationsByPlayer(Number(args.id));
@@ -685,7 +690,6 @@ const resolvers = {
       // Create Organisation
       return await createOrganisation(args.userId, args.alias, args.contact);
     },
-    // createAssociation
     requestAssociationByOrganisation: async (
       parent: null,
       args: {
@@ -746,7 +750,7 @@ const resolvers = {
 
       // Check if association exists
       const association = await getAssociationsByPlayer(player.id);
-      if (association) {
+      if (association?.organisationId === organisation.id) {
         if (association.startDate) {
           throw new GraphQLError('Player already associated', {
             extensions: { code: '400' },
@@ -757,10 +761,6 @@ const resolvers = {
         });
       }
 
-      console.log('args', args);
-      console.log('isLoggedIn', context.isLoggedIn);
-      console.log('user', context.user);
-
       return await requestAssociation(
         player.id,
         organisation.id,
@@ -770,7 +770,24 @@ const resolvers = {
       // Request association
     },
     // acceptAssociationByPlayer
-    // endAssociation
+    endAssociation: async (
+      parent: null,
+      args: {
+        id: string;
+      },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const id = z.string().nonempty();
+
+      if (!id.safeParse(args.id).success) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      return await endAssociation(Number(args.id));
+    },
     // deleteUserAndPlayerAndLeagueAccounts
     // deleteUserAndOrganisation
     login: async (

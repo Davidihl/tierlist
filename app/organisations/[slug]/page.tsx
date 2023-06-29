@@ -54,6 +54,7 @@ export default async function OrganisationPage(props: Props) {
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
+
   const { data } = await getClient().query({
     query: gql`
       query getOrganisationBySlug($slug: String!) {
@@ -128,7 +129,7 @@ export default async function OrganisationPage(props: Props) {
               <Player player={association.player} showOrganisation={false} />
               {allowEdit ? (
                 <div className="flex items-center">
-                  <EndAssociation something="test" />
+                  <EndAssociation id={association.id} />
                 </div>
               ) : (
                 ''
@@ -141,10 +142,10 @@ export default async function OrganisationPage(props: Props) {
       )}
       {allowEdit && (
         <>
+          <PendingQueries organisationId={Number(data.organisationBySlug.id)} />
           <div>
             <AssociationRequestForm isPlayer={false} userId={session.userId} />
           </div>
-          <PendingQueries organisationId={Number(data.organisationBySlug.id)} />
         </>
       )}
     </main>

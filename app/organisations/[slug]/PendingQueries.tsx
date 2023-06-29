@@ -2,7 +2,6 @@ import { gql } from '@apollo/client';
 import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
 import { getClient } from '../../../util/apolloClient';
-import { PlayerQuery } from '../../players/page';
 
 type Props = {
   organisationId: number;
@@ -31,11 +30,10 @@ export default async function PendingQueries(props: Props) {
   });
 
   return (
-    <div>
-      <h2>Pending requests:</h2>
+    <div className="mt-4">
+      <h2 className="font-medium text-lg">Pending requests:</h2>
       {data.organisationAssociationsPending ? (
         data.organisationAssociationsPending.map((association: any) => {
-          console.log(association);
           return (
             <div
               key={`player-${association.player.alias}`}

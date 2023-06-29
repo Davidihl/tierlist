@@ -8,6 +8,7 @@ import { getValidSessionByToken } from '../../../database/sessions';
 import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
+import AssociationRequestsList from './AssociationRequestsList';
 import DeleteLeagueAccount from './DeleteLeagueAccount';
 import SetMainAccount from './SetMainAccount';
 
@@ -84,8 +85,6 @@ export default async function PlayerPage(props: Props) {
     },
   });
 
-  console.log(session);
-
   if (!data.playerBySlug) {
     notFound();
   }
@@ -94,7 +93,7 @@ export default async function PlayerPage(props: Props) {
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
 
   return (
-    <main className="p-4">
+    <main className="p-4 min-w-sm">
       <div className="flex gap-4 items-center">
         {data.playerBySlug.mainAccount?.tier ? (
           <Image
@@ -129,6 +128,9 @@ export default async function PlayerPage(props: Props) {
           <div className="badge badge-primary">Austrian Force</div>
         </div>
       </div>
+      {allowEdit && (
+        <AssociationRequestsList playerId={data.playerBySlug.user.id} />
+      )}
 
       <div className="mt-4">
         <h2 className="font-medium text-lg">Assigned Accounts:</h2>
