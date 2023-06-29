@@ -24,6 +24,18 @@ export const getAllAssociations = cache(async () => {
   return associations;
 });
 
+export const getAssocationById = cache(async (id: number) => {
+  const [associations] = await sql<Association[]>`
+    SELECT
+      *
+    FROM
+      associations
+    WHERE
+      id = ${id}
+ `;
+  return associations;
+});
+
 export const getAssociationsByPlayer = cache(async (id: number) => {
   const [associations] = await sql<Association[]>`
     SELECT
@@ -117,7 +129,20 @@ export const requestAssociation = cache(
   },
 );
 
-export const acceptAssociationRequest = cache(async () => {});
+export const acceptAssociationRequest = cache(async (id: number) => {
+  const [association] = await sql<Association[]>`
+  UPDATE
+    associations
+  SET
+    start_date = now()
+  WHERE
+    id=${id}
+  RETURNING
+    *
+  `;
+
+  return association;
+});
 
 export const endAssociation = cache(async (id: number) => {
   const [association] = await sql<Association[]>`

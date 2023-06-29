@@ -9,8 +9,10 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
+  acceptAssociationRequest,
   endAssociation,
   getAllAssociations,
+  getAssocationById,
   getAssociationsByOrganisation,
   getAssociationsByPlayer,
   getCurrentAssociationsByPlayer,
@@ -155,6 +157,8 @@ const typeDefs = gql`
     ): Association
     "Deny a request or end an association"
     endAssociation(id: ID!): Association
+    "Accept a new association"
+    acceptAssociationByPlayer(id: ID!, playerId: Int!): Association
   }
 
   type Token {
@@ -769,13 +773,68 @@ const resolvers = {
 
       // Request association
     },
-    // acceptAssociationByPlayer
+    acceptAssociationByPlayer: async (
+      parent: null,
+      args: {
+        id: string;
+        playerId: number;
+      },
+    ) => {
+      // Validate Input
+      const associationId = z.string().nonempty();
+      const playerId = z.number();
+
+      if (
+        !associationId.safeParse(args.id).success ||
+        !playerId.safeParse(args.playerId).success
+      ) {
+        throw new GraphQLError('Invalid input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check authorization
+      const association = await getAssocationById(Number(args.id));
+      if (!association) {
+        throw new GraphQLError('Association not found', {
+          extensions: { code: '404' },
+        });
+      }
+
+      // Throw if playerIds not match
+      if (association.playerId !== Number(args.playerId)) {
+        throw new GraphQLError('Not authorized', {
+          extensions: { code: '401' },
+        });
+      }
+
+      // Throw if association has end_date
+      if (association.endDate) {
+        throw new GraphQLError(
+          'Cannot set start_date to associations with end_date',
+          {
+            extensions: { code: '401' },
+          },
+        );
+      }
+
+      // Check if there is an active association
+      const currentAssociation = await getCurrentAssociationsByPlayer(
+        Number(args.playerId),
+      );
+
+      // If there is, end it in the process of accepting the new one
+      if (currentAssociation) {
+        await endAssociation(Number(currentAssociation.id));
+      }
+
+      return await acceptAssociationRequest(Number(args.id));
+    },
     endAssociation: async (
       parent: null,
       args: {
         id: string;
       },
-      context: { isLoggedIn: any; user: any },
     ) => {
       // Validate Input
       const id = z.string().nonempty();
@@ -788,7 +847,6 @@ const resolvers = {
 
       return await endAssociation(Number(args.id));
     },
-    // deleteUserAndPlayerAndLeagueAccounts
     // deleteUserAndOrganisation
     login: async (
       parent: null,
@@ -853,6 +911,7 @@ const resolvers = {
       });
       return await deleteSessionByToken(args.token);
     },
+    // deleteUserAndPlayerAndLeagueAccounts
   },
 };
 

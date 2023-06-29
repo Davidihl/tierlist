@@ -4,6 +4,7 @@ import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
 import acceptIcon from '../../../public/accept.svg';
 import { getClient } from '../../../util/apolloClient';
+import DenyAssociation from './DenyAssociation';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,7 +50,7 @@ export default async function AssociationRequestsList(props: Props) {
                   </Link>
                 </div>
                 <div className="flex gap-2">
-                  <button className="btn btn-sm rounded-full">Deny</button>
+                  <DenyAssociation id={association.id} />
                   <button className="btn btn-sm btn-primary rounded-full">
                     Accept
                   </button>
