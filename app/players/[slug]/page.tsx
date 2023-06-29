@@ -94,7 +94,7 @@ export default async function PlayerPage(props: Props) {
   const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
 
   return (
-    <main className="p-4 min-w-sm">
+    <main className="p-4 min-w-sm max-w-lg h-full">
       <div className="flex gap-4 items-center">
         {data.playerBySlug.mainAccount?.tier ? (
           <Image
@@ -126,7 +126,7 @@ export default async function PlayerPage(props: Props) {
           ) : (
             ''
           )}
-          <AssociationBadge />
+          <AssociationBadge playerId={Number(data.playerBySlug.id)} />
         </div>
       </div>
       {allowEdit && (

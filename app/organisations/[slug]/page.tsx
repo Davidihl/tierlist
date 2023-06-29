@@ -103,7 +103,7 @@ export default async function OrganisationPage(props: Props) {
     data.organisationBySlug.associations;
 
   return (
-    <main className="p-4">
+    <main className="p-4 max-w-lg">
       <div className="flex gap-4 items-center">
         <div>
           <h1 className="font-medium text-xl">

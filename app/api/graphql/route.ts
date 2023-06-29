@@ -85,7 +85,7 @@ const typeDefs = gql`
     playerLeagueAccounts(id: ID!): [PlayerLeagueAccount]
 
     "Get the association of a player"
-    playerAssociations(id: ID!): Association
+    playerAssociationsByPlayerId(id: ID!): Association
 
     "Get associations of a player that have not been accepted yet"
     playersAssociationsPending(id: ID!): [Association]
@@ -255,7 +255,10 @@ const resolvers = {
     playerBySlug: async (parent: null, args: { slug: string }) => {
       return await getPlayerBySlug(args.slug);
     },
-    playerAssociations: async (parent: null, args: { id: string }) => {
+    playerAssociationsByPlayerId: async (
+      parent: null,
+      args: { id: string },
+    ) => {
       return await getCurrentAssociationsByPlayer(Number(args.id));
     },
     playersAssociationsPending: async (parent: null, args: { id: string }) => {

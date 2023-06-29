@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import AssociationBadge from '../app/players/[slug]/AssociationBadge';
 import { PlayerQuery } from '../app/players/page';
 
 type Props = {
@@ -34,9 +35,7 @@ export default function Player(props: Props) {
           <Link href={`/players/${props.player.slug}`}>
             <div>{props.player.alias}</div>
           </Link>
-          {showOrganisation && (
-            <div className="badge badge-primary">Austrian Force</div>
-          )}
+          {showOrganisation && <AssociationBadge playerId={props.player.id} />}
         </div>
       </div>
     </div>

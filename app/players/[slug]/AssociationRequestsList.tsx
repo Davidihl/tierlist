@@ -1,8 +1,5 @@
 import { gql } from '@apollo/client';
 import Link from 'next/link';
-import EndAssociation from '../../../components/EndAssociation';
-import Player from '../../../components/Player';
-import acceptIcon from '../../../public/accept.svg';
 import { getClient } from '../../../util/apolloClient';
 import AcceptAssociation from './AcceptAssociation';
 import DenyAssociation from './DenyAssociation';
