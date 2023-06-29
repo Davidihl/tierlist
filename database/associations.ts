@@ -19,7 +19,6 @@ export const getAllAssociations = cache(async () => {
     WHERE
       start_date IS NOT NULL AND
       end_date IS NULL
-    RETURNING *
  `;
   return associations;
 });

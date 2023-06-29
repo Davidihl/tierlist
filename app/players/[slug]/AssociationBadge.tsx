@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-import Link from 'next/link';
 import { getClient } from '../../../util/apolloClient';
 
 type Props = {

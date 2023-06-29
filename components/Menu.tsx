@@ -1,10 +1,8 @@
 'use client';
-import Image from 'next/image';
+
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
-import organisationIcon from '../public/organisation.svg';
-import playerIcon from '../public/player.svg';
 
 export default function Menu() {
   const [show, setShow] = useState(false);
@@ -54,7 +52,7 @@ export default function Menu() {
               href="/players"
               className="flex items-center gap-4 justify-between btn btn-ghost rounded-full normal-case font-normal"
             >
-              <span className="">Browser players</span>
+              <span className="font">Browser players</span>
             </Link>
           </div>
           <div className="divider lg:divider-horizontal">OR</div>
