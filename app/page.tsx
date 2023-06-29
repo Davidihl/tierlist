@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main>
-      <div className="hero min-h-screen bg-base-200">
+    <main className="h-full">
+      <div className="hero min-h-full bg-base-200">
         <div className="hero-content">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold mb-5">

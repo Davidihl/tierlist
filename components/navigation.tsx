@@ -6,7 +6,7 @@ import Menu from './Menu';
 
 export default function Navigation() {
   return (
-    <nav className="navbar bg-base-100 drop-shadow sticky top-0 z-40">
+    <nav className="navbar bg-base-100 drop-shadow fixed top-0 z-40">
       <div className="flex-none">
         <Menu />
       </div>

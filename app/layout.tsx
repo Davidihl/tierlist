@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-w-sm">
+      <body className="h-screen relative pt-[64px]">
         <ApolloClientProvider>
           <Navigation />
           {children}
