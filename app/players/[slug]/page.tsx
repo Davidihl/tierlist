@@ -5,13 +5,13 @@ import { notFound } from 'next/navigation';
 import LeagueAccount from '../../../components/LeagueAccount';
 import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 import { getValidSessionByToken } from '../../../database/sessions';
-import updateIcon from '../../../public/update.svg';
 import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
 import AssociationBadge from './AssociationBadge';
 import AssociationRequestsList from './AssociationRequestsList';
 import DeleteLeagueAccount from './DeleteLeagueAccount';
 import SetMainAccount from './SetMainAccount';
+import UpdateLeagueAccounts from './UpdateLeagueAccounts';
 
 export const dynamic = 'force-dynamic';
 
@@ -181,14 +181,7 @@ export default async function PlayerPage(props: Props) {
       </div>
       <div className="mt-4">
         {leagueAccounts.length > 0 ? (
-          <button className="flex items-center btn rounded-full group">
-            <Image
-              src={updateIcon}
-              alt="Update Icon"
-              className="group-hover:animate-reverse-spin"
-            />
-            Update Riot Data
-          </button>
+          <UpdateLeagueAccounts playerId={data.playerBySlug.id} />
         ) : !allowEdit ? (
           <div className="alert">
             <svg

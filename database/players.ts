@@ -77,6 +77,8 @@ export const getPlayerBySlug = cache(async (slug: string) => {
       players
     WHERE
       slug = ${slug}
+    ORDER BY
+      id
  `;
   return player;
 });
