@@ -5,6 +5,7 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import bcrypt from 'bcrypt';
 import { GraphQLError } from 'graphql';
+import { up } from 'ley';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -27,6 +28,8 @@ import {
   getAllLeagueAccountsByPlayerId,
   getLeagueAccountById,
   getLeagueAccountBySummoner,
+  getLeagueAccountsByPlayerId,
+  updateLeagueAccount,
 } from '../../../database/leagueAccounts';
 import {
   createOrganisation,
@@ -59,8 +62,12 @@ import {
   getUserWithPasswordHash,
   User,
 } from '../../../database/users';
+import calculateTimeDifference from '../../../util/calculateTimeDifference';
 import { secureCookieOptions } from '../../../util/cookies';
-import { callSummonerApi, getLeagueofLegendsData } from '../leagueoflegends';
+import {
+  getLeagueofLegendsData,
+  updateLeagueofLegendsData,
+} from '../leagueoflegends';
 
 type GraphQlResponseBody = { user: User } | Error;
 
@@ -143,6 +150,8 @@ const typeDefs = gql`
     addLeagueAccount(summoner: String!): LeagueAccount
     "Delete a league of legends account with a certain id"
     deleteLeagueAccount(id: Int!): LeagueAccount
+    "Update league accounts of a player"
+    updateLeagueAccounts(playerId: ID!): [LeagueAccount]
     "Set main league of legends account"
     setMainAccount(leagueAccountId: Int!, playerId: Int!): Player
     "Login to a dedicated user which is related to either a player or an organisation"
@@ -489,7 +498,6 @@ const resolvers = {
           extensions: { code: '40007' },
         });
       }
-
       // Check if summoner exists
       const summonerExists = await getLeagueAccountBySummoner(args.summoner);
       if (summonerExists) {
@@ -497,17 +505,14 @@ const resolvers = {
           extensions: { code: '400' },
         });
       }
-
       // Check authorization
       if (!context.isLoggedIn.userId === context.user.id) {
         throw new GraphQLError('Authorization failed', {
           extensions: { code: '400' },
         });
       }
-
       // Prepare data
       const riotData = await getLeagueofLegendsData(args.summoner);
-
       const playerToAssign = await getPlayerByUserId(context.user.id);
 
       if (!playerToAssign) {
@@ -655,7 +660,41 @@ const resolvers = {
       // Return the updated Player
       return await getPlayerById(args.playerId);
     },
-    // updateLeagueAccounts
+    updateLeagueAccounts: async (parent: null, args: { playerId: number }) => {
+      // Validate Input
+      const playerId = z.number();
+      if (!playerId.safeParse(Number(args.playerId)).success) {
+        throw new GraphQLError('Please add a valid arguments', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Get all League Accounts from database
+      const leagueAccounts = await getLeagueAccountsByPlayerId(
+        Number(args.playerId),
+      );
+
+      // Loop through the result
+      leagueAccounts.forEach(async (leagueAccount) => {
+        // Check timestamp
+        const hoursSinceLastUpdate = calculateTimeDifference(
+          leagueAccount.lastUpdate,
+        );
+        // Only allow an account update every hour
+        if (hoursSinceLastUpdate > 0) {
+          // Fetch data from RIOT API
+          const newRiotData = await updateLeagueofLegendsData(
+            leagueAccount.summoner,
+            leagueAccount.summonerId,
+          );
+
+          // Update database
+          await updateLeagueAccount(newRiotData, leagueAccount.summonerId);
+        }
+      });
+
+      return await getLeagueAccountsByPlayerId(Number(args.playerId));
+    },
     createOrganisation: async (
       parent: null,
       args: {
@@ -774,8 +813,6 @@ const resolvers = {
         organisation.id,
         args.playerRequest,
       );
-
-      // Request association
     },
     acceptAssociationByPlayer: async (
       parent: null,

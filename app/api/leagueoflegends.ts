@@ -80,6 +80,7 @@ export async function getLeagueofLegendsData(summoner: string) {
   if (!soloQData) {
     const unranked: RiotResponse = {
       summoner,
+      summonerId: summonerData.id,
       tier: 'UNRANKED',
       rank: '',
       leaguePoints: 0,
@@ -91,12 +92,50 @@ export async function getLeagueofLegendsData(summoner: string) {
   }
 
   const riotResponse: RiotResponse = {
-    summoner: soloQData?.summonerName,
-    tier: soloQData?.tier,
-    rank: soloQData?.rank,
+    summoner: soloQData.summonerName,
+    summonerId: soloQData.summonerId,
+    tier: soloQData.tier,
+    rank: soloQData.rank,
     leaguePoints: soloQData?.leaguePoints,
-    wins: soloQData?.wins,
-    losses: soloQData?.losses,
+    wins: soloQData.wins,
+    losses: soloQData.losses,
+  };
+
+  return riotResponse;
+}
+
+// Fetch League of Legends Data with summonerId to update database
+export async function updateLeagueofLegendsData(
+  summoner: string,
+  summonerId: string,
+) {
+  const leagueData: any = await callLeagueApi(summonerId);
+  const [soloQData] = leagueData.filter(
+    (rank: any) => rank.queueType === 'RANKED_SOLO_5x5',
+  );
+
+  if (!soloQData) {
+    const unranked: RiotResponse = {
+      summoner,
+      summonerId,
+      tier: 'UNRANKED',
+      rank: '',
+      leaguePoints: 0,
+      wins: 0,
+      losses: 0,
+    };
+
+    return unranked;
+  }
+
+  const riotResponse: RiotResponse = {
+    summoner: soloQData.summonerName,
+    summonerId: soloQData.summonerId,
+    tier: soloQData.tier,
+    rank: soloQData.rank,
+    leaguePoints: soloQData?.leaguePoints,
+    wins: soloQData.wins,
+    losses: soloQData.losses,
   };
 
   return riotResponse;

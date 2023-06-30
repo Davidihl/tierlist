@@ -6,7 +6,7 @@ const demoUser = [
     queueType: 'RANKED_SOLO_5x5',
     tier: 'PLATINUM',
     rank: 'IV',
-    summonerId: 'VnxbIU0zMaK81X80AzQfVp_nxiFV9KdBFurmo1amTj4bHm8',
+    summonerId: 'uVHOFflKPR6Lnacign_sU_ifXEVUo3T00zSEl0jTRJWObOA',
     summonerName: 'Chaoslordi',
     leaguePoints: 1,
     wins: 50,
@@ -39,6 +39,7 @@ export async function up(sql: Sql) {
     (
       player_id,
       summoner,
+      summoner_id,
       tier,
       rank,
       league_points,
@@ -49,6 +50,7 @@ export async function up(sql: Sql) {
     (
       1,
       ${demoUser[0]!.summonerName},
+      ${demoUser[0]!.summonerId},
       (SELECT id FROM tiers WHERE name = ${demoUser[0]!.tier}),
       ${demoUser[0]!.rank},
       ${demoUser[0]!.leaguePoints},

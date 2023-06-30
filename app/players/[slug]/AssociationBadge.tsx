@@ -21,8 +21,6 @@ export default async function AssociationBadge(props: Props) {
     },
   });
 
-  console.log(data.playerAssociationsByPlayerId);
-
   if (data.playerAssociationsByPlayerId) {
     return (
       <div className="badge badge-primary">
