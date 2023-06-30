@@ -681,7 +681,7 @@ const resolvers = {
           leagueAccount.lastUpdate,
         );
         // Only allow an account update every hour
-        if (hoursSinceLastUpdate > 0) {
+        if (hoursSinceLastUpdate > 1) {
           // Fetch data from RIOT API
           const newRiotData = await updateLeagueofLegendsData(
             leagueAccount.summoner,
