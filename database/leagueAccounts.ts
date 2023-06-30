@@ -161,6 +161,10 @@ export const getAllLeagueAccountsByPlayerId = cache(async (id: number) => {
       league_accounts.tier= tiers.id
     WHERE
       player_id = ${id}
+    ORDER BY
+      tiers.id ASC,
+      league_accounts.rank ASC,
+      league_accounts.league_points ASC
   `;
   return leagueAccounts;
 });

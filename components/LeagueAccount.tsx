@@ -15,6 +15,7 @@ export default function LeagueAccount(props: Props) {
         height={50}
       />
       <div>{props.leagueAccount.summoner}</div>
+      <div className="text-xs">{props.leagueAccount.lastUpdate.toString()}</div>
     </div>
   );
 }

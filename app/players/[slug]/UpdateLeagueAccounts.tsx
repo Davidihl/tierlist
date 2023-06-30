@@ -3,7 +3,6 @@ import { gql, useMutation } from '@apollo/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import acceptIcon from '../../../public/accept.svg';
 import updateIcon from '../../../public/update.svg';
 
 type Props = {
@@ -22,7 +21,6 @@ export default function UpdateLeagueAccounts(props: Props) {
   const [onError, setOnError] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [rotating, setRotating] = useState(false);
-  const [done, setDone] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,13 +29,6 @@ export default function UpdateLeagueAccounts(props: Props) {
     }, 2000);
     return () => clearTimeout(timer);
   }, [showNotification]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDone(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [done]);
 
   const [updateLeagueAccountsHandler] = useMutation(updateLeagueAccounts, {
     variables: { playerId: props.playerId },
@@ -51,19 +42,19 @@ export default function UpdateLeagueAccounts(props: Props) {
     onCompleted: () => {
       setOnError('');
       setRotating(false);
-      setDone(true);
       router.refresh();
     },
   });
 
   return (
-    <>
+    <form>
       <button
         className="flex items-center btn rounded-full group transition-all"
-        onClick={async () => {
+        formAction={async () => {
           setRotating(true);
           setOnError('');
           await updateLeagueAccountsHandler();
+          router.refresh();
         }}
       >
         <Image
@@ -83,15 +74,6 @@ export default function UpdateLeagueAccounts(props: Props) {
       ) : (
         ''
       )}
-      {done ? (
-        <div className="toast toast-bottom toast-center">
-          <div className="alert alert-success">
-            <span>Updated all League of Legends accounts</span>
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
-    </>
+    </form>
   );
 }

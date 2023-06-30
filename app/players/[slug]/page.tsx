@@ -77,6 +77,7 @@ export default async function PlayerPage(props: Props) {
             leaguePoints
             wins
             losses
+            lastUpdate
           }
         }
       }

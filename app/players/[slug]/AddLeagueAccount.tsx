@@ -72,6 +72,7 @@ export default function AddLeagueAccount() {
           setOnError('');
           await addLeagueAccountHandler();
           setSummonerName('');
+          router.refresh();
         }}
       >
         Add League Account
