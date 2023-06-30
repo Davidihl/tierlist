@@ -9,8 +9,7 @@ import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
 import AssociationBadge from './AssociationBadge';
 import AssociationRequestsList from './AssociationRequestsList';
-import DeleteLeagueAccount from './DeleteLeagueAccount';
-import SetMainAccount from './SetMainAccount';
+import LeagueAccountMoreButton from './LeagueAccountMoreButton';
 import UpdateLeagueAccounts from './UpdateLeagueAccounts';
 
 export const dynamic = 'force-dynamic';
@@ -161,17 +160,13 @@ export default async function PlayerPage(props: Props) {
               key={`league-account-${leagueAccount.id}`}
             >
               <LeagueAccount leagueAccount={leagueAccount} />
-              {allowEdit ? (
+              {allowEdit &&
+              data.playerBySlug.mainAccount?.id !== leagueAccount.id ? (
                 <div className="flex items-center">
-                  {data.playerBySlug.mainAccount?.id !== leagueAccount.id ? (
-                    <SetMainAccount
-                      leagueAccountId={leagueAccount.id}
-                      playerId={data.playerBySlug.id}
-                    />
-                  ) : (
-                    ''
-                  )}
-                  <DeleteLeagueAccount leagueAccountId={leagueAccount.id} />
+                  <LeagueAccountMoreButton
+                    leagueAccountId={leagueAccount.id}
+                    playerId={data.playerBySlug.id}
+                  />
                 </div>
               ) : (
                 ''
