@@ -60,7 +60,7 @@ import {
   User,
 } from '../../../database/users';
 import { secureCookieOptions } from '../../../util/cookies';
-import { getLeagueofLegendsData } from '../leagueoflegends';
+import { callSummonerApi, getLeagueofLegendsData } from '../leagueoflegends';
 
 type GraphQlResponseBody = { user: User } | Error;
 
@@ -507,6 +507,7 @@ const resolvers = {
 
       // Prepare data
       const riotData = await getLeagueofLegendsData(args.summoner);
+
       const playerToAssign = await getPlayerByUserId(context.user.id);
 
       if (!playerToAssign) {
@@ -534,7 +535,7 @@ const resolvers = {
         return getLeagueAccountById(firstAccount.id);
       }
 
-      return await addLeagueAccount(riotData, playerToAssign.id);
+      await addLeagueAccount(riotData, playerToAssign.id);
     },
     deleteLeagueAccount: async (
       parent: null,

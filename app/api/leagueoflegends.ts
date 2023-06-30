@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import { RateLimiter } from 'limiter';
 import { RiotResponse } from '../../database/leagueAccounts';
 import { encodeString } from '../../util/encodeString';
@@ -35,11 +36,14 @@ export async function callSummonerApi(summoner: string) {
     },
   );
 
-  // if ('status' in response) {
-  //   throw console.error(status.message);
-  // }
-
   const data = await response.json();
+
+  if ('status' in data) {
+    throw new GraphQLError(data.status.message, {
+      extensions: { code: data.status_code },
+    });
+  }
+
   return data;
 }
 
