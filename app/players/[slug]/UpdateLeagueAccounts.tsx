@@ -13,6 +13,13 @@ const updateLeagueAccounts = gql`
   mutation Mutation($playerId: ID!) {
     updateLeagueAccounts(playerId: $playerId) {
       id
+      tier
+      rank
+      leaguePoints
+      summoner
+      wins
+      losses
+      lastUpdate
     }
   }
 `;
@@ -42,7 +49,6 @@ export default function UpdateLeagueAccounts(props: Props) {
     onCompleted: () => {
       setOnError('');
       setRotating(false);
-      router.refresh();
     },
   });
 

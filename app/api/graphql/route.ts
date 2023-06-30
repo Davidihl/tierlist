@@ -674,26 +674,30 @@ const resolvers = {
       );
 
       // Loop through the result
-      leagueAccounts.forEach(async (leagueAccount) => {
-        // Check timestamp
-        const hoursSinceLastUpdate = calculateTimeDifference(
-          leagueAccount.lastUpdate,
-        );
-        // Only allow an account update every hour
-        if (hoursSinceLastUpdate > 0) {
-          // Fetch data from RIOT API
-          const newRiotData = await updateLeagueofLegendsData(
-            leagueAccount.summoner,
-            leagueAccount.summonerId,
+      await Promise.all(
+        leagueAccounts.map(async (leagueAccount) => {
+          // Check timestamp
+          const hoursSinceLastUpdate = calculateTimeDifference(
+            leagueAccount.lastUpdate,
           );
+          // Only allow an account update every hour, for testing set to 0
+          if (hoursSinceLastUpdate > 0) {
+            // Fetch data from RIOT API
+            const newRiotData = await updateLeagueofLegendsData(
+              leagueAccount.summoner,
+              leagueAccount.summonerId,
+            );
+            // Update database
+            await updateLeagueAccount(newRiotData, leagueAccount.summonerId);
+          }
+        }),
+      );
+      // Return complete list
 
-          // Update database
-
-          await updateLeagueAccount(newRiotData, leagueAccount.summonerId);
-        }
-      });
-
-      return await getLeagueAccountsByPlayerId(Number(args.playerId));
+      const updatedLeagueAccounts = await getLeagueAccountsByPlayerId(
+        Number(args.playerId),
+      );
+      return updatedLeagueAccounts;
     },
     createOrganisation: async (
       parent: null,

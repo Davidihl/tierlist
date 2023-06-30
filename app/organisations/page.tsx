@@ -34,8 +34,6 @@ export default async function OrganisationsPage() {
     `,
   });
 
-  console.log(data);
-
   const organisations: OrganisationQuery[] = data.organisations;
   return (
     <main className="p-4 max-w-lg">
