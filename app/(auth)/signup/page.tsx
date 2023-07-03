@@ -27,7 +27,7 @@ export default async function SignUpPage() {
   }
   return (
     <main className="flex justify-center sm:items-center sm:p-4">
-      <div className="shadow-xl w-full sm:w-3/4 md:w-2/3 max-w-lg bg-base-100">
+      <div className="shadow-xl w-full sm:w-3/4 md:w-2/3 max-w-lg bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
           <h1 className="text-3xl font-medium mb-4">Sign up</h1>
           <SignUpForm />

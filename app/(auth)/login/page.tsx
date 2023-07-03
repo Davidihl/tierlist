@@ -27,7 +27,7 @@ export default async function LoginPage() {
   }
   return (
     <main className="flex justify-center sm:items-center sm:h-full sm:p-4">
-      <div className="shadow-xl w-full sm:w-3/4 md:w-1/2 bg-base-100">
+      <div className="shadow-xl w-full sm:w-3/4 md:w-1/2 max-w-lg bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
           <h1 className="card-title">Login</h1>
           <LoginForm />

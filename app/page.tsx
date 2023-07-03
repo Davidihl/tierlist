@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className="h-full">
-      <div className="hero min-h-full bg-base-200">
+      <div className="hero min-h-full">
         <div className="hero-content">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold mb-5">
