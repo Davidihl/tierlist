@@ -160,8 +160,8 @@ export default function EditProfile(props: Props) {
                     type="password"
                     placeholder="Password"
                     className={`mt-1 p-2 block input input-bordered w-full ${
-                      graphQlError === '40001' ? 'input-error' : ''
-                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                      graphQlError === '40003' ? 'input-error' : ''
+                    }`}
                   />
                 </label>
                 <label className="label-text">
@@ -174,8 +174,8 @@ export default function EditProfile(props: Props) {
                     type="password"
                     placeholder="Repeat password"
                     className={`mt-1 p-2 block input input-bordered w-full ${
-                      graphQlError === '40001' ? 'input-error' : ''
-                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                      graphQlError === '40003' ? 'input-error' : ''
+                    }`}
                   />
                 </label>
                 <label className="label-text">
@@ -184,8 +184,7 @@ export default function EditProfile(props: Props) {
                     value={alias}
                     onChange={(event) => setAlias(event.currentTarget.value)}
                     placeholder="Your Organisation Name"
-                    className={`mt-1 p-2 block input input-bordered w-full ${
-                      graphQlError === '40001' ? 'input-error' : ''
+                    className={`mt-1 p-2 block input input-bordered w-full
                     } ${graphQlError === '40004' ? 'input-error' : ''}`}
                   />
                 </label>

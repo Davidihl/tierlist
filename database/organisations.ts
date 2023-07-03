@@ -56,6 +56,22 @@ export const getOrganisationBySlug = cache(async (slug: string) => {
   return organisation;
 });
 
+export const getOrganisationByAlias = cache(async (alias: string) => {
+  const [organisation] = await sql<Organisation[]>`
+    SELECT
+      id,
+      user_id,
+      alias,
+      contact,
+      slug
+    FROM
+      organisations
+    WHERE
+      alias = ${alias}
+ `;
+  return organisation;
+});
+
 export const getOrganisationByUserId = cache(async (id: number) => {
   const [organisation] = await sql<Organisation[]>`
     SELECT

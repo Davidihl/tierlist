@@ -33,6 +33,7 @@ import {
 import {
   createOrganisation,
   getAllOrganisations,
+  getOrganisationByAlias,
   getOrganisationById,
   getOrganisationBySlug,
   getOrganisationByUserId,
@@ -796,8 +797,35 @@ const resolvers = {
         });
       }
 
-      // Change password
+      async function validateAlias(aliasInput: string) {
+        // Compare organisation alias with organisations
+        let checkAlias = await getOrganisationByAlias(aliasInput);
+
+        if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
+          throw new GraphQLError('Alias already in use', {
+            extensions: { code: '40004' },
+          });
+        }
+        // Compare organisation alias with players
+        checkAlias = await getPlayerByAlias(aliasInput);
+
+        if (checkAlias) {
+          throw new GraphQLError('Alias already in use', {
+            extensions: { code: '40004' },
+          });
+        }
+      }
+
+      // Validate username
+      const checkUsername = await getUserByUsername(args.username);
+      if (checkUsername && checkUsername.id !== Number(context.user.id)) {
+        throw new GraphQLError('Username already in use', {
+          extensions: { code: '40001' },
+        });
+      }
+
       if (args.newPassword !== '') {
+        // Check if password is subject to change
         // Check if newPassword and repeatPassword are the same
         if (args.newPassword !== args.repeatPassword) {
           throw new GraphQLError(
@@ -827,15 +855,13 @@ const resolvers = {
           );
         }
 
+        // Compare password hash
         const existingUser = await getUserWithPasswordHash(args.username);
-
         if (!existingUser) {
           throw new GraphQLError('User not found', {
             extensions: { code: '404' },
           });
         }
-
-        // check if old password hash
         const isPasswordValid = await bcrypt.compare(
           args.oldPassword,
           existingUser.passwordHash,
@@ -845,10 +871,18 @@ const resolvers = {
             extensions: { code: '40002' },
           });
         }
+
+        await validateAlias(args.alias);
+        // Update database
+        throw new GraphQLError('It works with password change', {
+          extensions: { code: '200' },
+        });
       }
 
-      console.log('context', context);
-      console.log('args', args);
+      // Validate alias
+      await validateAlias(args.alias);
+      // Update database
+
       throw new GraphQLError('It works', {
         extensions: { code: '200' },
       });
