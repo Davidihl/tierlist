@@ -31,7 +31,7 @@ export default async function PendingQueries(props: Props) {
 
   return (
     <div className="mt-4">
-      <h2 className="font-medium text-lg">Pending requests:</h2>
+      <h2 className="font-medium text-lg mb-2">Pending requests:</h2>
       {data.organisationAssociationsPending ? (
         data.organisationAssociationsPending.map((association: any) => {
           return (

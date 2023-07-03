@@ -149,7 +149,7 @@ export default async function PlayerPage(props: Props) {
           )}
 
           <div className="mt-4">
-            <h2 className="font-medium text-lg">Assigned Accounts:</h2>
+            <h2 className="font-medium text-lg mb-2">Assigned Accounts</h2>
             <div>
               {!data.playerBySlug.mainAccount?.tier && allowEdit && (
                 <div className="alert alert-warning mt-4">

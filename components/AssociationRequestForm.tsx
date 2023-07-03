@@ -62,7 +62,7 @@ export default function AssociationRequestForm(props: Props) {
 
   return (
     <form className="mt-4 bg-slate-200 p-4 rounded">
-      <h2 className="font-medium text-lg">
+      <h2 className="font-medium text-lg mb-2">
         {props.isPlayer
           ? 'Request association with organisation'
           : 'Request association with player'}

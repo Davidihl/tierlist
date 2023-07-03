@@ -7,6 +7,7 @@ import Player from '../../../components/Player';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
 import { PlayerQuery } from '../../players/page';
+import EditProfile from './EditProfile';
 import PendingQueries from './PendingQueries';
 
 export const dynamic = 'force-dynamic';
@@ -104,7 +105,8 @@ export default async function OrganisationPage(props: Props) {
 
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">
-      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4 relative">
+        <EditProfile />
         <div className="card-body">
           <div className="flex gap-4 items-center">
             <div>
@@ -118,7 +120,7 @@ export default async function OrganisationPage(props: Props) {
               )}
             </div>
           </div>
-          <h2 className="font-medium text-lg">
+          <h2 className="font-medium text-lg mb-2">
             Players associated with {data.organisationBySlug.alias}
           </h2>
           {associations ? (

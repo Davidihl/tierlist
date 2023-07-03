@@ -32,7 +32,7 @@ export default async function AssociationRequestsList(props: Props) {
   return (
     <div className="mt-4">
       {data.playersAssociationsPending.length !== 0 && (
-        <h2 className="font-medium text-lg">Association invites:</h2>
+        <h2 className="font-medium text-lg mb-2">Association Invites</h2>
       )}
       {data.playersAssociationsPending.length !== 0 &&
         data.playersAssociationsPending.map((association: any) => {

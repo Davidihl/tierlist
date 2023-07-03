@@ -54,7 +54,9 @@ export default function AddLeagueAccount() {
     <div className="w-full max-w-4xl">
       <form className="shadow-xl w-full max-w-2xl bg-base-100 border-accent sm:border-t-4">
         <div className="card-body">
-          <h2 className="font-medium text-lg">Add League Of Legends Account</h2>
+          <h2 className="font-medium text-lg mb-2">
+            Add League Of Legends Account
+          </h2>
           <label className="label-text">
             Summoner Name
             <input
