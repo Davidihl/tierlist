@@ -26,9 +26,13 @@ export default async function LoginPage() {
     redirect(`/${isPlayer ? 'players' : 'organisations'}/${user.slug}`);
   }
   return (
-    <main className="p-4">
-      <h1 className="text-3xl font-medium mb-4">Login</h1>
-      <LoginForm />
+    <main className="flex justify-center sm:items-center sm:h-full sm:p-4">
+      <div className="shadow-xl w-full sm:w-3/4 md:w-1/2 bg-base-100">
+        <div className="card-body">
+          <h1 className="card-title">Login</h1>
+          <LoginForm />
+        </div>
+      </div>
     </main>
   );
 }

@@ -26,9 +26,13 @@ export default async function SignUpPage() {
     redirect(`/${isPlayer ? 'players' : 'organisations'}/${user.slug}`);
   }
   return (
-    <main className="p-4">
-      <h1 className="text-3xl font-medium mb-4">Sign up</h1>
-      <SignUpForm />
+    <main className="flex justify-center sm:items-center sm:p-4">
+      <div className="shadow-xl w-full sm:w-3/4 md:w-2/3 max-w-lg bg-base-100">
+        <div className="card-body">
+          <h1 className="text-3xl font-medium mb-4">Sign up</h1>
+          <SignUpForm />
+        </div>
+      </div>
     </main>
   );
 }

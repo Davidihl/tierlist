@@ -46,26 +46,26 @@ export default function LoginForm() {
 
   return (
     <form className="flex flex-col gap-4">
-      <label>
+      <label className="label-text">
         Username
         <input
           value={username}
           onChange={(event) => setUsername(event.currentTarget.value)}
           placeholder="Username"
-          className="p-2 block input w-full max-w-xs"
+          className="mt-1 p-2 block input input-bordered w-full"
         />
       </label>
-      <label>
+      <label className="label-text">
         Password
         <input
           value={password}
           onChange={(event) => setPassword(event.currentTarget.value)}
           type="password"
           placeholder="Password"
-          className="p-2 block input w-full max-w-xs"
+          className="mt-1 p-2 block input input-bordered w-full"
         />
       </label>
-      <div className="flex gap-4 flex-col">
+      <div className="flex gap-4 flex-col items-center">
         <button
           formAction={async () => {
             await loginHandler();
@@ -74,7 +74,9 @@ export default function LoginForm() {
         >
           Login
         </button>
-        <Link href="/signup">No account yet? Sign up here instead!</Link>
+        <Link className="link text-xs" href="/signup">
+          No account yet? Sign up here instead!
+        </Link>
       </div>
       {showNotification ? (
         <div className="toast toast-center ">

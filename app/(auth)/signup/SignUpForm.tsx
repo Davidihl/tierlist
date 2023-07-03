@@ -167,53 +167,52 @@ export default function SignUpForm() {
 
   return (
     <form className="flex flex-col gap-4">
-      <label className="text-sm">
+      <label className="label-text">
         Username
         <input
           value={username}
           onChange={(event) => setUsername(event.currentTarget.value)}
           placeholder="Username"
-          className={`p-2 block input w-full max-w-xs ${
+          className={`mt-1 p-2 block input input-bordered w-full ${
             graphQlError === '40001' ? 'input-error' : ''
           } ${graphQlError === '40002' ? 'input-error' : ''}`}
         />
       </label>
-      <label className="text-sm">
+      <label className="label-text">
         Password
         <input
           value={password}
           onChange={(event) => setPassword(event.currentTarget.value)}
           type="password"
           placeholder="Password"
-          className={`p-2 block input w-full max-w-xs ${
+          className={`mt-1 p-2 block input input-bordered w-full ${
             graphQlError === '40001' ? 'input-error' : ''
           } ${graphQlError === '40003' ? 'input-error' : ''}`}
         />
       </label>
-      <label className="text-sm">
+      <label className="label-text">
         Repeat Password
         <input
           value={repeatPassword}
           onChange={(event) => setRepeatPassword(event.currentTarget.value)}
           type="password"
           placeholder="Repeat password"
-          className={`p-2 block input w-full max-w-xs ${
+          className={`mt-1 p-2 block input input-bordered w-full ${
             graphQlError === '40001' ? 'input-error' : ''
           } ${graphQlError === '40003' ? 'input-error' : ''}`}
         />
       </label>
       <div className="flex gap-4 mt-4">
-        <label className="flex items gap-2">
-          I am an athlete
+        <label className="label-text flex items-center gap-2">
           <input
             type="checkbox"
             checked={isPlayer}
             onChange={() => setIsPlayer(!isPlayer)}
             className="radio radio-primary"
           />
+          I am an athlete
         </label>
-        <label className="flex items gap-2">
-          I am an organisation
+        <label className="label-text flex items-center gap-2">
           <input
             type="checkbox"
             checked={!isPlayer}
@@ -223,76 +222,77 @@ export default function SignUpForm() {
             }}
             className="radio radio-primary"
           />
+          I am an organisation
         </label>
       </div>
       {isPlayer ? (
         <div className="flex flex-col gap-4">
-          <label className="text-sm">
+          <label className="label-text">
             Alias
             <input
               value={alias}
               onChange={(event) => setAlias(event.currentTarget.value)}
               placeholder="Gamertag"
-              className={`p-2 block input w-full max-w-xs ${
+              className={`mt-1 p-2 block input input-bordered w-full ${
                 graphQlError === '40001' ? 'input-error' : ''
               } ${graphQlError === '40004' ? 'input-error' : ''} ${
                 graphQlError === '40006' ? 'input-error' : ''
               }`}
             />
           </label>
-          <label className="text-sm">
+          <label className="label-text">
             First name (optional)
             <input
               value={firstName}
               onChange={(event) => setFirstName(event.currentTarget.value)}
               placeholder="First name"
-              className="p-2 block input w-full max-w-xs"
+              className="mt-1 p-2 block input input-bordered w-full"
             />
           </label>
-          <label className="text-sm">
+          <label className="label-text">
             Last name (optional)
             <input
               value={lastName}
               onChange={(event) => setLastName(event.currentTarget.value)}
               placeholder="Last name"
-              className="p-2 block input w-full max-w-xs"
+              className="mt-1 p-2 block input input-bordered w-full"
             />
           </label>
-          <label className="text-sm">
+          <label className="label-text">
             Email contact (optional)
             <input
               value={contact}
               onChange={(event) => setContact(event.currentTarget.value)}
               placeholder="user@email.com"
-              className="p-2 block input w-full max-w-xs"
+              className="mt-1 p-2 block input input-bordered w-full"
             />
           </label>
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <label className="text-sm">
+          <label className="label-text">
             Alias
             <input
               value={alias}
               onChange={(event) => setAlias(event.currentTarget.value)}
-              placeholder="Austrian Force"
-              className={`p-2 block input w-full max-w-xs ${
+              placeholder="Your Organisation Name"
+              className={`mt-1 p-2 block input input-bordered w-full ${
                 graphQlError === '40001' ? 'input-error' : ''
               } ${graphQlError === '40004' ? 'input-error' : ''}`}
             />
           </label>
-          <label className="text-sm">
+          <label className="label-text">
             Email contact (optional)
             <input
               value={contact}
               onChange={(event) => setContact(event.currentTarget.value)}
               placeholder="user@email.com"
-              className="p-2 block input w-full max-w-xs"
+              className="mt-1 p-2 block input input-bordered w-full"
             />
           </label>
         </div>
       )}
-      <div className="flex gap-4 flex-col">
+      <div className="flex gap-4 flex-col items-center">
         <button
           formAction={async () => {
             setGraphQlError('');
@@ -302,7 +302,9 @@ export default function SignUpForm() {
         >
           Sign up
         </button>
-        <Link href="/login">Already have a login? Login here instead!</Link>
+        <Link className="link text-xs" href="/login">
+          Already have a login? Login here instead!
+        </Link>
         {showNotification ? (
           <div className="toast toast-center ">
             <div className="alert alert-error">
