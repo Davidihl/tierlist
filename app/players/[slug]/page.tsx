@@ -10,6 +10,7 @@ import AddLeagueAccount from './AddLeagueAccount';
 import AssociationBadge from './AssociationBadge';
 import AssociationRequestsList from './AssociationRequestsList';
 import LeagueAccountMoreButton from './LeagueAccountMoreButton';
+import RemoveAssociation from './RemoveAssociation';
 import UpdateLeagueAccounts from './UpdateLeagueAccounts';
 
 export const dynamic = 'force-dynamic';
@@ -78,6 +79,9 @@ export default async function PlayerPage(props: Props) {
             losses
             lastUpdate
           }
+          currentAssociation {
+            id
+          }
         }
       }
     `,
@@ -128,7 +132,16 @@ export default async function PlayerPage(props: Props) {
               ) : (
                 ''
               )}
-              <AssociationBadge playerId={Number(data.playerBySlug.id)} />
+              <div className="flex gap-2">
+                <AssociationBadge playerId={Number(data.playerBySlug.id)} />
+                {allowEdit && data.playerBySlug.currentAssociation?.id && (
+                  <RemoveAssociation
+                    currentAssociationId={
+                      data.playerBySlug.currentAssociation.id
+                    }
+                  />
+                )}
+              </div>
             </div>
           </div>
           {allowEdit && (

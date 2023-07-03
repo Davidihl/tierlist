@@ -196,6 +196,7 @@ const typeDefs = gql`
     slug: String
     mainAccount: LeagueAccount
     leagueAccounts: [PlayerLeagueAccount]
+    currentAssociation: Association
   }
 
   "Due to rate limiter of RIOT api, league account data are cached in database"
@@ -321,6 +322,9 @@ const resolvers = {
     },
     leagueAccounts: async (parent: any) => {
       return await getAllLeagueAccountsByPlayerId(parent.id);
+    },
+    currentAssociation: async (parent: any) => {
+      return await getCurrentAssociationsByPlayer(parent.id);
     },
   },
   Association: {

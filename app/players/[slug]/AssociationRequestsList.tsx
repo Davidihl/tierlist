@@ -39,9 +39,9 @@ export default async function AssociationRequestsList(props: Props) {
           return (
             <div
               key={`player-${association.id}`}
-              className="flex justify-between max-w-lg p-1"
+              className="flex flex-col justify-between max-w-lg p-1"
             >
-              <div className="alert flex justify-between">
+              <div className="shadow-md w-full max-w-lg bg-base-100 border-secondary sm:border-l-2 p-4 flex gap-4 justify-between">
                 <div>
                   <Link
                     className="font-medium"
