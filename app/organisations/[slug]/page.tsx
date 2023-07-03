@@ -103,51 +103,63 @@ export default async function OrganisationPage(props: Props) {
     data.organisationBySlug.associations;
 
   return (
-    <main className="p-4 max-w-lg">
-      <div className="flex gap-4 items-center">
-        <div>
-          <h1 className="font-medium text-xl">
-            {data.organisationBySlug.alias}
-          </h1>
-          {data.organisationBySlug.contact ? (
-            <p>Contact: {data.organisationBySlug.contact}</p>
-          ) : (
-            ''
-          )}
-        </div>
-      </div>
-      <h2 className="font-medium text-lg">
-        Players associated with {data.organisationBySlug.alias}
-      </h2>
-      {associations ? (
-        associations.map((association) => {
-          return (
-            <div
-              key={`player-${association.player.alias}`}
-              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
-            >
-              <Player player={association.player} showOrganisation={false} />
-              {allowEdit ? (
-                <div className="flex items-center">
-                  <EndAssociation id={association.id} />
-                </div>
+    <main className="flex flex-col items-center sm:p-4 gap-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+        <div className="card-body">
+          <div className="flex gap-4 items-center">
+            <div>
+              <h1 className="font-medium text-xl">
+                {data.organisationBySlug.alias}
+              </h1>
+              {data.organisationBySlug.contact ? (
+                <p>Contact: {data.organisationBySlug.contact}</p>
               ) : (
                 ''
               )}
             </div>
-          );
-        })
-      ) : (
-        <p>No players associated yet</p>
-      )}
-      {allowEdit && (
-        <>
-          <PendingQueries organisationId={Number(data.organisationBySlug.id)} />
-          <div>
-            <AssociationRequestForm isPlayer={false} userId={session.userId} />
           </div>
-        </>
-      )}
+          <h2 className="font-medium text-lg">
+            Players associated with {data.organisationBySlug.alias}
+          </h2>
+          {associations ? (
+            associations.map((association) => {
+              return (
+                <div
+                  key={`player-${association.player.alias}`}
+                  className="flex gap-2 justify-between border-b p-2 first:border-t"
+                >
+                  <Player
+                    player={association.player}
+                    showOrganisation={false}
+                  />
+                  {allowEdit ? (
+                    <div className="flex items-center">
+                      <EndAssociation id={association.id} />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <p>No players associated yet</p>
+          )}
+          {allowEdit && (
+            <>
+              <PendingQueries
+                organisationId={Number(data.organisationBySlug.id)}
+              />
+              <div>
+                <AssociationRequestForm
+                  isPlayer={false}
+                  userId={session.userId}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </main>
   );
 }

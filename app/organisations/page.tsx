@@ -36,7 +36,7 @@ export default async function OrganisationsPage() {
 
   const organisations: OrganisationQuery[] = data.organisations;
   return (
-    <main className="flex justify-center sm:h-full sm:p-4">
+    <main className="flex flex-col items-center sm:p-4 gap-4">
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
           <h1 className="font-medium text-xl">Organisations</h1>

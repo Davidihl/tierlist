@@ -158,7 +158,7 @@ export default async function PlayerPage(props: Props) {
               )}
               {leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
                 <div
-                  className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
+                  className="flex gap-2 justify-between border-b p-2 first:border-t"
                   key={`league-account-${leagueAccount.id}`}
                 >
                   <LeagueAccount leagueAccount={leagueAccount} />
