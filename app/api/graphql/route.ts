@@ -140,11 +140,23 @@ const typeDefs = gql`
       lastName: String
       contact: String
     ): Player
+    "Create a new organisation"
     createOrganisation(
       userId: Int!
       alias: String!
       contact: String
     ): Organisation
+    "Edit an organisation"
+    editOrganisation(
+      organisationId: ID!
+      userId: Int!
+      alias: String
+      contact: String
+      oldPassword: String
+      newPassword: String
+    ): Organisation
+    "Delete an organisation"
+    deleteOrganisation(organisationId: ID!, userId: ID!): Organisation
     "Add a new league account to a player"
     addLeagueAccount(summoner: String!): LeagueAccount
     "Delete a league of legends account with a certain id"
@@ -744,6 +756,31 @@ const resolvers = {
 
       // Create Organisation
       return await createOrganisation(args.userId, args.alias, args.contact);
+    },
+    editOrganisation: async (
+      parent: null,
+      args: {
+        organisationId: number;
+        userId: number;
+        alias: string;
+        contact: string;
+        oldPassword: string;
+        newPassword: string;
+      },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const organisationId = z.number();
+      const userId = z.number();
+      if (
+        !organisationId.safeParse(Number(args.organisationId)).success ||
+        !userId.safeParse(Number(args.userId)).success
+      ) {
+        throw new GraphQLError('Invalid authoriInputzation');
+      }
+
+      // Check login
+      console.log(context);
     },
     requestAssociationByOrganisation: async (
       parent: null,

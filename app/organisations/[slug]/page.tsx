@@ -28,7 +28,6 @@ export async function generateMetadata(props: Props) {
     query: gql`
       query getOrganisationBySlug($slug: String!) {
         organisationBySlug(slug: $slug) {
-          id
           alias
         }
       }
@@ -65,6 +64,7 @@ export default async function OrganisationPage(props: Props) {
           contact
           user {
             id
+            username
           }
           associations {
             id
@@ -106,7 +106,12 @@ export default async function OrganisationPage(props: Props) {
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4 relative">
-        {allowEdit && <EditProfile />}
+        {allowEdit && (
+          <EditProfile
+            organisation={data.organisationBySlug}
+            userId={session.userId}
+          />
+        )}
         <div className="card-body">
           <div className="flex gap-4 items-center">
             <div>

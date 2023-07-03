@@ -1,16 +1,66 @@
 'use client';
 import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Organisation } from '../../../database/organisations';
 
-export default function EditProfile() {
+const editOrganisationMutation = gql`
+  mutation editOrganisation(
+    $organisationId: ID!
+    $userId: Int!
+    $alias: String
+    $contact: String
+    $oldPassword: String
+    $newPassword: String
+  ) {
+    editOrganisation(
+      organisationId: $organisationId
+      userId: $userId
+      alias: $alias
+      contact: $contact
+      oldPassword: $oldPassword
+      newPassword: $newPassword
+    ) {
+      id
+    }
+  }
+`;
+
+type Props = {
+  organisation: {
+    id: number;
+    alias: string;
+    contact: string;
+    user: {
+      id: number;
+      username: string;
+    };
+  };
+  userId: number;
+};
+
+export default function EditProfile(props: Props) {
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState('');
+  const [onError, setOnError] = useState('');
+  const [username, setUsername] = useState(props.organisation.user.username);
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [alias, setAlias] = useState('');
-  const [contact, setContact] = useState('');
+  const [alias, setAlias] = useState(props.organisation.alias);
+  const [contact, setContact] = useState(props.organisation.contact);
   const [graphQlError, setGraphQlError] = useState('');
+  const router = useRouter();
+
+  const [editOrganisationHandler] = useMutation(editOrganisationMutation, {
+    variables: {
+      organisationId: props.organisation.id,
+      userId: props.userId,
+      alias,
+      contact,
+      oldPassword,
+      newPassword: password,
+    },
+  });
 
   return (
     <>
@@ -123,7 +173,11 @@ export default function EditProfile() {
               </div>
               <div className="flex flex-col items-center gap-4 mt-4">
                 <button
-                  formAction={() => console.log('edit')}
+                  formAction={async () => {
+                    setOnError('');
+                    await editOrganisationHandler();
+                    router.refresh();
+                  }}
                   className="btn btn-primary rounded-full"
                 >
                   Save Changes
