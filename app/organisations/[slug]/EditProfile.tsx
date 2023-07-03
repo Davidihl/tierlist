@@ -1,8 +1,17 @@
 'use client';
+import { gql, useMutation } from '@apollo/client';
 import { useState } from 'react';
 
 export default function EditProfile() {
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [alias, setAlias] = useState('');
+  const [contact, setContact] = useState('');
+  const [graphQlError, setGraphQlError] = useState('');
+
   return (
     <>
       <button
@@ -21,9 +30,9 @@ export default function EditProfile() {
 
       {open && (
         <div className="absolute top-0 left-0 right-0">
-          <form className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4 p-4">
-            <div className="flex justify-between items-center">
-              <h2>Edit Profile</h2>
+          <form className="flex flex-col items-center shadow-xl w-full max-w-4xl bg-base-100 p-4">
+            <div className="flex justify-between items-center w-full">
+              <h2 className="font-medium text-lg mb-2">Edit Profile</h2>
               <button
                 className="btn btn-ghost btn-circle"
                 onClick={() => setOpen(false)}
@@ -38,7 +47,95 @@ export default function EditProfile() {
                 </svg>
               </button>
             </div>
-            test
+            <div className="w-full max-w-lg">
+              <div className="flex flex-col gap-4">
+                <label className="label-text">
+                  Username
+                  <input
+                    value={username}
+                    onChange={(event) => setUsername(event.currentTarget.value)}
+                    placeholder="Username"
+                    className={`mt-1 p-2 block input input-bordered w-full ${
+                      graphQlError === '40001' ? 'input-error' : ''
+                    } ${graphQlError === '40002' ? 'input-error' : ''}`}
+                  />
+                </label>
+                <label className="label-text">
+                  Old Password
+                  <input
+                    value={oldPassword}
+                    onChange={(event) =>
+                      setOldPassword(event.currentTarget.value)
+                    }
+                    type="password"
+                    placeholder="Password"
+                    className={`mt-1 p-2 block input input-bordered w-full ${
+                      graphQlError === '40001' ? 'input-error' : ''
+                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                  />
+                </label>
+                <label className="label-text">
+                  Password
+                  <input
+                    value={password}
+                    onChange={(event) => setPassword(event.currentTarget.value)}
+                    type="password"
+                    placeholder="Password"
+                    className={`mt-1 p-2 block input input-bordered w-full ${
+                      graphQlError === '40001' ? 'input-error' : ''
+                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                  />
+                </label>
+                <label className="label-text">
+                  Repeat Password
+                  <input
+                    value={repeatPassword}
+                    onChange={(event) =>
+                      setRepeatPassword(event.currentTarget.value)
+                    }
+                    type="password"
+                    placeholder="Repeat password"
+                    className={`mt-1 p-2 block input input-bordered w-full ${
+                      graphQlError === '40001' ? 'input-error' : ''
+                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                  />
+                </label>
+                <label className="label-text">
+                  Alias
+                  <input
+                    value={alias}
+                    onChange={(event) => setAlias(event.currentTarget.value)}
+                    placeholder="Your Organisation Name"
+                    className={`mt-1 p-2 block input input-bordered w-full ${
+                      graphQlError === '40001' ? 'input-error' : ''
+                    } ${graphQlError === '40004' ? 'input-error' : ''}`}
+                  />
+                </label>
+                <label className="label-text">
+                  Email contact (optional)
+                  <input
+                    value={contact}
+                    onChange={(event) => setContact(event.currentTarget.value)}
+                    placeholder="user@email.com"
+                    className="mt-1 p-2 block input input-bordered w-full"
+                  />
+                </label>
+              </div>
+              <div className="flex flex-col items-center gap-4 mt-4">
+                <button
+                  formAction={() => console.log('edit')}
+                  className="btn btn-primary rounded-full"
+                >
+                  Save Changes
+                </button>
+                <button
+                  formAction={() => console.log('delete')}
+                  className="link text-xs"
+                >
+                  Delete Account
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       )}
