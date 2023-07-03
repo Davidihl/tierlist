@@ -1,25 +1,29 @@
 'use client';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Organisation } from '../../../database/organisations';
 
 const editOrganisationMutation = gql`
   mutation editOrganisation(
     $organisationId: ID!
     $userId: Int!
+    $username: String
     $alias: String
     $contact: String
     $oldPassword: String
     $newPassword: String
+    $repeatPassword: String
   ) {
     editOrganisation(
       organisationId: $organisationId
       userId: $userId
+      username: $username
       alias: $alias
       contact: $contact
       oldPassword: $oldPassword
       newPassword: $newPassword
+      repeatPassword: $repeatPassword
     ) {
       id
     }
@@ -42,23 +46,45 @@ type Props = {
 export default function EditProfile(props: Props) {
   const [open, setOpen] = useState(false);
   const [onError, setOnError] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
   const [username, setUsername] = useState(props.organisation.user.username);
   const [oldPassword, setOldPassword] = useState('');
-  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [alias, setAlias] = useState(props.organisation.alias);
   const [contact, setContact] = useState(props.organisation.contact);
   const [graphQlError, setGraphQlError] = useState('');
   const router = useRouter();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showNotification]);
+
   const [editOrganisationHandler] = useMutation(editOrganisationMutation, {
     variables: {
       organisationId: props.organisation.id,
       userId: props.userId,
+      username,
       alias,
       contact,
       oldPassword,
-      newPassword: password,
+      newPassword,
+      repeatPassword,
+    },
+
+    onError: (error) => {
+      setOnError(error.message);
+      const errorCode: any = error.graphQLErrors[0]?.extensions.code;
+      setGraphQlError(errorCode);
+      setShowNotification(true);
+    },
+
+    onCompleted: () => {
+      setOnError('');
+      router.refresh();
     },
   });
 
@@ -107,7 +133,7 @@ export default function EditProfile(props: Props) {
                     placeholder="Username"
                     className={`mt-1 p-2 block input input-bordered w-full ${
                       graphQlError === '40001' ? 'input-error' : ''
-                    } ${graphQlError === '40002' ? 'input-error' : ''}`}
+                    }`}
                   />
                 </label>
                 <label className="label-text">
@@ -120,15 +146,17 @@ export default function EditProfile(props: Props) {
                     type="password"
                     placeholder="Password"
                     className={`mt-1 p-2 block input input-bordered w-full ${
-                      graphQlError === '40001' ? 'input-error' : ''
-                    } ${graphQlError === '40003' ? 'input-error' : ''}`}
+                      graphQlError === '40002' ? 'input-error' : ''
+                    } ${graphQlError === '40002' ? 'input-error' : ''}`}
                   />
                 </label>
                 <label className="label-text">
-                  Password
+                  New Password
                   <input
-                    value={password}
-                    onChange={(event) => setPassword(event.currentTarget.value)}
+                    value={newPassword}
+                    onChange={(event) =>
+                      setNewPassword(event.currentTarget.value)
+                    }
                     type="password"
                     placeholder="Password"
                     className={`mt-1 p-2 block input input-bordered w-full ${
@@ -191,6 +219,15 @@ export default function EditProfile(props: Props) {
               </div>
             </div>
           </form>
+          {showNotification ? (
+            <div className="toast toast-center ">
+              <div className="alert alert-error">
+                <span>{onError}</span>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       )}
     </>

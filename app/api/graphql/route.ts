@@ -154,6 +154,8 @@ const typeDefs = gql`
       contact: String
       oldPassword: String
       newPassword: String
+      repeatPassword: String
+      username: String
     ): Organisation
     "Delete an organisation"
     deleteOrganisation(organisationId: ID!, userId: ID!): Organisation
@@ -760,27 +762,96 @@ const resolvers = {
     editOrganisation: async (
       parent: null,
       args: {
+        username: string;
         organisationId: number;
         userId: number;
         alias: string;
         contact: string;
         oldPassword: string;
         newPassword: string;
+        repeatPassword: string;
       },
       context: { isLoggedIn: any; user: any },
     ) => {
       // Validate Input
       const organisationId = z.number();
       const userId = z.number();
+      const alias = z.string().nonempty();
+      const contact = z.string().nonempty();
       if (
         !organisationId.safeParse(Number(args.organisationId)).success ||
-        !userId.safeParse(Number(args.userId)).success
+        !userId.safeParse(Number(args.userId)).success ||
+        !alias.safeParse(args.alias).success ||
+        !contact.safeParse(args.contact).success
       ) {
-        throw new GraphQLError('Invalid authoriInputzation');
+        throw new GraphQLError('Invalid Input', {
+          extensions: { code: '400' },
+        });
       }
 
-      // Check login
-      console.log(context);
+      // Check authorization
+      if (context.user.id !== args.userId) {
+        throw new GraphQLError('Not authorized. Please login', {
+          extensions: { code: '401' },
+        });
+      }
+
+      // Change password
+      if (args.newPassword !== '') {
+        // Check if newPassword and repeatPassword are the same
+        if (args.newPassword !== args.repeatPassword) {
+          throw new GraphQLError(
+            'New password and repeat password are not identical',
+            {
+              extensions: { code: '40003' },
+            },
+          );
+        }
+
+        // Check if new password is secure
+        const securePassword = z
+          .string()
+          .nonempty()
+          .min(8)
+          .regex(
+            new RegExp(
+              /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+            ),
+          );
+        if (!securePassword.safeParse(args.newPassword).success) {
+          throw new GraphQLError(
+            'Password must be at least 8 characters long and contain one special character',
+            {
+              extensions: { code: '40003' },
+            },
+          );
+        }
+
+        const existingUser = await getUserWithPasswordHash(args.username);
+
+        if (!existingUser) {
+          throw new GraphQLError('User not found', {
+            extensions: { code: '404' },
+          });
+        }
+
+        // check if old password hash
+        const isPasswordValid = await bcrypt.compare(
+          args.oldPassword,
+          existingUser.passwordHash,
+        );
+        if (!isPasswordValid) {
+          throw new GraphQLError('Old password incorrect', {
+            extensions: { code: '40002' },
+          });
+        }
+      }
+
+      console.log('context', context);
+      console.log('args', args);
+      throw new GraphQLError('It works', {
+        extensions: { code: '200' },
+      });
     },
     requestAssociationByOrganisation: async (
       parent: null,
