@@ -43,23 +43,25 @@ export default async function PlayersPage() {
   const players: PlayerQuery[] = data.players;
 
   return (
-    <main className="p-4 max-w-lg">
-      <div className="w-full max-w-lg">
-        <h1 className="font-medium text-xl">Players</h1>
-        {players.map((player) => {
-          return (
-            <div
-              key={`player-${player.alias}`}
-              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
-            >
-              <Player
+    <main className="flex justify-center sm:h-full sm:p-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+        <div className="card-body">
+          <h1 className="font-medium text-xl">Players</h1>
+          {players.map((player) => {
+            return (
+              <div
                 key={`player-${player.alias}`}
-                player={player}
-                showOrganisation={true}
-              />
-            </div>
-          );
-        })}
+                className="flex gap-2 justify-between border-b p-2 first:border-t"
+              >
+                <Player
+                  key={`player-${player.alias}`}
+                  player={player}
+                  showOrganisation={true}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </main>
   );

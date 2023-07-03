@@ -36,19 +36,21 @@ export default async function OrganisationsPage() {
 
   const organisations: OrganisationQuery[] = data.organisations;
   return (
-    <main className="p-4 max-w-lg">
-      <div className="w-full max-w-lg">
-        <h1 className="font-medium text-xl">Organisations</h1>
-        {organisations.map((organisation) => {
-          return (
-            <div
-              key={`player-${organisation.id}`}
-              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
-            >
-              <Organisation organisation={organisation} />
-            </div>
-          );
-        })}
+    <main className="flex justify-center sm:h-full sm:p-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+        <div className="card-body">
+          <h1 className="font-medium text-xl">Organisations</h1>
+          {organisations.map((organisation) => {
+            return (
+              <div
+                key={`player-${organisation.id}`}
+                className="flex gap-2 justify-between border-b p-2 first:border-t"
+              >
+                <Organisation organisation={organisation} />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </main>
   );

@@ -51,41 +51,47 @@ export default function AddLeagueAccount() {
   });
 
   return (
-    <form className="mt-4 bg-slate-200 p-4 rounded">
-      <h2 className="font-medium text-lg">Add League Of Legends Account</h2>
-      <label>
-        Summoner Name
-        <input
-          value={summonerName}
-          onChange={(event) => {
-            setSummonerName(event.currentTarget.value);
-          }}
-          placeholder="Summoner"
-          className={`input input-bordered w-full max-w-xs block my-4 ${
-            graphQlError === '40004' ? 'input-error' : ''
-          } ${graphQlError === '40006' ? 'input-error' : ''}`}
-        />
-      </label>
-      <button
-        className="btn btn-secondary rounded-full"
-        formAction={async () => {
-          setOnError('');
-          await addLeagueAccountHandler();
-          setSummonerName('');
-          router.refresh();
-        }}
-      >
-        Add League Account
-      </button>
-      {showNotification ? (
-        <div className="toast toast-center ">
-          <div className="alert alert-error">
-            <span>{onError}</span>
+    <div className="w-full max-w-4xl">
+      <form className="shadow-xl w-full max-w-2xl bg-base-100 border-accent sm:border-t-4">
+        <div className="card-body">
+          <h2 className="font-medium text-lg">Add League Of Legends Account</h2>
+          <label className="label-text">
+            Summoner Name
+            <input
+              value={summonerName}
+              onChange={(event) => {
+                setSummonerName(event.currentTarget.value);
+              }}
+              placeholder="Summoner"
+              className={`mt-1 p-2 block input input-bordered w-full${
+                graphQlError === '40004' ? 'input-error' : ''
+              } ${graphQlError === '40006' ? 'input-error' : ''}`}
+            />
+          </label>
+          <div>
+            <button
+              className="btn btn-secondary rounded-full"
+              formAction={async () => {
+                setOnError('');
+                await addLeagueAccountHandler();
+                setSummonerName('');
+                router.refresh();
+              }}
+            >
+              Add League Account
+            </button>
           </div>
+          {showNotification ? (
+            <div className="toast toast-center ">
+              <div className="alert alert-error">
+                <span>{onError}</span>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
-      ) : (
-        ''
-      )}
-    </form>
+      </form>
+    </div>
   );
 }
