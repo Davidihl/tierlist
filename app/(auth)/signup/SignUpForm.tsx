@@ -202,28 +202,31 @@ export default function SignUpForm() {
           } ${graphQlError === '40003' ? 'input-error' : ''}`}
         />
       </label>
-      <div className="flex gap-4 mt-4">
-        <label className="label-text flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={isPlayer}
-            onChange={() => setIsPlayer(!isPlayer)}
-            className="radio radio-primary"
-          />
-          I am an athlete
-        </label>
-        <label className="label-text flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={!isPlayer}
-            onChange={() => {
-              setIsPlayer(!isPlayer);
-              setAlias('');
-            }}
-            className="radio radio-primary"
-          />
-          I am an organisation
-        </label>
+      <div>
+        <h2>I am signing up as:</h2>
+        <div className="flex gap-4 mt-4">
+          <label className="label-text flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={isPlayer}
+              onChange={() => setIsPlayer(!isPlayer)}
+              className="radio radio-primary"
+            />
+            I am an athlete
+          </label>
+          <label className="label-text flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={!isPlayer}
+              onChange={() => {
+                setIsPlayer(!isPlayer);
+                setAlias('');
+              }}
+              className="radio radio-primary"
+            />
+            I am an organisation
+          </label>
+        </div>
       </div>
       {isPlayer ? (
         <div className="flex flex-col gap-4">
