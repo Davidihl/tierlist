@@ -10,6 +10,7 @@ import profileIcon from '../public/profile.svg';
 type Props = {
   slug: string;
   isPlayer: Player | undefined;
+  username: string;
 };
 
 export default function ProfileMenu(props: Props) {
@@ -33,7 +34,7 @@ export default function ProfileMenu(props: Props) {
       onClick={() => handleClickInside()}
       ref={ref}
     >
-      <span className="text-xs mr-1">Logged in</span>
+      <span className="text-xs mr-1">{props.username}</span>
       <Image src={profileIcon} alt="Profile" width={28} />
       <ul
         className={`${

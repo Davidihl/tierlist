@@ -56,7 +56,7 @@ import {
 import {
   createUser,
   getAllUsers,
-  getUserByID,
+  getUserById,
   getUserByToken,
   getUserByUsername,
   getUserWithPasswordHash,
@@ -268,7 +268,7 @@ const resolvers = {
       return await getAllUsers();
     },
     user: async (parent: null, args: { id: string }) => {
-      return await getUserByID(Number(args.id));
+      return await getUserById(Number(args.id));
     },
     players: async () => {
       return await getAllPlayers();
@@ -330,7 +330,7 @@ const resolvers = {
   },
   Player: {
     user: async (parent: any) => {
-      return await getUserByID(Number(parent.userId));
+      return await getUserById(Number(parent.userId));
     },
     mainAccount: async (parent: any) => {
       return await getLeagueAccountById(Number(parent.mainaccountId));
@@ -352,7 +352,7 @@ const resolvers = {
   },
   Organisation: {
     user: async (parent: any) => {
-      return await getUserByID(Number(parent.userId));
+      return await getUserById(Number(parent.userId));
     },
     associations: async (parent: any) => {
       return await getAssociationsByOrganisation(parent.id);
@@ -873,19 +873,16 @@ const resolvers = {
         }
 
         await validateAlias(args.alias);
+
         // Update database
-        throw new GraphQLError('It works with password change', {
-          extensions: { code: '200' },
-        });
+        console.log('updated including password');
       }
 
       // Validate alias
       await validateAlias(args.alias);
       // Update database
 
-      throw new GraphQLError('It works', {
-        extensions: { code: '200' },
-      });
+      console.log('updated');
     },
     requestAssociationByOrganisation: async (
       parent: null,

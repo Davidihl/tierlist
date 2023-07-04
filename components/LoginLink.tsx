@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getPlayerByUserId } from '../database/players';
 import { getSlugFromToken, getValidSessionByToken } from '../database/sessions';
+import { getUserByToken } from '../database/users';
 import loginIcon from '../public/login.svg';
 import ProfileMenu from './ProfileMenu';
 
@@ -14,12 +15,18 @@ export default async function LoginLink() {
 
   if (session) {
     const sessionData = await getValidSessionByToken(sessionTokenCookie.value);
-    const user = await getSlugFromToken(sessionData!.userId);
+    const userSlug = await getSlugFromToken(sessionData!.userId);
     const isPlayer = await getPlayerByUserId(Number(sessionData!.userId));
+    const user = await getUserByToken(sessionTokenCookie.value);
+    console.log(user);
 
     return (
       <div>
-        <ProfileMenu slug={user.slug} isPlayer={isPlayer} />
+        <ProfileMenu
+          slug={userSlug.slug}
+          isPlayer={isPlayer}
+          username={user!.username}
+        />
       </div>
     );
   }

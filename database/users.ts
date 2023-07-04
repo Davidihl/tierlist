@@ -28,7 +28,7 @@ export const getAllUsers = cache(async () => {
   return users;
 });
 
-export const getUserByID = cache(async (id: number) => {
+export const getUserById = cache(async (id: number) => {
   const [user] = await sql<User[]>`
     SELECT
     id,

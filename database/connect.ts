@@ -1,11 +1,9 @@
 import 'server-only';
-import { config } from 'dotenv-safe';
 import { headers } from 'next/headers';
 import postgres, { Sql } from 'postgres';
+import { setEnvironmentVariables } from '../util/config.mjs';
 
-// This loads all environment variables from a .env file
-// for all code after this line
-if (!process.env.FLY_IO) config();
+setEnvironmentVariables();
 
 declare module globalThis {
   let postgresSqlClient: Sql;
@@ -16,6 +14,7 @@ declare module globalThis {
 function connectOneTimeToDatabase() {
   if (!('postgresSqlClient' in globalThis)) {
     globalThis.postgresSqlClient = postgres({
+      ssl: Boolean(process.env.POSTGRES_URL),
       transform: {
         ...postgres.camel,
         undefined: null,
