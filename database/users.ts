@@ -55,7 +55,7 @@ export const getUserByUsername = cache(async (username: string) => {
     FROM
       users
     WHERE
-      username = ${username.toLowerCase()}
+      username = ${username}
  `;
   return user;
 });
@@ -67,7 +67,7 @@ export const getUserWithPasswordHash = cache(async (username: string) => {
     FROM
       users
     WHERE
-      username = ${username.toLowerCase()}
+      username = ${username}
  `;
   return user;
 });
@@ -98,7 +98,7 @@ export const createUser = cache(
     INSERT INTO users
       (username, password_hash)
     VALUES
-      (${username.toLowerCase()}, ${passwordHash})
+      (${username}, ${passwordHash})
     RETURNING
       id,
       username,
@@ -109,3 +109,44 @@ export const createUser = cache(
     return user;
   },
 );
+
+export const updateUsername = async (username: string, userId: number) => {
+  const [user] = await sql<User[]>`
+    UPDATE
+      users
+    SET
+      username = ${username}
+    WHERE
+      id = ${userId}
+    RETURNING
+      id,
+      username,
+      is_admin,
+      created,
+      last_update
+ `;
+  return user;
+};
+
+export const updateUserWithPassword = async (
+  username: string,
+  passwordHash: string,
+  userId: number,
+) => {
+  const [user] = await sql<User[]>`
+    UPDATE
+      users
+    SET
+      username = ${username},
+      password_hash =${passwordHash}
+    WHERE
+      id = ${userId}
+    RETURNING
+      id,
+      username,
+      is_admin,
+      created,
+      last_update
+ `;
+  return user;
+};

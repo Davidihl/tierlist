@@ -62,6 +62,7 @@ export default async function OrganisationPage(props: Props) {
           id
           alias
           contact
+          slug
           user {
             id
             username

@@ -1,8 +1,8 @@
 'use client';
 import { gql, useMutation } from '@apollo/client';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Organisation } from '../../../database/organisations';
+import { encodeString } from '../../../util/encodeString';
 
 const editOrganisationMutation = gql`
   mutation editOrganisation(
@@ -35,6 +35,7 @@ type Props = {
     id: number;
     alias: string;
     contact: string;
+    slug: string;
     user: {
       id: number;
       username: string;
@@ -84,7 +85,9 @@ export default function EditProfile(props: Props) {
 
     onCompleted: () => {
       setOnError('');
-      router.refresh();
+      setOpen(false);
+      console.log(encodeString(alias.toLowerCase()));
+      router.push(`/organisations/${encodeString(alias.toLowerCase())}`);
     },
   });
 

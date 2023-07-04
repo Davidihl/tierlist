@@ -18,7 +18,6 @@ export default async function LoginLink() {
     const userSlug = await getSlugFromToken(sessionData!.userId);
     const isPlayer = await getPlayerByUserId(Number(sessionData!.userId));
     const user = await getUserByToken(sessionTokenCookie.value);
-    console.log(user);
 
     return (
       <div>

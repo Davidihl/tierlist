@@ -101,3 +101,21 @@ export const createOrganisation = cache(
     return organisation;
   },
 );
+
+export const updateOrganisation = cache(
+  async (organisationId: number, alias: string, contact: string) => {
+    const [organisation] = await sql<Organisation[]>`
+    UPDATE
+      organisations
+    SET
+      alias = ${alias}, contact = ${contact}, slug = ${encodeString(
+      alias,
+    ).toLowerCase()}
+    WHERE
+        id = ${organisationId}
+  RETURNING
+  *`;
+
+    return organisation;
+  },
+);

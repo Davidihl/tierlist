@@ -37,6 +37,7 @@ import {
   getOrganisationById,
   getOrganisationBySlug,
   getOrganisationByUserId,
+  updateOrganisation,
 } from '../../../database/organisations';
 import {
   createPlayer,
@@ -60,6 +61,8 @@ import {
   getUserByToken,
   getUserByUsername,
   getUserWithPasswordHash,
+  updateUsername,
+  updateUserWithPassword,
   User,
 } from '../../../database/users';
 import calculateTimeDifference from '../../../util/calculateTimeDifference';
@@ -875,14 +878,21 @@ const resolvers = {
         await validateAlias(args.alias);
 
         // Update database
+        // Create password hash
+        const passwordHash = await bcrypt.hash(args.newPassword, 10);
+        await updateUserWithPassword(args.username, passwordHash, args.userId);
         console.log('updated including password');
       }
 
       // Validate alias
       await validateAlias(args.alias);
+      await updateUsername(args.username, Number(args.userId));
+      return await updateOrganisation(
+        Number(args.organisationId),
+        args.alias,
+        args.contact,
+      );
       // Update database
-
-      console.log('updated');
     },
     requestAssociationByOrganisation: async (
       parent: null,
