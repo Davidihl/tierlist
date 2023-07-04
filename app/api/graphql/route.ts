@@ -29,7 +29,7 @@ import {
   getAllLeagueAccounts,
   getAllLeagueAccountsByPlayerId,
   getLeagueAccountById,
-  getLeagueAccountBySummoner,
+  getLeagueAccountBySummonerId,
   getLeagueAccountsByPlayerId,
   updateLeagueAccount,
 } from '../../../database/leagueAccounts';
@@ -51,6 +51,7 @@ import {
   getPlayerById,
   getPlayerBySlug,
   getPlayerByUserId,
+  removeMainAccountByPlayerId,
   setLeagueMainAccount,
   updatePlayer,
 } from '../../../database/players';
@@ -709,6 +710,7 @@ const resolvers = {
       }
 
       await deleteAssociationByPlayerId(Number(args.playerId));
+      await removeMainAccountByPlayerId(Number(args.playerId));
       await deleteLeagueAccountsByPlayerId(Number(args.playerId));
       await deletePlayerByPlayerId(Number(args.playerId));
       await deleteUserByUserId(Number(args.userId));
@@ -725,13 +727,7 @@ const resolvers = {
           extensions: { code: '40007' },
         });
       }
-      // Check if summoner exists
-      const summonerExists = await getLeagueAccountBySummoner(args.summoner);
-      if (summonerExists) {
-        throw new GraphQLError('League of Legends account already assigned', {
-          extensions: { code: '400' },
-        });
-      }
+
       // Check authorization
       if (!context.isLoggedIn.userId === context.user.id) {
         throw new GraphQLError('Authorization failed', {
@@ -740,6 +736,16 @@ const resolvers = {
       }
       // Prepare data
       const riotData = await getLeagueofLegendsData(args.summoner);
+
+      // Check if summoner exists
+      const summonerExists = await getLeagueAccountBySummonerId(
+        riotData.summonerId,
+      );
+      if (summonerExists) {
+        throw new GraphQLError('League of Legends account already assigned', {
+          extensions: { code: '400' },
+        });
+      }
       const playerToAssign = await getPlayerByUserId(context.user.id);
 
       if (!playerToAssign) {

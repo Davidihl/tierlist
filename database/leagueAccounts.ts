@@ -115,8 +115,9 @@ export const getLeagueAccountById = cache(async (id: number) => {
   return leagueAccount;
 });
 
-export const getLeagueAccountBySummoner = cache(async (summoner: string) => {
-  const [leagueAccount] = await sql<LeagueAccountQuery[]>`
+export const getLeagueAccountBySummonerId = cache(
+  async (summonerId: string) => {
+    const [leagueAccount] = await sql<LeagueAccountQuery[]>`
     SELECT
       league_accounts.id,
       player_id,
@@ -135,10 +136,11 @@ export const getLeagueAccountBySummoner = cache(async (summoner: string) => {
     ON
       league_accounts.tier= tiers.id
     WHERE
-      summoner = ${summoner}
+      summoner_id = ${summonerId}
  `;
-  return leagueAccount;
-});
+    return leagueAccount;
+  },
+);
 
 export const getAllLeagueAccountsByPlayerId = cache(async (id: number) => {
   const leagueAccounts = await sql<LeagueAccountQuery[]>`

@@ -205,6 +205,20 @@ export const updatePlayer = cache(
   },
 );
 
+export const removeMainAccountByPlayerId = cache(async (playerId: number) => {
+  const [player] = await sql<Player[]>`
+    UPDATE
+      players
+    SET
+      mainaccount_id = null
+    WHERE
+        id = ${playerId}
+  RETURNING
+  *`;
+
+  return player;
+});
+
 export const deletePlayerByPlayerId = cache(async (playerId: number) => {
   const [player] = await sql<Player[]>`
   DELETE FROM
