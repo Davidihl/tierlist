@@ -10,7 +10,7 @@ export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: 'http://localhost:3000/api/graphql',
+      uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
       credentials: 'same-origin',
     }),
   });
