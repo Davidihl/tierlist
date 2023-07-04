@@ -562,86 +562,89 @@ const resolvers = {
           extensions: { code: '400' },
         });
       }
-      // // Check authorization
-      // if (context.user.id !== args.userId) {
-      //   throw new GraphQLError('Not authorized. Please login', {
-      //     extensions: { code: '401' },
-      //   });
-      // }
-      // async function validateAlias(aliasInput: string) {
-      //   // Compare organisation alias with organisations
-      //   let checkAlias = await getOrganisationByAlias(aliasInput);
-      //   if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
-      //     throw new GraphQLError('Alias already in use', {
-      //       extensions: { code: '40004' },
-      //     });
-      //   }
-      //   // Compare organisation alias with players
-      //   checkAlias = await getPlayerByAlias(aliasInput);
-      //   if (checkAlias) {
-      //     throw new GraphQLError('Alias already in use', {
-      //       extensions: { code: '40004' },
-      //     });
-      //   }
-      // }
-      // // Validate username
-      // const checkUsername = await getUserByUsername(args.username);
-      // if (checkUsername && checkUsername.id !== Number(context.user.id)) {
-      //   throw new GraphQLError('Username already in use', {
-      //     extensions: { code: '40001' },
-      //   });
-      // }
-      // if (args.newPassword !== '') {
-      //   // Check if password is subject to change
-      //   // Check if newPassword and repeatPassword are the same
-      //   if (args.newPassword !== args.repeatPassword) {
-      //     throw new GraphQLError(
-      //       'New password and repeat password are not identical',
-      //       {
-      //         extensions: { code: '40003' },
-      //       },
-      //     );
-      //   }
-      //   // Check if new password is secure
-      //   const securePassword = z
-      //     .string()
-      //     .nonempty()
-      //     .min(8)
-      //     .regex(
-      //       new RegExp(
-      //         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-      //       ),
-      //     );
-      //   if (!securePassword.safeParse(args.newPassword).success) {
-      //     throw new GraphQLError(
-      //       'Password must be at least 8 characters long and contain one special character',
-      //       {
-      //         extensions: { code: '40003' },
-      //       },
-      //     );
-      //   }
-      //   // Compare password hash
-      //   const existingUser = await getUserWithPasswordHash(args.username);
-      //   if (!existingUser) {
-      //     throw new GraphQLError('User not found', {
-      //       extensions: { code: '404' },
-      //     });
-      //   }
-      //   const isPasswordValid = await bcrypt.compare(
-      //     args.oldPassword,
-      //     existingUser.passwordHash,
-      //   );
-      //   if (!isPasswordValid) {
-      //     throw new GraphQLError('Old password incorrect', {
-      //       extensions: { code: '40002' },
-      //     });
-      //   }
-      //   await validateAlias(args.alias);
-      //   // Update database
-      //   // Create password hash
-      //   const passwordHash = await bcrypt.hash(args.newPassword, 10);
-      //   await updateUserWithPassword(args.username, passwordHash, args.userId);
-      // }
+      // Check authorization
+      if (context.user.id !== args.userId) {
+        throw new GraphQLError('Not authorized. Please login', {
+          extensions: { code: '401' },
+        });
+      }
+      async function validateAlias(aliasInput: string) {
+        // Compare organisation alias with organisations
+        let checkAlias = await getOrganisationByAlias(aliasInput);
+        if (checkAlias) {
+          throw new GraphQLError('Alias already in use', {
+            extensions: { code: '40004' },
+          });
+        }
+        // Compare organisation alias with players
+        checkAlias = await getPlayerByAlias(aliasInput);
+        if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
+          throw new GraphQLError('Alias already in use', {
+            extensions: { code: '40004' },
+          });
+        }
+      }
+
+      // Validate username
+      const checkUsername = await getUserByUsername(args.username);
+      console.log(checkUsername);
+      if (checkUsername && checkUsername.id !== Number(context.user.id)) {
+        throw new GraphQLError('Username already in use', {
+          extensions: { code: '40001' },
+        });
+      }
+      if (args.newPassword !== '') {
+        // Check if password is subject to change
+        // Check if newPassword and repeatPassword are the same
+        if (args.newPassword !== args.repeatPassword) {
+          throw new GraphQLError(
+            'New password and repeat password are not identical',
+            {
+              extensions: { code: '40003' },
+            },
+          );
+        }
+        // Check if new password is secure
+        const securePassword = z
+          .string()
+          .nonempty()
+          .min(8)
+          .regex(
+            new RegExp(
+              /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+            ),
+          );
+        if (!securePassword.safeParse(args.newPassword).success) {
+          throw new GraphQLError(
+            'Password must be at least 8 characters long and contain one special character',
+            {
+              extensions: { code: '40003' },
+            },
+          );
+        }
+        // Compare password hash
+        const existingUser = await getUserWithPasswordHash(args.username);
+        if (!existingUser) {
+          throw new GraphQLError('User not found', {
+            extensions: { code: '404' },
+          });
+        }
+        const isPasswordValid = await bcrypt.compare(
+          args.oldPassword,
+          existingUser.passwordHash,
+        );
+        if (!isPasswordValid) {
+          throw new GraphQLError('Old password incorrect', {
+            extensions: { code: '40002' },
+          });
+        }
+        await validateAlias(args.alias);
+
+        // Create password hash
+        const passwordHash = await bcrypt.hash(args.newPassword, 10);
+        // await updateUserWithPassword(args.username, passwordHash, args.userId);
+        console.log(passwordHash);
+      }
       // // Validate alias
       // await validateAlias(args.alias);
       // await updateUsername(args.username, Number(args.userId));

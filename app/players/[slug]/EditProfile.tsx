@@ -236,8 +236,7 @@ export default function EditProfile(props: Props) {
                       setFirstName(event.currentTarget.value)
                     }
                     placeholder="Jane"
-                    className={`mt-1 p-2 block input input-bordered w-full
-                    } ${graphQlError === '40004' ? 'input-error' : ''}`}
+                    className="mt-1 p-2 block input input-bordered w-full"
                   />
                 </label>
                 <label className="label-text">
@@ -246,8 +245,7 @@ export default function EditProfile(props: Props) {
                     value={lastName}
                     onChange={(event) => setLastName(event.currentTarget.value)}
                     placeholder="Doe"
-                    className={`mt-1 p-2 block input input-bordered w-full
-                    } ${graphQlError === '40004' ? 'input-error' : ''}`}
+                    className="mt-1 p-2 block input input-bordered w-full"
                   />
                 </label>
                 <label className="label-text">
