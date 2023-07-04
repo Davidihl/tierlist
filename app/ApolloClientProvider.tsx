@@ -14,6 +14,7 @@ function makeClient() {
     fetchOptions: { cache: 'no-store' },
   });
 
+  // Using server side Apollo client
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
