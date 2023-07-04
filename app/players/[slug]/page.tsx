@@ -9,6 +9,7 @@ import { getClient } from '../../../util/apolloClient';
 import AddLeagueAccount from './AddLeagueAccount';
 import AssociationBadge from './AssociationBadge';
 import AssociationRequestsList from './AssociationRequestsList';
+import EditProfile from './EditProfile';
 import LeagueAccountMoreButton from './LeagueAccountMoreButton';
 import RemoveAssociation from './RemoveAssociation';
 import UpdateLeagueAccounts from './UpdateLeagueAccounts';
@@ -64,6 +65,7 @@ export default async function PlayerPage(props: Props) {
           contact
           user {
             id
+            username
           }
           mainAccount {
             id
@@ -99,7 +101,10 @@ export default async function PlayerPage(props: Props) {
 
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">
-      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4 relative">
+        {allowEdit && (
+          <EditProfile player={data.playerBySlug} userId={session.userId} />
+        )}
         <div className="card-body">
           <div className="flex gap-4 items-center">
             {data.playerBySlug.mainAccount?.tier ? (
