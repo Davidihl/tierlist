@@ -204,3 +204,16 @@ export const updatePlayer = cache(
     return player;
   },
 );
+
+export const deletePlayerByPlayerId = cache(async (playerId: number) => {
+  const [player] = await sql<Player[]>`
+  DELETE FROM
+    players
+  WHERE
+    id = ${playerId}
+  RETURNING
+  *
+  `;
+
+  return player;
+});

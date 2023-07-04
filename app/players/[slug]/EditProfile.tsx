@@ -35,8 +35,8 @@ const editPlayerMutation = gql`
 `;
 
 const deletePlayerMutation = gql`
-  mutation deletePlayer($organisationId: ID!, $userId: ID!) {
-    deletePlayer(organisationId: $organisationId, userId: $userId) {
+  mutation deletePlayer($playerId: ID!, $userId: ID!) {
+    deletePlayer(playerId: $playerId, userId: $userId) {
       id
     }
   }
@@ -113,7 +113,7 @@ export default function EditProfile(props: Props) {
 
   const [deletePlayerHandler] = useMutation(deletePlayerMutation, {
     variables: {
-      organisationId: props.player.id,
+      playerId: props.player.id,
       userId: props.userId,
     },
 

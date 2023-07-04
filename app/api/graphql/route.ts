@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
   acceptAssociationRequest,
+  deleteAssociationByPlayerId,
   deleteAssociationsByOrganisationId,
   endAssociation,
   getAllAssociations,
@@ -24,6 +25,7 @@ import {
 import {
   addLeagueAccount,
   deleteLeagueAccount,
+  deleteLeagueAccountsByPlayerId,
   getAllLeagueAccounts,
   getAllLeagueAccountsByPlayerId,
   getLeagueAccountById,
@@ -43,6 +45,7 @@ import {
 } from '../../../database/organisations';
 import {
   createPlayer,
+  deletePlayerByPlayerId,
   getAllPlayers,
   getPlayerByAlias,
   getPlayerById,
@@ -672,6 +675,43 @@ const resolvers = {
         args.lastName,
         args.contact,
       );
+    },
+    deletePlayer: async (
+      parent: null,
+      args: { playerId: number; userId: number },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const playerId = z.number();
+      const userId = z.number();
+      if (
+        !userId.safeParse(Number(args.userId)).success ||
+        !playerId.safeParse(Number(args.playerId)).success
+      ) {
+        throw new GraphQLError('Invalid Input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if Player exists
+      const player = await getPlayerById(Number(args.playerId));
+      if (!player) {
+        throw new GraphQLError('Organisation not found', {
+          extensions: { code: '404' },
+        });
+      }
+
+      // Check authorization
+      if (player.userId !== context.user.id) {
+        throw new GraphQLError('Not authorized. Please login', {
+          extensions: { code: '401' },
+        });
+      }
+
+      await deleteAssociationByPlayerId(Number(args.playerId));
+      await deleteLeagueAccountsByPlayerId(Number(args.playerId));
+      await deletePlayerByPlayerId(Number(args.playerId));
+      await deleteUserByUserId(Number(args.userId));
     },
     addLeagueAccount: async (
       parent: null,

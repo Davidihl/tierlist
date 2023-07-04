@@ -203,6 +203,19 @@ export const deleteLeagueAccount = cache(async (id: number) => {
   return deletedAccount;
 });
 
+export const deleteLeagueAccountsByPlayerId = cache(
+  async (playerId: number) => {
+    const [deletedAccount] = await sql<LeagueAccount[]>`
+    DELETE FROM
+      league_Accounts
+    WHERE
+      player_id = ${playerId}
+    RETURNING
+      *`;
+    return deletedAccount;
+  },
+);
+
 export const updateLeagueAccount = cache(
   async (account: RiotResponse, summonerId: string) => {
     const [updatedAccount] = await sql<LeagueAccount[]>`
