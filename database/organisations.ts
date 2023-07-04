@@ -20,6 +20,8 @@ export const getAllOrganisations = cache(async () => {
       slug
     FROM
       organisations
+    ORDER BY
+      alias ASC
  `;
   return organisations;
 });

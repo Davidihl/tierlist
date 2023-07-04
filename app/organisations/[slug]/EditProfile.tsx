@@ -86,7 +86,6 @@ export default function EditProfile(props: Props) {
     onCompleted: () => {
       setOnError('');
       setOpen(false);
-      console.log(encodeString(alias.toLowerCase()));
       router.push(`/organisations/${encodeString(alias.toLowerCase())}`);
     },
   });
