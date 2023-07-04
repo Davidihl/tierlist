@@ -1,6 +1,6 @@
 import './globals.css';
-import Navigation from '../components/Navigation';
 import { ApolloClientProvider } from './ApolloClientProvider';
+import Navigation from './Navigation';
 
 export const metadata = {
   title: {

@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import LoginLink from '../components/LoginLink';
+import Menu from '../components/Menu';
 import esvoeLogo from '../public/esvoe_Logo.svg';
-import LoginLink from './LoginLink';
-import Menu from './Menu';
 
 export default function Navigation() {
   return (
