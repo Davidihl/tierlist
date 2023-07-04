@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
   acceptAssociationRequest,
+  deleteAssociationsByOrganisationId,
   endAssociation,
   getAllAssociations,
   getAssocationById,
@@ -32,6 +33,7 @@ import {
 } from '../../../database/leagueAccounts';
 import {
   createOrganisation,
+  deleteOrganisationByOrganisationId,
   getAllOrganisations,
   getOrganisationByAlias,
   getOrganisationById,
@@ -56,6 +58,7 @@ import {
 } from '../../../database/sessions';
 import {
   createUser,
+  deleteUserByUserId,
   getAllUsers,
   getUserById,
   getUserByToken,
@@ -781,12 +784,15 @@ const resolvers = {
       const organisationId = z.number();
       const userId = z.number();
       const alias = z.string().nonempty();
-      const contact = z.string().nonempty();
+      const contact = z.string();
+      const username = z.string().nonempty();
+
       if (
         !organisationId.safeParse(Number(args.organisationId)).success ||
         !userId.safeParse(Number(args.userId)).success ||
         !alias.safeParse(args.alias).success ||
-        !contact.safeParse(args.contact).success
+        !contact.safeParse(args.contact).success ||
+        !username.safeParse(args.username).success
       ) {
         throw new GraphQLError('Invalid Input', {
           extensions: { code: '400' },
@@ -893,6 +899,46 @@ const resolvers = {
         args.contact,
       );
       // Update database
+    },
+    deleteOrganisation: async (
+      parent: null,
+      args: { organisationId: number; userId: number },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const organisationId = z.number();
+      const userId = z.number();
+      if (
+        !userId.safeParse(Number(args.userId)).success ||
+        !organisationId.safeParse(Number(args.organisationId)).success
+      ) {
+        throw new GraphQLError('Invalid Input', {
+          extensions: { code: '400' },
+        });
+      }
+
+      // Check if Organisation exists
+      const organisation = await getOrganisationById(
+        Number(args.organisationId),
+      );
+      if (!organisation) {
+        throw new GraphQLError('Organisation not found', {
+          extensions: { code: '404' },
+        });
+      }
+
+      // Check authorization
+      if (organisation.userId !== context.user.id) {
+        throw new GraphQLError('Not authorized. Please login', {
+          extensions: { code: '401' },
+        });
+      }
+
+      await deleteAssociationsByOrganisationId(Number(args.organisationId));
+      await deleteOrganisationByOrganisationId(Number(args.organisationId));
+      await deleteUserByUserId(Number(args.userId));
+
+      console.log('it works');
     },
     requestAssociationByOrganisation: async (
       parent: null,

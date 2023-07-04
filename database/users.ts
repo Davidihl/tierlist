@@ -150,3 +150,20 @@ export const updateUserWithPassword = async (
  `;
   return user;
 };
+
+export const deleteUserByUserId = cache(async (userId: number) => {
+  const [organisation] = await sql<User[]>`
+  DELETE FROM
+    users
+  WHERE
+    id = ${userId}
+  RETURNING
+    id,
+    username,
+    is_admin,
+    created,
+    last_update
+  `;
+
+  return organisation;
+});

@@ -121,3 +121,18 @@ export const updateOrganisation = cache(
     return organisation;
   },
 );
+
+export const deleteOrganisationByOrganisationId = cache(
+  async (organisationId: number) => {
+    const [organisation] = await sql<Organisation[]>`
+  DELETE FROM
+    organisations
+  WHERE
+    id = ${organisationId}
+  RETURNING
+  *
+  `;
+
+    return organisation;
+  },
+);

@@ -1,6 +1,6 @@
 'use client';
 import { gql, useMutation } from '@apollo/client';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { encodeString } from '../../../util/encodeString';
 
@@ -25,6 +25,14 @@ const editOrganisationMutation = gql`
       newPassword: $newPassword
       repeatPassword: $repeatPassword
     ) {
+      id
+    }
+  }
+`;
+
+const deleteOrganisationMutation = gql`
+  mutation deleteOrganisation($organisationId: ID!, $userId: ID!) {
+    deleteOrganisation(organisationId: $organisationId, userId: $userId) {
       id
     }
   }
@@ -87,6 +95,26 @@ export default function EditProfile(props: Props) {
       setOnError('');
       setOpen(false);
       router.push(`/organisations/${encodeString(alias.toLowerCase())}`);
+    },
+  });
+
+  const [deleteOrganisationHandler] = useMutation(deleteOrganisationMutation, {
+    variables: {
+      organisationId: props.organisation.id,
+      userId: props.userId,
+    },
+
+    onError: (error) => {
+      setOnError(error.message);
+      const errorCode: any = error.graphQLErrors[0]?.extensions.code;
+      setGraphQlError(errorCode);
+      setShowNotification(true);
+    },
+
+    onCompleted: () => {
+      setOnError('');
+      setOpen(false);
+      router.push('/');
     },
   });
 
@@ -212,7 +240,12 @@ export default function EditProfile(props: Props) {
                   Save Changes
                 </button>
                 <button
-                  formAction={() => console.log('delete')}
+                  formAction={async () => {
+                    setOnError('');
+                    await deleteOrganisationHandler();
+                    console.log('delete');
+                    router.refresh();
+                  }}
                   className="link text-xs"
                 >
                   Delete Account

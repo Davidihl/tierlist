@@ -160,3 +160,31 @@ export const endAssociation = cache(async (id: number) => {
 
   return association;
 });
+
+export const deleteAssociationsByOrganisationId = cache(
+  async (organisationId: number) => {
+    const associations = await sql<Association[]>`
+  DELETE FROM
+    associations
+  WHERE
+    organisation_id = ${organisationId}
+  RETURNING
+    *
+  `;
+
+    return associations;
+  },
+);
+
+export const deleteAssociationByPlayerId = cache(async (playerId: number) => {
+  const associations = await sql<Association[]>`
+  DELETE FROM
+    associations
+  WHERE
+    player_id = ${playerId}
+  RETURNING
+    *
+  `;
+
+  return associations;
+});
