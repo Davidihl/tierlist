@@ -5,25 +5,29 @@ import { useEffect, useState } from 'react';
 import { encodeString } from '../../../util/encodeString';
 
 const editPlayerMutation = gql`
-  mutation editPlayer(
-    $organisationId: ID!
+  mutation Mutation(
+    $playerId: ID!
     $userId: Int!
-    $username: String
     $alias: String
+    $firstName: String
+    $lastName: String
     $contact: String
     $oldPassword: String
     $newPassword: String
     $repeatPassword: String
+    $username: String
   ) {
     editPlayer(
-      organisationId: $organisationId
+      playerId: $playerId
       userId: $userId
-      username: $username
       alias: $alias
+      firstName: $firstName
+      lastName: $lastName
       contact: $contact
       oldPassword: $oldPassword
       newPassword: $newPassword
       repeatPassword: $repeatPassword
+      username: $username
     ) {
       id
     }
@@ -78,10 +82,12 @@ export default function EditProfile(props: Props) {
 
   const [editPlayerHandler] = useMutation(editPlayerMutation, {
     variables: {
-      organisationId: props.player.id,
+      playerId: props.player.id,
       userId: props.userId,
       username,
       alias,
+      firstName,
+      lastName,
       contact,
       oldPassword,
       newPassword,

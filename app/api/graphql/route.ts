@@ -147,6 +147,21 @@ const typeDefs = gql`
       lastName: String
       contact: String
     ): Player
+    "Edit a player"
+    editPlayer(
+      playerId: ID!
+      userId: Int!
+      alias: String
+      firstName: String
+      lastName: String
+      contact: String
+      oldPassword: String
+      newPassword: String
+      repeatPassword: String
+      username: String
+    ): Player
+    "Delete a player"
+    deletePlayer(playerId: ID!, userId: ID!): Player
     "Create a new organisation"
     createOrganisation(
       userId: Int!
@@ -509,6 +524,134 @@ const resolvers = {
         args.lastName,
         args.contact,
       );
+    },
+    editPlayer: async (
+      parent: null,
+      args: {
+        username: string;
+        playerId: number;
+        userId: number;
+        alias: string;
+        firstName: string;
+        lastName: string;
+        contact: string;
+        oldPassword: string;
+        newPassword: string;
+        repeatPassword: string;
+      },
+      context: { isLoggedIn: any; user: any },
+    ) => {
+      // Validate Input
+      const playerId = z.number();
+      const userId = z.number();
+      const alias = z.string().nonempty();
+      const firstName = z.string();
+      const lastName = z.string();
+      const contact = z.string();
+      const username = z.string().nonempty();
+      if (
+        !playerId.safeParse(Number(args.playerId)).success ||
+        !userId.safeParse(Number(args.userId)).success ||
+        !alias.safeParse(args.alias).success ||
+        !firstName.safeParse(args.firstName).success ||
+        !lastName.safeParse(args.lastName).success ||
+        !contact.safeParse(args.contact).success ||
+        !username.safeParse(args.username).success
+      ) {
+        throw new GraphQLError('Invalid Input', {
+          extensions: { code: '400' },
+        });
+      }
+      // // Check authorization
+      // if (context.user.id !== args.userId) {
+      //   throw new GraphQLError('Not authorized. Please login', {
+      //     extensions: { code: '401' },
+      //   });
+      // }
+      // async function validateAlias(aliasInput: string) {
+      //   // Compare organisation alias with organisations
+      //   let checkAlias = await getOrganisationByAlias(aliasInput);
+      //   if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
+      //     throw new GraphQLError('Alias already in use', {
+      //       extensions: { code: '40004' },
+      //     });
+      //   }
+      //   // Compare organisation alias with players
+      //   checkAlias = await getPlayerByAlias(aliasInput);
+      //   if (checkAlias) {
+      //     throw new GraphQLError('Alias already in use', {
+      //       extensions: { code: '40004' },
+      //     });
+      //   }
+      // }
+      // // Validate username
+      // const checkUsername = await getUserByUsername(args.username);
+      // if (checkUsername && checkUsername.id !== Number(context.user.id)) {
+      //   throw new GraphQLError('Username already in use', {
+      //     extensions: { code: '40001' },
+      //   });
+      // }
+      // if (args.newPassword !== '') {
+      //   // Check if password is subject to change
+      //   // Check if newPassword and repeatPassword are the same
+      //   if (args.newPassword !== args.repeatPassword) {
+      //     throw new GraphQLError(
+      //       'New password and repeat password are not identical',
+      //       {
+      //         extensions: { code: '40003' },
+      //       },
+      //     );
+      //   }
+      //   // Check if new password is secure
+      //   const securePassword = z
+      //     .string()
+      //     .nonempty()
+      //     .min(8)
+      //     .regex(
+      //       new RegExp(
+      //         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+      //       ),
+      //     );
+      //   if (!securePassword.safeParse(args.newPassword).success) {
+      //     throw new GraphQLError(
+      //       'Password must be at least 8 characters long and contain one special character',
+      //       {
+      //         extensions: { code: '40003' },
+      //       },
+      //     );
+      //   }
+      //   // Compare password hash
+      //   const existingUser = await getUserWithPasswordHash(args.username);
+      //   if (!existingUser) {
+      //     throw new GraphQLError('User not found', {
+      //       extensions: { code: '404' },
+      //     });
+      //   }
+      //   const isPasswordValid = await bcrypt.compare(
+      //     args.oldPassword,
+      //     existingUser.passwordHash,
+      //   );
+      //   if (!isPasswordValid) {
+      //     throw new GraphQLError('Old password incorrect', {
+      //       extensions: { code: '40002' },
+      //     });
+      //   }
+      //   await validateAlias(args.alias);
+      //   // Update database
+      //   // Create password hash
+      //   const passwordHash = await bcrypt.hash(args.newPassword, 10);
+      //   await updateUserWithPassword(args.username, passwordHash, args.userId);
+      // }
+      // // Validate alias
+      // await validateAlias(args.alias);
+      // await updateUsername(args.username, Number(args.userId));
+      // // Update database
+      // return await updateOrganisation(
+      //   Number(args.organisationId),
+      //   args.alias,
+      //   args.contact,
+      // );
+      console.log('it works');
     },
     addLeagueAccount: async (
       parent: null,
