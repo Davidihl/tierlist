@@ -103,6 +103,9 @@ export default function EditProfile(props: Props) {
 
     onCompleted: () => {
       setOnError('');
+      setOldPassword('');
+      setNewPassword('');
+      setRepeatPassword('');
       setOpen(false);
       router.push(`/players/${encodeString(alias.toLowerCase())}`);
     },

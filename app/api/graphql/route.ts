@@ -49,6 +49,7 @@ import {
   getPlayerBySlug,
   getPlayerByUserId,
   setLeagueMainAccount,
+  updatePlayer,
 } from '../../../database/players';
 import {
   createSession,
@@ -64,6 +65,7 @@ import {
   getUserByToken,
   getUserByUsername,
   getUserWithPasswordHash,
+  getUserWithPasswordHashByUserId,
   updateUsername,
   updateUserWithPassword,
   User,
@@ -593,8 +595,9 @@ const resolvers = {
           extensions: { code: '40001' },
         });
       }
+
+      // Check if password is subject to change
       if (args.newPassword !== '') {
-        // Check if password is subject to change
         // Check if newPassword and repeatPassword are the same
         if (args.newPassword !== args.repeatPassword) {
           throw new GraphQLError(
@@ -604,6 +607,7 @@ const resolvers = {
             },
           );
         }
+
         // Check if new password is secure
         const securePassword = z
           .string()
@@ -622,8 +626,11 @@ const resolvers = {
             },
           );
         }
+
         // Compare password hash
-        const existingUser = await getUserWithPasswordHash(args.username);
+        const existingUser = await getUserWithPasswordHashByUserId(
+          context.user.id,
+        );
         if (!existingUser) {
           throw new GraphQLError('User not found', {
             extensions: { code: '404' },
@@ -642,19 +649,29 @@ const resolvers = {
 
         // Create password hash
         const passwordHash = await bcrypt.hash(args.newPassword, 10);
-        // await updateUserWithPassword(args.username, passwordHash, args.userId);
-        console.log(passwordHash);
+
+        // Update Function
+        await updateUserWithPassword(args.username, passwordHash, args.userId);
+        return await updatePlayer(
+          Number(args.playerId),
+          args.alias,
+          args.firstName,
+          args.lastName,
+          args.contact,
+        );
       }
-      // // Validate alias
-      // await validateAlias(args.alias);
-      // await updateUsername(args.username, Number(args.userId));
-      // // Update database
-      // return await updateOrganisation(
-      //   Number(args.organisationId),
-      //   args.alias,
-      //   args.contact,
-      // );
-      console.log('it works');
+      // Validate alias
+      await validateAlias(args.alias);
+
+      // Update database
+      await updateUsername(args.username, Number(args.userId));
+      return await updatePlayer(
+        Number(args.playerId),
+        args.alias,
+        args.firstName,
+        args.lastName,
+        args.contact,
+      );
     },
     addLeagueAccount: async (
       parent: null,
@@ -979,8 +996,8 @@ const resolvers = {
         });
       }
 
+      // Check if password is subject to change
       if (args.newPassword !== '') {
-        // Check if password is subject to change
         // Check if newPassword and repeatPassword are the same
         if (args.newPassword !== args.repeatPassword) {
           throw new GraphQLError(
@@ -1011,7 +1028,9 @@ const resolvers = {
         }
 
         // Compare password hash
-        const existingUser = await getUserWithPasswordHash(args.username);
+        const existingUser = await getUserWithPasswordHashByUserId(
+          context.user.id,
+        );
         if (!existingUser) {
           throw new GraphQLError('User not found', {
             extensions: { code: '404' },
@@ -1027,13 +1046,19 @@ const resolvers = {
           });
         }
 
+        // Validate Alias
         await validateAlias(args.alias);
 
-        // Update database
         // Create password hash
         const passwordHash = await bcrypt.hash(args.newPassword, 10);
+
+        // Update database
         await updateUserWithPassword(args.username, passwordHash, args.userId);
-        console.log('updated including password');
+        return await updateOrganisation(
+          Number(args.organisationId),
+          args.alias,
+          args.contact,
+        );
       }
 
       // Validate alias

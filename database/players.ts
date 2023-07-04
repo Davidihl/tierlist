@@ -180,3 +180,27 @@ export const setLeagueMainAccount = cache(
     return updatedPlayer;
   },
 );
+
+export const updatePlayer = cache(
+  async (
+    playerId: number,
+    alias: string,
+    firstName: string,
+    lastName: string,
+    contact: string,
+  ) => {
+    const [player] = await sql<Player[]>`
+    UPDATE
+      players
+    SET
+      alias = ${alias}, first_name=${firstName}, last_name=${lastName}, contact = ${contact}, slug = ${encodeString(
+      alias,
+    ).toLowerCase()}
+    WHERE
+        id = ${playerId}
+  RETURNING
+  *`;
+
+    return player;
+  },
+);
