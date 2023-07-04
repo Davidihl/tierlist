@@ -1,8 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { OrganisationQuery } from '../app/organisations/page';
-import AssociationBadge from '../app/players/[slug]/AssociationBadge';
-import { PlayerQuery } from '../app/players/page';
 
 type Props = {
   organisation: OrganisationQuery;
