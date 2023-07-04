@@ -3,7 +3,7 @@ import Player from '../../components/Player';
 import { LeagueAccountQuery } from '../../database/leagueAccounts';
 import { getClient } from '../../util/apolloClient';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Players',
