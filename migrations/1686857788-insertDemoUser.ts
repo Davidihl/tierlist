@@ -10,7 +10,7 @@ export async function up(sql: Sql) {
     (username, password_hash, is_admin)
     VALUES
     (
-      'admin',
+      'Chaoslordi',
       ${passwordhash1},
       true
     )
@@ -22,7 +22,7 @@ export async function up(sql: Sql) {
     (username, password_hash, is_admin)
     VALUES
     (
-      'austrianforce',
+      'Austrian Force',
       ${passwordhash2},
       false
     )
