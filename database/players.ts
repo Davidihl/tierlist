@@ -27,18 +27,18 @@ export type MainAccountId = {
 
 export const getAllPlayers = cache(async () => {
   const players = await sql<Player[]>`
-SELECT
-  players.*
-FROM
-  players
-LEFT JOIN
-  league_accounts
-ON
-  players.mainaccount_id = league_accounts.id
-ORDER BY
-  league_accounts.tier ASC,
-  league_accounts.rank ASC,
-  league_accounts.league_points ASC
+    SELECT
+      players.*
+    FROM
+      players
+    LEFT JOIN
+      league_accounts
+    ON
+      players.mainaccount_id = league_accounts.id
+    ORDER BY
+      league_accounts.tier ASC,
+      league_accounts.rank ASC,
+      league_accounts.league_points ASC
  `;
   return players;
 });
