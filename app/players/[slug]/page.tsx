@@ -23,7 +23,7 @@ type Props = {
 };
 
 export async function generateMetadata(props: Props) {
-  const { data, loading } = await getClient().query({
+  const { data } = await getClient().query({
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {
@@ -35,8 +35,6 @@ export async function generateMetadata(props: Props) {
       slug: props.params.slug,
     },
   });
-
-  if (loading) return <button className="btn loading">loading</button>;
 
   if (!data.playerBySlug) {
     return {
@@ -56,7 +54,7 @@ export default async function PlayerPage(props: Props) {
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {
@@ -94,9 +92,9 @@ export default async function PlayerPage(props: Props) {
     },
   });
 
-  console.log(props.params.slug);
+  if (loading) return <button className="btn loading">loading</button>;
 
-  if (!data.playerBySlug) {
+  if (!data?.playerBySlug) {
     notFound();
   }
 
