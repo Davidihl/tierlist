@@ -94,6 +94,8 @@ export default async function PlayerPage(props: Props) {
     },
   });
 
+  console.log(props.params.slug);
+
   if (!data.playerBySlug) {
     notFound();
   }
