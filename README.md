@@ -12,33 +12,7 @@ The idea of this project is to showcase a way of creating a comprehensive platfo
 
 To support the functionalities of the platform, the following database setup was created. For a complete overview, please follow the provided schema: [Database Schema](https://drawsql.app/teams/davids-team-30/diagrams/final-project-tierlist)
 
-placeholder schema screenshot
-
-Please find a description of the purpose of the tables below:
-
-### Users
-
-The "Users" table will store the general information of individuals who register on the platform. This includes fields such as username, email address, password (hashed and securely stored), and other relevant user details.
-
-### Players
-
-The "Players" table will be associated with the "Users" table, establishing a one-to-one relationship. It will store additional player-specific information, such as player rankings, preferred roles, achievements, and other League of Legends-related data. Each player will be linked to a user account, enabling seamless integration between their player profiles and platform-wide functionalities.
-
-### Organisations
-
-Similar to players, the "organisations" table will be associated with the "Users" table, establishing a one-to-one relationship. It will store specific information about esports organisations, such as their name and contact information.
-
-### League Accounts
-
-The "League Accounts" table will be related to the "Players" table, establishing a one-to-many relationship. This table will store League of Legends account information for each player, such as account IDs, summoner names, and associated statistics. Players can add multiple league accounts, enabling them to showcase their strengths across different profiles.
-
-### Associations
-
-The "Associations" table will facilitate the relationship between players and organisations. It will store information regarding association requests, start- and end-date, and any additional relevant details. This table will establish a one-to-many relationship, as a players can be associated with only one organisation but an organisations can be associated with many players.
-
-### Sessions
-
-The "Sessions" table will be associated with the "Users" table, establishing a one-to-many relationship. It will store data related to user sessions, including session IDs, login timestamps, and a token which will be matched with a cookie to verify the authentification. This enables the management of user sessions and provides the foundation for secure authentication and authorization mechanisms.
+<img width="984" alt="Bildschirmfoto 2023-07-04 um 11 16 46" src="https://github.com/Davidihl/tierlist/assets/111972510/bfa02877-e97f-4eec-b852-12e04fce8798">
 
 ## Design using Tailwind CSS and DaisyUI
 
