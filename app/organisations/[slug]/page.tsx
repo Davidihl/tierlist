@@ -24,7 +24,7 @@ type Association = {
 };
 
 export async function generateMetadata(props: Props) {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query getOrganisationBySlug($slug: String!) {
         organisationBySlug(slug: $slug) {
@@ -36,6 +36,8 @@ export async function generateMetadata(props: Props) {
       slug: props.params.slug,
     },
   });
+
+  if (loading) return <button className="btn loading">loading</button>;
 
   if (!data.organisationBySlug) {
     return {

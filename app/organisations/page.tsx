@@ -18,7 +18,7 @@ export type OrganisationQuery = {
 };
 
 export default async function OrganisationsPage() {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query getAllOrganisations {
         organisations {
@@ -33,6 +33,8 @@ export default async function OrganisationsPage() {
       }
     `,
   });
+
+  if (loading) return <button className="btn loading">loading</button>;
 
   const organisations: OrganisationQuery[] = data.organisations;
   return (

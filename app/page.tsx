@@ -1,6 +1,13 @@
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import Link from 'next/link';
 
 export default function Home() {
+  if (process.env.NODE_ENV !== 'production') {
+    // Adds messages only in a dev environment
+    loadDevMessages();
+    loadErrorMessages();
+  }
+
   return (
     <main className="h-full">
       <div className="hero min-h-full">
