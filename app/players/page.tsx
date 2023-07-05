@@ -45,7 +45,7 @@ export default async function PlayersPage() {
   const players: PlayerQuery[] = data.players;
 
   return (
-    <main className="flex justify-center sm:h-full sm:p-4">
+    <main className="flex justify-center sm:p-4">
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
           <h1 className="font-medium text-xl">Players</h1>
