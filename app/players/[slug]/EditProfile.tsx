@@ -67,8 +67,8 @@ export default function EditProfile(props: Props) {
   const [newPassword, setNewPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [alias, setAlias] = useState(props.player.alias);
-  const [firstName, setFirstName] = useState(props.player.alias);
-  const [lastName, setLastName] = useState(props.player.alias);
+  const [firstName, setFirstName] = useState(props.player.firstName);
+  const [lastName, setLastName] = useState(props.player.lastName);
   const [contact, setContact] = useState(props.player.contact);
   const [graphQlError, setGraphQlError] = useState('');
   const router = useRouter();
