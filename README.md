@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwindcss, PostgreSQL as the database, and integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts and display their respective strengths.
+This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwind CSS, PostgreSQL as the database, and integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts and display their respective strengths.
 
 ## Idea of this Project
 
@@ -16,7 +16,7 @@ To support the functionalities of the platform, the following database setup was
 
 ## Design using Tailwind CSS and DaisyUI
 
-The design will leverage Tailwind CSS, a utility-first CSS framework, to streamline the development process and create consistent and responsive components. DaisyUI, a plugin for Tailwind CSS, will further enhance the design by providing a set of ready-to-use components and styles, ensuring a cohesive and visually appealing interface. While not strictly adhering to Material Design, the UI tries incorporate certain principles inspired by it. This includes clean typography, the use of colors to convey hierarchy and interactivity, and the implementation of subtle animations and transitions to enhance user engagement.
+The frontend was created with [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/), a plugin for Tailwind CSS. While not strictly adhering to Material Design, the UI tries incorporate certain principles inspired by it. This includes clean typography, the use of colors to convey hierarchy and interactivity, and the implementation of subtle animations and transitions to enhance user engagement.
 
 ## Mobile First
 
