@@ -1,6 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-import { headers } from 'next/headers';
+
+// import { headers } from 'next/headers';
 
 export const { getClient } = registerApolloClient(() => {
   // Workaround to avoid using 'force-dynamic'
