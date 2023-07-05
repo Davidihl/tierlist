@@ -593,7 +593,6 @@ const resolvers = {
 
       // Validate username
       const checkUsername = await getUserByUsername(args.username);
-      console.log(checkUsername);
       if (checkUsername && checkUsername.id !== Number(context.user.id)) {
         throw new GraphQLError('Username already in use', {
           extensions: { code: '40001' },
@@ -1154,8 +1153,6 @@ const resolvers = {
       await deleteAssociationsByOrganisationId(Number(args.organisationId));
       await deleteOrganisationByOrganisationId(Number(args.organisationId));
       await deleteUserByUserId(Number(args.userId));
-
-      console.log('it works');
     },
     requestAssociationByOrganisation: async (
       parent: null,

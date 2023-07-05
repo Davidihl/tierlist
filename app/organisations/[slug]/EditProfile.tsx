@@ -246,7 +246,6 @@ export default function EditProfile(props: Props) {
                   formAction={async () => {
                     setOnError('');
                     await deleteOrganisationHandler();
-                    console.log('delete');
                     router.refresh();
                   }}
                   className="link text-xs"
