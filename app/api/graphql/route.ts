@@ -773,7 +773,7 @@ const resolvers = {
         return getLeagueAccountById(firstAccount.id);
       }
 
-      await addLeagueAccount(riotData, playerToAssign.id);
+      return await addLeagueAccount(riotData, playerToAssign.id);
     },
     deleteLeagueAccount: async (
       parent: null,
