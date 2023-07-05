@@ -46,4 +46,20 @@ npm run dev
 pnpm dev
 ```
 
+You need to setup a Postgres database, once it is setup, please run:
+
+```bash
+npm migrate up
+# or
+pnpm migrate up
+```
+
+To revert, run:
+
+```bash
+npm migrate down
+# or
+pnpm migrate down
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
