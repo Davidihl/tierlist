@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwindcss, PostgreSQL as the database, and integration of a GraphQL API and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts and display their respective strengths.
+This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwindcss, PostgreSQL as the database, and integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts and display their respective strengths.
 
 ## Idea of this Project
 
@@ -24,6 +24,12 @@ The frontend of this project was created with a mobile-first approach, ensuring 
 
 ## Getting Started
 
+### Requirements
+
+You need to add a `RIOT_API_KEY` in your local `.env`. You can get one from the [RIOT Developer Portal](https://developer.riotgames.com/). Caution: Development keys expire after 24 hours so you may apply for a personal key with a proper project description. It usually takes up to 2 weeks for RIOT to approve an application.
+
+### Start up the repository
+
 First, run install the dependencies:
 
 ```bash
@@ -41,22 +47,3 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
