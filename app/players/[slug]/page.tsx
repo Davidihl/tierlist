@@ -23,7 +23,7 @@ type Props = {
 };
 
 export async function generateMetadata(props: Props) {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query PlayerBySlug($slug: String!) {
         playerBySlug(slug: $slug) {
@@ -35,6 +35,8 @@ export async function generateMetadata(props: Props) {
       slug: props.params.slug,
     },
   });
+
+  if (loading) return <button className="btn loading">loading</button>;
 
   if (!data.playerBySlug) {
     return {
