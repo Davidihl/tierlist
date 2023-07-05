@@ -3,7 +3,7 @@ import Player from '../../components/Player';
 import { LeagueAccountQuery } from '../../database/leagueAccounts';
 import { getClient } from '../../util/apolloClient';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Players',
@@ -18,7 +18,7 @@ export type PlayerQuery = {
 };
 
 export default async function PlayersPage() {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query Player {
         players {
@@ -39,6 +39,8 @@ export default async function PlayersPage() {
       }
     `,
   });
+
+  if (loading) return <button className="btn loading">loading</button>;
 
   const players: PlayerQuery[] = data.players;
 

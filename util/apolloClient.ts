@@ -3,9 +3,8 @@ import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rs
 import { headers } from 'next/headers';
 
 export const { getClient } = registerApolloClient(() => {
-  // Local server Link
-
-  headers();
+  // Workaround to avoid using 'force-dynamic'
+  // headers();
 
   return new ApolloClient({
     cache: new InMemoryCache(),
