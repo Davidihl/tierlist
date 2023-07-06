@@ -36,7 +36,7 @@ export default async function OrganisationsPage() {
 
   if (loading) return <button className="btn loading">loading</button>;
 
-  const organisations: OrganisationQuery[] = data.organisations;
+  const organisations: OrganisationQuery[] = data?.organisations;
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">

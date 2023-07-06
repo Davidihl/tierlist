@@ -42,7 +42,7 @@ export default async function PlayersPage() {
 
   if (loading) return <button className="btn loading">loading</button>;
 
-  const players: PlayerQuery[] = data.players;
+  const players: PlayerQuery[] = data?.players;
 
   return (
     <main className="flex justify-center sm:p-4">

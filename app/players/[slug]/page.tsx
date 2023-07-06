@@ -44,8 +44,8 @@ export async function generateMetadata(props: Props) {
   }
 
   return {
-    title: `Player Profile for ${data.playerBySlug.alias}`,
-    description: `This is the player profile page for ${data.playerBySlug.alias}. You can look up contact information or the various league of legends accounts he claims to have access to.`,
+    title: `Player Profile for ${data.playerBySlug?.alias}`,
+    description: `This is the player profile page for ${data.playerBySlug?.alias}. You can look up contact information or the various league of legends accounts he claims to have access to.`,
   };
 }
 
@@ -98,8 +98,8 @@ export default async function PlayerPage(props: Props) {
     notFound();
   }
 
-  const leagueAccounts = data.playerBySlug.leagueAccounts;
-  const allowEdit = session?.userId === Number(data.playerBySlug.user.id);
+  const leagueAccounts = data.playerBySlug?.leagueAccounts;
+  const allowEdit = session?.userId === Number(data.playerBySlug?.user.id);
 
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">

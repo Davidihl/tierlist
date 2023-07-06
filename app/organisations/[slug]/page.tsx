@@ -24,7 +24,7 @@ type Association = {
 };
 
 export async function generateMetadata(props: Props) {
-  const { data, loading } = await getClient().query({
+  const { data } = await getClient().query({
     query: gql`
       query getOrganisationBySlug($slug: String!) {
         organisationBySlug(slug: $slug) {
@@ -37,9 +37,7 @@ export async function generateMetadata(props: Props) {
     },
   });
 
-  if (loading) return <button className="btn loading">loading</button>;
-
-  if (!data.organisationBySlug) {
+  if (!data?.organisationBySlug) {
     return {
       title: 'Organisation not found',
       description: 'Could not find the organisation you are looking for',
@@ -57,7 +55,7 @@ export default async function OrganisationPage(props: Props) {
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
 
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: gql`
       query getOrganisationBySlug($slug: String!) {
         organisationBySlug(slug: $slug) {
@@ -98,13 +96,16 @@ export default async function OrganisationPage(props: Props) {
     },
   });
 
+  if (loading) return <button className="btn loading">loading</button>;
+
   if (!data.organisationBySlug) {
     notFound();
   }
 
-  const allowEdit = session?.userId === Number(data.organisationBySlug.user.id);
+  const allowEdit =
+    session?.userId === Number(data.organisationBySlug?.user.id);
   const associations: Association[] | undefined =
-    data.organisationBySlug.associations;
+    data.organisationBySlug?.associations;
 
   return (
     <main className="flex flex-col items-center sm:p-4 gap-4">
