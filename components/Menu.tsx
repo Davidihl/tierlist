@@ -50,7 +50,7 @@ export default function Menu() {
           <div className="grid flex-grow h-32 card rounded-box place-items-center">
             <Link
               href="/players"
-              className="flex items-center gap-4 justify-between btn btn-ghost rounded-full normal-case font-normal"
+              className="flex items-center gap-4 justify-between btn btn-ghost btn-lg rounded-full normal-case text-sm font-normal"
             >
               <span className="font">Browser players</span>
             </Link>
@@ -59,7 +59,7 @@ export default function Menu() {
           <div className="grid flex-grow h-32 card rounded-box place-items-center">
             <Link
               href="/organisations"
-              className="flex items-center gap-1 justify-between btn btn-ghost rounded-full normal-case font-normal"
+              className="flex items-center gap-1 justify-between btn btn-ghost btn-lg rounded-full normal-case text-sm font-normal"
             >
               <span>Browser organisations</span>
             </Link>
