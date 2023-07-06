@@ -156,20 +156,15 @@ export default async function OrganisationPage(props: Props) {
             <p>No players associated yet</p>
           )}
           {allowEdit && (
-            <>
-              <PendingQueries
-                organisationId={Number(data.organisationBySlug.id)}
-              />
-              <div>
-                <AssociationRequestForm
-                  isPlayer={false}
-                  userId={session.userId}
-                />
-              </div>
-            </>
+            <PendingQueries
+              organisationId={Number(data.organisationBySlug.id)}
+            />
           )}
         </div>
       </div>
+      {allowEdit && (
+        <AssociationRequestForm isPlayer={false} userId={session.userId} />
+      )}
     </main>
   );
 }
