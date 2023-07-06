@@ -37,7 +37,7 @@ export default async function PendingQueries(props: Props) {
           return (
             <div
               key={`player-${association.player.alias}`}
-              className="flex gap-2 justify-between max-w-lg border-b p-2 first:border-t"
+              className="flex gap-2 justify-between border-b p-2 first:border-t"
             >
               <Player player={association.player} showOrganisation={false} />
 
