@@ -31,6 +31,8 @@ export default function UpdateLeagueAccounts(props: Props) {
   const [rotating, setRotating] = useState(false);
   const router = useRouter();
 
+  console.log(rotating);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowNotification(false);
@@ -75,9 +77,9 @@ export default function UpdateLeagueAccounts(props: Props) {
         <Image
           src={updateIcon}
           alt="Update Icon"
-          className={rotating ? 'animate-reverse-spin' : ''}
+          className={`block ${rotating && 'animate-reverse-spin'}`}
         />
-        Update Riot Data
+        Update Riot Data {rotating && 'test'}
       </button>
 
       {showNotification ? (
