@@ -21,8 +21,10 @@ const addLeagueAccountMutation = gql`
 export default function AddLeagueAccount() {
   const [summonerName, setSummonerName] = useState('');
   const [showNotification, setShowNotification] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [onError, setOnError] = useState('');
   const [graphQlError, setGraphQlError] = useState('');
+  const [updateStatus, setUpdateStatus] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -31,6 +33,13 @@ export default function AddLeagueAccount() {
     }, 2000);
     return () => clearTimeout(timer);
   }, [showNotification]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [showSuccess]);
 
   const [addLeagueAccountHandler] = useMutation(addLeagueAccountMutation, {
     variables: {
@@ -42,10 +51,14 @@ export default function AddLeagueAccount() {
       const errorCode: any = error.graphQLErrors[0]?.extensions.code;
       setGraphQlError(errorCode);
       setShowNotification(true);
+      setUpdateStatus('');
     },
 
     onCompleted: () => {
       setOnError('');
+      setUpdateStatus('');
+      setShowSuccess(true);
+      console.log(updateStatus);
       router.refresh();
     },
   });
@@ -75,6 +88,8 @@ export default function AddLeagueAccount() {
               className="btn btn-secondary rounded-full"
               formAction={async () => {
                 setOnError('');
+                setUpdateStatus('Searching');
+                console.log(updateStatus);
                 await addLeagueAccountHandler();
                 setSummonerName('');
                 router.refresh();
@@ -82,11 +97,34 @@ export default function AddLeagueAccount() {
             >
               Add League Account
             </button>
+            <span className="text-xs ml-4">{updateStatus}</span>
           </div>
           {showNotification ? (
             <div className="toast toast-center ">
               <div className="alert alert-error">
                 <span>{onError}</span>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+          {showSuccess ? (
+            <div className="toast toast-center ">
+              <div className="alert alert-success">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Summoner found. List will be updated.</span>
               </div>
             </div>
           ) : (
