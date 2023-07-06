@@ -15,16 +15,21 @@ export default function Error({
   }, [error]);
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
-    </div>
+    <main className="flex flex-col items-center sm:p-4 gap-4">
+      <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
+        <div className="card-body">
+          <h1 className="font-medium text-xl">Something went wrong!</h1>
+          <button
+            className="btn btn-primary rounded-full"
+            onClick={
+              // Attempt to recover by trying to re-render the segment
+              () => reset()
+            }
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }
