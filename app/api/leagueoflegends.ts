@@ -23,7 +23,7 @@ export async function callSummonerApi(summoner: string) {
   const remainingRequests = await summonerLimiter.removeTokens(1);
 
   if (remainingRequests === 0) {
-    throw console.error('Too many requests on RIOT Summoner API');
+    throw new GraphQLError('To many requests, try again in 1 minute');
   }
 
   const encodedSummoner = encodeString(summoner);
@@ -52,7 +52,7 @@ export async function callLeagueApi(encryptedSummoner: string) {
   const remainingRequests = await leagueLimiter.removeTokens(1);
 
   if (remainingRequests === 0) {
-    throw console.error('Too many requests on RIOT League API');
+    throw new GraphQLError('To many requests, try again in 1 minute');
   }
 
   const response = await fetch(
