@@ -30,6 +30,7 @@ export default function UpdateLeagueAccounts(props: Props) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [rotating, setRotating] = useState(false);
   const router = useRouter();
+  console.log(rotating);
 
   useEffect(() => {
     const timer = setTimeout(() => {
