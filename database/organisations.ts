@@ -53,7 +53,7 @@ export const getOrganisationBySlug = cache(async (slug: string) => {
     FROM
       organisations
     WHERE
-      slug = ${slug}
+      slug = ${slug.toLowerCase()}
  `;
   return organisation;
 });

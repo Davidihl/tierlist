@@ -209,7 +209,10 @@ export default function SignUpForm() {
             <input
               type="checkbox"
               checked={isPlayer}
-              onChange={() => setIsPlayer(!isPlayer)}
+              onChange={() => {
+                setIsPlayer(!isPlayer);
+                setAlias('');
+              }}
               className="radio radio-primary"
             />
             I am an athlete

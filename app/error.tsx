@@ -18,16 +18,21 @@ export default function Error({
     <main className="flex flex-col items-center sm:p-4 gap-4">
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
-          <h1 className="font-medium text-xl">Something went wrong!</h1>
-          <button
-            className="btn btn-primary rounded-full"
-            onClick={
-              // Attempt to recover by trying to re-render the segment
-              () => reset()
-            }
-          >
-            Try again
-          </button>
+          <h1 className="font-medium text-xl">
+            It's not your fault. It's mine!
+          </h1>
+          <p>Sometimes, something goes wrong. Sorry for that!</p>
+          <div>
+            <button
+              className="btn btn-primary rounded-full"
+              onClick={
+                // Attempt to recover by trying to re-render the segment
+                () => reset()
+              }
+            >
+              Try again
+            </button>
+          </div>
         </div>
       </div>
     </main>

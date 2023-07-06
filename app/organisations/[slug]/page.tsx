@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import AssociationRequestForm from '../../../components/AssociationRequestForm';
 import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
+import { getOrganisationBySlug } from '../../../database/organisations';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
 import { PlayerQuery } from '../../players/page';

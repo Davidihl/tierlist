@@ -76,6 +76,7 @@ import {
 } from '../../../database/users';
 import calculateTimeDifference from '../../../util/calculateTimeDifference';
 import { secureCookieOptions } from '../../../util/cookies';
+import { encodeString } from '../../../util/encodeString';
 import {
   getLeagueofLegendsData,
   updateLeagueofLegendsData,
@@ -445,12 +446,12 @@ const resolvers = {
       // Check if player or organisation exists
       const aliasTakenByPlayer = await getPlayerByAlias(args.alias);
       if (aliasTakenByPlayer) {
-        throw new GraphQLError('Alias already taken', {
+        throw new GraphQLError('Alias already in use', {
           extensions: { code: '40004' },
         });
       }
 
-      const aliasTakenByOrganisation = await getPlayerByAlias(args.alias);
+      const aliasTakenByOrganisation = await getOrganisationByAlias(args.alias);
       if (aliasTakenByOrganisation) {
         throw new GraphQLError('Alias already in use', {
           extensions: { code: '40004' },
@@ -458,14 +459,16 @@ const resolvers = {
       }
 
       // Check if conflict with slug can happen
-      const slugTakenByPlayer = await getPlayerBySlug(args.alias);
+      const slugTakenByPlayer = await getPlayerBySlug(encodeString(args.alias));
       if (slugTakenByPlayer) {
-        throw new GraphQLError('Alias already taken', {
+        throw new GraphQLError('Alias already in use', {
           extensions: { code: '40004' },
         });
       }
 
-      const slugTakenByOrganisation = await getPlayerBySlug(args.alias);
+      const slugTakenByOrganisation = await getOrganisationBySlug(
+        encodeString(args.alias),
+      );
       if (slugTakenByOrganisation) {
         throw new GraphQLError('Alias already in use', {
           extensions: { code: '40004' },
@@ -575,15 +578,15 @@ const resolvers = {
         });
       }
       async function validateAlias(aliasInput: string) {
-        // Compare organisation alias with organisations
-        let checkAlias = await getOrganisationByAlias(aliasInput);
+        // Check if alias causes conflict with slugs
+        let checkAlias = await getOrganisationBySlug(encodeString(aliasInput));
         if (checkAlias) {
           throw new GraphQLError('Alias already in use', {
             extensions: { code: '40004' },
           });
         }
         // Compare organisation alias with players
-        checkAlias = await getPlayerByAlias(aliasInput);
+        checkAlias = await getPlayerBySlug(encodeString(aliasInput));
         if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
           throw new GraphQLError('Alias already in use', {
             extensions: { code: '40004' },
@@ -1016,8 +1019,8 @@ const resolvers = {
       }
 
       async function validateAlias(aliasInput: string) {
-        // Compare organisation alias with organisations
-        let checkAlias = await getOrganisationByAlias(aliasInput);
+        // Check if alias causes conflict with slugs
+        let checkAlias = await getOrganisationBySlug(encodeString(aliasInput));
 
         if (checkAlias && checkAlias.userId !== Number(context.user.id)) {
           throw new GraphQLError('Alias already in use', {
@@ -1025,7 +1028,7 @@ const resolvers = {
           });
         }
         // Compare organisation alias with players
-        checkAlias = await getPlayerByAlias(aliasInput);
+        checkAlias = await getPlayerBySlug(encodeString(aliasInput));
 
         if (checkAlias) {
           throw new GraphQLError('Alias already in use', {
