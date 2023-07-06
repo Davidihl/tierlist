@@ -9,13 +9,13 @@ riotAuthorization.append('X-Riot-Token', process.env.RIOT_API_KEY || '');
 
 // Provide limiters for each endpoint used
 const summonerLimiter = new RateLimiter({
-  tokensPerInterval: 10,
-  interval: 'second',
+  tokensPerInterval: 100,
+  interval: 'minute',
 });
 
 const leagueLimiter = new RateLimiter({
-  tokensPerInterval: 10,
-  interval: 'second',
+  tokensPerInterval: 100,
+  interval: 'minute',
 });
 
 // Call Summoner Endpoint
