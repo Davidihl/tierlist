@@ -28,9 +28,7 @@ export default function UpdateLeagueAccounts(props: Props) {
   const [onError, setOnError] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [rotating, setRotating] = useState(false);
   const router = useRouter();
-  console.log(rotating);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,14 +49,13 @@ export default function UpdateLeagueAccounts(props: Props) {
 
     onError: (error) => {
       setShowNotification(true);
-      setRotating(false);
       setOnError(error.message);
     },
 
     onCompleted: () => {
       setOnError('');
       setShowSuccess(true);
-      setRotating(false);
+      router.refresh();
     },
   });
 
@@ -67,17 +64,14 @@ export default function UpdateLeagueAccounts(props: Props) {
       <button
         className="flex items-center btn rounded-full group transition-all"
         formAction={async () => {
-          setRotating(true);
-          console.log(rotating);
           setOnError('');
           await updateLeagueAccountsHandler();
-          router.refresh();
         }}
       >
         <Image
           src={updateIcon}
           alt="Update Icon"
-          className={rotating ? 'animate-reverse-spin' : ''}
+          className="group-hover:animate-reverse-spin"
         />
         Update Riot Data
       </button>
