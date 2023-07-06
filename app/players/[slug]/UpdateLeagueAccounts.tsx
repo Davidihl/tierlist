@@ -68,6 +68,7 @@ export default function UpdateLeagueAccounts(props: Props) {
         className="flex items-center btn rounded-full group transition-all"
         formAction={async () => {
           setRotating(true);
+          console.log(rotating);
           setOnError('');
           await updateLeagueAccountsHandler();
           router.refresh();
