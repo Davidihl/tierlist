@@ -159,22 +159,31 @@ export default async function PlayerPage(props: Props) {
             <h2 className="font-medium text-lg mb-2">Assigned Accounts</h2>
             <div>
               {!data.playerBySlug.mainAccount?.tier && allowEdit && (
-                <div className="alert alert-warning mt-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="stroke-current shrink-0 h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                    />
-                  </svg>
-                  <span>Warning: No League of Legends account assigned!</span>
-                </div>
+                <>
+                  <div className="alert mt-4 rounded-none shadow-md">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="stroke-current shrink-0 h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <span>
+                      Recommended: Please add a League of Legends account!
+                    </span>
+                  </div>
+                  <p className="text-xs mt-4 max-w-lg">
+                    Don't worry, you still show up in the player overview, but
+                    since the list is sorted by player strength, you will be
+                    showed at the very end.
+                  </p>
+                </>
               )}
               {leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
                 <div
@@ -201,7 +210,7 @@ export default async function PlayerPage(props: Props) {
             {leagueAccounts.length > 0 ? (
               <UpdateLeagueAccounts playerId={data.playerBySlug.id} />
             ) : !allowEdit ? (
-              <div className="alert">
+              <div className="alert mt-4 rounded-none shadow-md ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
