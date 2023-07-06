@@ -9,13 +9,13 @@ riotAuthorization.append('X-Riot-Token', process.env.RIOT_API_KEY || '');
 
 // Provide limiters for each endpoint used
 const summonerLimiter = new RateLimiter({
-  tokensPerInterval: 100,
-  interval: 'minute',
+  tokensPerInterval: 20,
+  interval: 'second',
 });
 
 const leagueLimiter = new RateLimiter({
-  tokensPerInterval: 100,
-  interval: 'minute',
+  tokensPerInterval: 20,
+  interval: 'second',
 });
 
 // Call Summoner Endpoint
@@ -40,7 +40,7 @@ export async function callSummonerApi(summoner: string) {
 
   if ('status' in data) {
     throw new GraphQLError(data.status.message, {
-      extensions: { code: data.status_code },
+      extensions: { code: data.status.status_code },
     });
   }
 

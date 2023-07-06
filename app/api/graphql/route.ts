@@ -344,7 +344,7 @@ const resolvers = {
     },
   },
   Date: {
-    // The `serialize` function is used to convert the Date object to a string when sending the response
+    // Convert the timestamp into a readable format
     serialize(value: Date) {
       const year = value.getFullYear();
       const month = String(value.getMonth() + 1).padStart(2, '0');
@@ -363,10 +363,10 @@ const resolvers = {
       return await getLeagueAccountById(Number(parent.mainaccountId));
     },
     leagueAccounts: async (parent: any) => {
-      return await getAllLeagueAccountsByPlayerId(parent.id);
+      return await getAllLeagueAccountsByPlayerId(Number(parent.id));
     },
     currentAssociation: async (parent: any) => {
-      return await getCurrentAssociationsByPlayer(parent.id);
+      return await getCurrentAssociationsByPlayer(Number(parent.id));
     },
   },
   Association: {
@@ -374,7 +374,7 @@ const resolvers = {
       return await getPlayerById(Number(parent.playerId));
     },
     organisation: async (parent: any) => {
-      return await getOrganisationById(parent.organisationId);
+      return await getOrganisationById(Number(parent.organisationId));
     },
   },
   Organisation: {
@@ -382,7 +382,7 @@ const resolvers = {
       return await getUserById(Number(parent.userId));
     },
     associations: async (parent: any) => {
-      return await getAssociationsByOrganisation(parent.id);
+      return await getAssociationsByOrganisation(Number(parent.id));
     },
   },
 
@@ -745,8 +745,9 @@ const resolvers = {
           extensions: { code: '400' },
         });
       }
-      const playerToAssign = await getPlayerByUserId(context.user.id);
 
+      // Check if player exists
+      const playerToAssign = await getPlayerByUserId(context.user.id);
       if (!playerToAssign) {
         throw new GraphQLError('Player not found', {
           extensions: { code: '404' },
