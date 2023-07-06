@@ -8,20 +8,6 @@ module.exports = {
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      animation: {
-        'reverse-spin': 'reverse-spin 1s linear infinite',
-      },
-      keyframes: {
-        'reverse-spin': {
-          from: {
-            transform: 'rotate(360deg)',
-          },
-        },
-      },
-    },
-  },
   plugins: [require('daisyui')],
   daisyui: {
     // themes: true, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]

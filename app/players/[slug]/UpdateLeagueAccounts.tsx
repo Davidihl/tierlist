@@ -68,11 +68,7 @@ export default function UpdateLeagueAccounts(props: Props) {
           await updateLeagueAccountsHandler();
         }}
       >
-        <Image
-          src={updateIcon}
-          alt="Update Icon"
-          className="group-hover:animate-reverse-spin"
-        />
+        <Image src={updateIcon} alt="Update Icon" />
         Update Riot Data
       </button>
 
