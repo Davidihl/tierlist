@@ -63,7 +63,6 @@ export const getPlayerById = cache(async (id: number) => {
 });
 
 export const getPlayerBySlug = cache(async (slug: string) => {
-  console.log(slug.toLowerCase());
   const [player] = await sql<Player[]>`
     SELECT
      id,

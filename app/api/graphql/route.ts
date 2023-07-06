@@ -1305,7 +1305,6 @@ const resolvers = {
 
       return await endAssociation(Number(args.id));
     },
-    // deleteUserAndOrganisation
     login: async (
       parent: null,
       args: { username: string; password: string },
@@ -1369,7 +1368,6 @@ const resolvers = {
       });
       return await deleteSessionByToken(args.token);
     },
-    // deleteUserAndPlayerAndLeagueAccounts
   },
 };
 
