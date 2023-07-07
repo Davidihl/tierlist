@@ -27,11 +27,6 @@ export default function Home() {
             </div>
           </div>
           <Image
-            src={mouse}
-            alt="Illustration of a mouse"
-            className="absolute top-10 left-0 -z-10 w-1/2 md:w-1/5 max-w-sm"
-          />
-          <Image
             src={headset}
             alt="Illustration of a headset"
             className="absolute right-0 bottom-1/4 -z-10 w-1/2 max-w-sm"
