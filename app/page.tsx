@@ -15,16 +15,6 @@ export default function Home() {
             <Link href="/players" className="btn btn-primary rounded-full z-50">
               Browser Players
             </Link>
-            <div className="mt-24 bg-base-100 shadow-lg p-4 border-t-4 border-primary max-w-md">
-              <h2 className="font-medium text-xl mb-2">About This Project</h2>
-              <p>
-                This application is a prototype allowing users to sign up as
-                either organizations or players. Players can showcase their
-                League of Legends accounts and display their respective
-                strengths while organisations can facilitate associations to the
-                players.
-              </p>
-            </div>
           </div>
         </div>
       </div>

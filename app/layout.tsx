@@ -25,8 +25,8 @@ export default function RootLayout({
           <Navigation />
           {children}
         </ApolloClientProvider>
-        <footer className="footer footer-center p-4 relative text-base-content">
-          <div className="mb-10">
+        <footer className="footer footer-center text-base-content p-4">
+          <div>
             <p className="flex flex-wrap gap-4 justify-">
               <span className="border-r pr-4 border-black">
                 Copyright © 2023 - David Ihl
@@ -37,11 +37,6 @@ export default function RootLayout({
               </Link>
             </p>
           </div>
-          <Image
-            src={background}
-            className="absolute bottom-0 w-full -z-10"
-            alt="Red shapes"
-          />
         </footer>
       </body>
     </html>
