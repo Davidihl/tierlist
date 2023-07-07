@@ -5,9 +5,9 @@ import mouse from '../public/mouse.svg';
 
 export default function Home() {
   return (
-    <main className="h-full relative">
+    <main className="h-full">
       <div className="hero min-h-full">
-        <div className="hero-content flex-col">
+        <div className="hero-content">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold mb-5 text-white">
               Connecting Talent. Amplifying Recognition. Shaping Esports.
@@ -26,16 +26,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <Image
-            src={mouse}
-            alt="Illustration of a mouse"
-            className="absolute top-1/4 left-0 -z-10 w-1/2 md:w-1/5 max-w-sm"
-          />
-          <Image
-            src={headset}
-            alt="Illustration of a headset"
-            className="absolute right-0 bottom-1/4 -z-10 w-1/2 max-w-sm"
-          />
         </div>
       </div>
     </main>
