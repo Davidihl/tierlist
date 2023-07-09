@@ -134,32 +134,43 @@ export default async function OrganisationPage(props: Props) {
           <h2 className="font-medium text-lg mb-2">
             Players associated with {data.organisationBySlug.alias}
           </h2>
-          {associations ? (
-            associations.map((association) => {
-              return (
-                <div
-                  key={`player-${association.player.alias}`}
-                  className="flex gap-2 justify-between border-b py-2 first:border-t"
-                >
-                  <AssociatedPlayer player={association.player} />
-                  {allowEdit ? (
-                    <div className="flex items-center">
-                      <EndAssociation id={association.id} />
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <p>No players associated yet</p>
-          )}
-          {allowEdit && (
-            <PendingQueries
-              organisationId={Number(data.organisationBySlug.id)}
-            />
-          )}
+          <div className="table border-collapse table-auto w-full">
+            <div className="hidden sm:table-header-group">
+              <div className="table-row text-xs pb-4">
+                <div className="table-cell">Alias</div>
+                <div className="table-cell text-right">Division</div>
+                <div className="table-cell text-right">LP</div>
+                <div className="table-cell text-right">Winrate</div>
+                <div className="table-cell text-right">Games</div>
+              </div>
+            </div>
+            {associations ? (
+              associations.map((association) => {
+                return (
+                  <div
+                    key={`player-${association.player.alias}`}
+                    className="table-row w-full border-b"
+                  >
+                    <AssociatedPlayer player={association.player} />
+                    {allowEdit ? (
+                      <div className="table-cell align-middle text-right">
+                        <EndAssociation id={association.id} />
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <p>No players associated yet</p>
+            )}
+            {allowEdit && (
+              <PendingQueries
+                organisationId={Number(data.organisationBySlug.id)}
+              />
+            )}
+          </div>
         </div>
       </div>
       {allowEdit && (

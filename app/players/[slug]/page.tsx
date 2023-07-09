@@ -139,7 +139,7 @@ export default async function PlayerPage(props: Props) {
               ) : (
                 ''
               )}
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <AssociationBadge playerId={Number(data.playerBySlug.id)} />
                 {allowEdit && data.playerBySlug.currentAssociation?.id && (
                   <RemoveAssociation

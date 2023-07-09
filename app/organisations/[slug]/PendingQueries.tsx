@@ -40,18 +40,27 @@ export default async function PendingQueries(props: Props) {
   });
 
   return (
-    <div className="mt-4">
-      <h2 className="font-medium text-lg mb-2">Pending requests:</h2>
+    <>
+      <h2 className="font-medium text-lg mb-2 mt-8">Pending requests:</h2>
+      <div className="hidden sm:table-header-group border-b">
+        <div className="table-row text-xs pb-4">
+          <div className="table-cell">Alias</div>
+          <div className="table-cell text-right">Division</div>
+          <div className="table-cell text-right">LP</div>
+          <div className="table-cell text-right">Winrate</div>
+          <div className="table-cell text-right">Games</div>
+        </div>
+      </div>
       {data.organisationAssociationsPending ? (
         data.organisationAssociationsPending.map((association: any) => {
           return (
             <div
               key={`player-${association.player.alias}`}
-              className="flex gap-2 justify-between border-b py-2 first:border-t"
+              className="table-row w-full border-b"
             >
               <AssociatedPlayer player={association.player} />
 
-              <div className="flex items-center">
+              <div className="table-cell align-middle text-right">
                 <EndAssociation id={association.id} />
               </div>
             </div>
@@ -60,6 +69,6 @@ export default async function PendingQueries(props: Props) {
       ) : (
         <p>No pending requests</p>
       )}
-    </div>
+    </>
   );
 }

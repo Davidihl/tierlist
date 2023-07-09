@@ -46,7 +46,7 @@ export default function DeleteLeagueAccount(props: Props) {
   return (
     <>
       <button
-        className="btn btn-circle mr-2"
+        className="btn btn-circle"
         onClick={async () => {
           setOnError('');
           await endAssociationHandler();
