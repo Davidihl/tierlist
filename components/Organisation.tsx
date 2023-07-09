@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { OrganisationQuery } from '../app/organisations/page';
+import groupIcon from '../public/group.svg';
 
 type Props = {
   organisation: OrganisationQuery;
@@ -14,8 +16,18 @@ export default function Organisation(props: Props) {
       <Link href={`/organisations/${props.organisation.slug}`}>
         <div>{props.organisation.alias}</div>
       </Link>
-      <div className="text-xs flex items-center">
-        Current player: {props.organisation.associations.length}
+      <div className="text-xs flex items-center relative">
+        <div className="indicator">
+          <span className="indicator-item badge badge-secondary">
+            {props.organisation.associations.length}
+          </span>
+          <Image
+            src={groupIcon}
+            width={28}
+            height={28}
+            alt="Players associated with icon"
+          />
+        </div>
       </div>
     </div>
   );

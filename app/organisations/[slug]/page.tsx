@@ -144,7 +144,7 @@ export default async function OrganisationPage(props: Props) {
                 <div className="table-cell text-right">Games</div>
               </div>
             </div>
-            {associations ? (
+            {associations && associations.length > 0 ? (
               associations.map((association) => {
                 return (
                   <div
@@ -163,7 +163,7 @@ export default async function OrganisationPage(props: Props) {
                 );
               })
             ) : (
-              <p>No players associated yet</p>
+              <p className="py-4">No players associated yet</p>
             )}
             {allowEdit && (
               <PendingQueries

@@ -74,7 +74,7 @@ export default function AssociatedPlayer(props: Props) {
         {winrate ? winrate.toFixed(2) + '%' : ''}
       </div>
       <div className="hidden sm:table-cell text-right align-middle text-xs">
-        {totalGames}
+        {totalGames && totalGames > 0 ? totalGames : ''}
       </div>
       <div className="max-[360px]:hidden table-cell sm:hidden text-right align-middle text-xs">
         <div>
