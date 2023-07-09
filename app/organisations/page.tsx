@@ -46,7 +46,7 @@ export default async function OrganisationsPage() {
             return (
               <div
                 key={`player-${organisation.id}`}
-                className="flex gap-2 justify-between border-b p-2 first:border-t"
+                className="flex gap-2 justify-between border-b py-2 first:border-t"
               >
                 <Organisation organisation={organisation} />
               </div>

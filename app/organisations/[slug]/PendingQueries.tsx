@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import AssociatedPlayer from '../../../components/AssociatedPlayer';
 import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
 import { getClient } from '../../../util/apolloClient';
@@ -16,9 +17,18 @@ export default async function PendingQueries(props: Props) {
         ) {
           id
           player {
+            id
             alias
+            slug
             mainAccount {
+              id
+              summoner
               tier
+              rank
+              leaguePoints
+              wins
+              losses
+              lastUpdate
             }
           }
         }
@@ -37,9 +47,9 @@ export default async function PendingQueries(props: Props) {
           return (
             <div
               key={`player-${association.player.alias}`}
-              className="flex gap-2 justify-between border-b p-2 first:border-t"
+              className="flex gap-2 justify-between border-b py-2 first:border-t"
             >
-              <Player player={association.player} showOrganisation={false} />
+              <AssociatedPlayer player={association.player} />
 
               <div className="flex items-center">
                 <EndAssociation id={association.id} />

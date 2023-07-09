@@ -157,7 +157,16 @@ export default async function PlayerPage(props: Props) {
 
           <div className="mt-4">
             <h2 className="font-medium text-lg mb-2">Assigned Accounts</h2>
-            <div>
+            <div className="table border-collapse table-auto w-full">
+              <div className="hidden sm:table-header-group">
+                <div className="table-row text-xs pb-4">
+                  <div className="table-cell">Alias</div>
+                  <div className="table-cell text-right">Division</div>
+                  <div className="table-cell text-right">LP</div>
+                  <div className="table-cell text-right">Winrate</div>
+                  <div className="table-cell text-right">Games</div>
+                </div>
+              </div>
               {!data.playerBySlug.mainAccount?.tier && allowEdit && (
                 <>
                   <div className="alert mt-4 rounded-none shadow-md">
@@ -185,15 +194,19 @@ export default async function PlayerPage(props: Props) {
                   </p>
                 </>
               )}
+
               {leagueAccounts.map((leagueAccount: LeagueAccountQuery) => (
                 <div
-                  className="flex gap-2 justify-between border-b p-2 first:border-t"
+                  className="table-row w-full border-b"
                   key={`league-account-${leagueAccount.id}`}
                 >
-                  <LeagueAccount leagueAccount={leagueAccount} />
+                  <LeagueAccount
+                    leagueAccount={leagueAccount}
+                    key={`league-account-${leagueAccount.id}`}
+                  />
                   {allowEdit &&
                   data.playerBySlug.mainAccount?.id !== leagueAccount.id ? (
-                    <div className="flex items-center">
+                    <div className="table-cell align-middle text-right">
                       <LeagueAccountMoreButton
                         leagueAccountId={leagueAccount.id}
                         playerId={data.playerBySlug.id}

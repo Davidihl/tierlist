@@ -49,20 +49,26 @@ export default async function PlayersPage() {
       <div className="shadow-xl w-full max-w-4xl bg-base-100 border-primary sm:border-t-4">
         <div className="card-body">
           <h1 className="font-medium text-xl">Players</h1>
-          {players.map((player) => {
-            return (
-              <div
-                key={`player-${player.alias}`}
-                className="flex gap-2 justify-between border-b p-2 first:border-t"
-              >
+          <div className="table border-collapse table-auto w-full">
+            <div className="hidden sm:table-header-group">
+              <div className="table-row text-xs pb-4">
+                <div className="table-cell">Alias</div>
+                <div className="table-cell text-right">Division</div>
+                <div className="table-cell text-right">LP</div>
+                <div className="table-cell text-right">Winrate</div>
+                <div className="table-cell text-right">Games</div>
+              </div>
+            </div>
+            {players.map((player) => {
+              return (
                 <Player
                   key={`player-${player.alias}`}
                   player={player}
                   showOrganisation={true}
                 />
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </main>

@@ -23,7 +23,7 @@ export default async function AssociationBadge(props: Props) {
 
   if (data.playerAssociationsByPlayerId) {
     return (
-      <div className="badge badge-primary">
+      <div className="badge badge-primary truncate text-xs">
         {data.playerAssociationsByPlayerId.organisation.alias}
       </div>
     );

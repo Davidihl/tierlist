@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
+import AssociatedPlayer from '../../../components/AssociatedPlayer';
 import AssociationRequestForm from '../../../components/AssociationRequestForm';
 import EndAssociation from '../../../components/EndAssociation';
 import Player from '../../../components/Player';
@@ -138,12 +139,9 @@ export default async function OrganisationPage(props: Props) {
               return (
                 <div
                   key={`player-${association.player.alias}`}
-                  className="flex gap-2 justify-between border-b p-2 first:border-t"
+                  className="flex gap-2 justify-between border-b py-2 first:border-t"
                 >
-                  <Player
-                    player={association.player}
-                    showOrganisation={false}
-                  />
+                  <AssociatedPlayer player={association.player} />
                   {allowEdit ? (
                     <div className="flex items-center">
                       <EndAssociation id={association.id} />
