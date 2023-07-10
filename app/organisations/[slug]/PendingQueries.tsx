@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 import { getClient } from '../../../util/apolloClient';
-import Player from '../../players/Player';
 import AssociatedPlayer from './AssociatedPlayer';
 import EndAssociation from './EndAssociation';
 

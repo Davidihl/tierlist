@@ -1,11 +1,9 @@
 import { gql } from '@apollo/client';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { getOrganisationBySlug } from '../../../database/organisations';
 import { getValidSessionByToken } from '../../../database/sessions';
 import { getClient } from '../../../util/apolloClient';
 import { PlayerQuery } from '../../players/page';
-import Player from '../../players/Player';
 import AssociatedPlayer from './AssociatedPlayer';
 import AssociationRequestForm from './AssociationRequestForm';
 import EditProfile from './EditProfile';
