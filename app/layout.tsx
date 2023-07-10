@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="h-screen relative pt-[64px] bg-slate-400">
+      <body className="h-screen flex flex-col justify-between relative pt-[64px] bg-slate-400">
         <ApolloClientProvider>
           <Navigation />
           {children}
