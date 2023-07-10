@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { LeagueAccountQuery } from '../database/leagueAccounts';
+import { LeagueAccountQuery } from '../../../database/leagueAccounts';
 
 type Props = {
   leagueAccount: LeagueAccountQuery;

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
-import Player from '../../components/Player';
 import { LeagueAccountQuery } from '../../database/leagueAccounts';
 import { getClient } from '../../util/apolloClient';
+import Player from './Player';
 
 export const dynamic = 'force-dynamic';
 

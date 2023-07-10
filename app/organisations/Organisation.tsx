@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { OrganisationQuery } from '../app/organisations/page';
-import groupIcon from '../public/group.svg';
+import groupIcon from '../../public/group.svg';
+import { OrganisationQuery } from './page';
 
 type Props = {
   organisation: OrganisationQuery;

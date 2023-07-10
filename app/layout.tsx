@@ -1,9 +1,9 @@
 import './globals.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import Navigation from '../components/Navigation';
 import background from '../public/background.svg';
 import { ApolloClientProvider } from './ApolloClientProvider';
+import Navigation from './Navigation';
 
 export const metadata = {
   title: {

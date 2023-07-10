@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
-import Organisation from '../../components/Organisation';
 import { getClient } from '../../util/apolloClient';
+import Organisation from './Organisation';
 
 export const dynamic = 'force-dynamic';
 

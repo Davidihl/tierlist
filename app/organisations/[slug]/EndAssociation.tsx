@@ -3,7 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import removeIcon from '../public/remove.svg';
+import removeIcon from '../../../public/remove.svg';
 
 type Props = {
   id: number;

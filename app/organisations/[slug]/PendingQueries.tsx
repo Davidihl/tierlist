@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
-import AssociatedPlayer from '../../../components/AssociatedPlayer';
-import EndAssociation from '../../../components/EndAssociation';
-import Player from '../../../components/Player';
 import { getClient } from '../../../util/apolloClient';
+import Player from '../../players/Player';
+import AssociatedPlayer from './AssociatedPlayer';
+import EndAssociation from './EndAssociation';
 
 type Props = {
   organisationId: number;

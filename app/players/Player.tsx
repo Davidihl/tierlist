@@ -1,12 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlayerQuery } from '../app/players/page';
+import AssociationBadge from './[slug]/AssociationBadge';
+import { PlayerQuery } from './page';
 
 type Props = {
   player: PlayerQuery;
+  showOrganisation: boolean | undefined;
 };
 
-export default function AssociatedPlayer(props: Props) {
+export default function Player(props: Props) {
+  const showOrganisation = props.showOrganisation ?? false;
+
   let totalGames;
   let winrate;
   let rank;
@@ -31,33 +35,35 @@ export default function AssociatedPlayer(props: Props) {
       leaguePoints = `${props.player.mainAccount.leaguePoints} LP`;
     }
   }
+
   return (
-    <>
-      <div className="table-cell py-2 w-40">
-        <div>
-          <div className="flex gap-2 items-center ">
-            {props.player.mainAccount ? (
-              <Image
-                src={`/leagueoflegends/tiers/${props.player.mainAccount.tier}.webp`}
-                alt={`Tier ${props.player.mainAccount.tier}`}
-                className="w-10"
-                width={50}
-                height={50}
-              />
-            ) : (
-              <Image
-                src="/leagueoflegends/tiers/UNRANKED.webp"
-                alt="Unranked"
-                className="w-10"
-                width={50}
-                height={50}
-              />
+    <div className="table-row w-full border-b">
+      <div className="table-cell py-2">
+        <div className="flex gap-2 items-center ">
+          {props.player.mainAccount ? (
+            <Image
+              src={`/leagueoflegends/tiers/${props.player.mainAccount.tier}.webp`}
+              alt={`Tier ${props.player.mainAccount.tier}`}
+              className="w-10"
+              width={50}
+              height={50}
+            />
+          ) : (
+            <Image
+              src="/leagueoflegends/tiers/UNRANKED.webp"
+              alt="Unranked"
+              className="w-10"
+              width={50}
+              height={50}
+            />
+          )}
+          <div>
+            <Link href={`/players/${props.player.slug}`}>
+              <div>{props.player.alias}</div>
+            </Link>
+            {showOrganisation && (
+              <AssociationBadge playerId={props.player.id} />
             )}
-            <div>
-              <Link href={`/players/${props.player.slug}`}>
-                <div>{props.player.alias}</div>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
@@ -86,6 +92,6 @@ export default function AssociatedPlayer(props: Props) {
         <div>{winrate ? winrate.toFixed(2) + '% WR' : ''}</div>
         <div>{totalGames ? totalGames + ' Games' : ''}</div>
       </div>
-    </>
+    </div>
   );
 }
