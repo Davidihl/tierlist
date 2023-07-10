@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import headsetReversed from '../public/headset_reversed.svg';
 
 export default function Home() {
   return (
@@ -12,6 +14,11 @@ export default function Home() {
             <Link href="/players" className="btn btn-primary rounded-full z-50">
               Browser Players
             </Link>
+            <Image
+              src={headsetReversed}
+              alt="Illustration of a headset"
+              className="absolute bottom-10 -z-10 left-10 sm:left-20 w-3/4"
+            />
           </div>
         </div>
       </div>

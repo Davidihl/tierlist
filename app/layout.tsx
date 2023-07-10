@@ -36,7 +36,6 @@ export default function RootLayout({
               </Link>
             </p>
           </div>
-          <Image src={background} alt="" className="w-full" />
         </footer>
       </body>
     </html>
