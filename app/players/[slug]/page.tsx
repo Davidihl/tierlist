@@ -154,19 +154,23 @@ export default async function PlayerPage(props: Props) {
           {allowEdit && (
             <AssociationRequestsList playerId={Number(data.playerBySlug.id)} />
           )}
-
           <div className="mt-4">
             <h2 className="font-medium text-lg mb-2">Assigned Accounts</h2>
+
             <div className="table border-collapse table-auto w-full">
-              <div className="hidden sm:table-header-group">
-                <div className="table-row text-xs pb-4">
-                  <div className="table-cell">Alias</div>
-                  <div className="table-cell text-right">Division</div>
-                  <div className="table-cell text-right">LP</div>
-                  <div className="table-cell text-right">Winrate</div>
-                  <div className="table-cell text-right">Games</div>
+              {data.playerBySlug.leagueAccounts.length > 0 ? (
+                <div className="hidden sm:table-header-group">
+                  <div className="table-row text-xs pb-4">
+                    <div className="table-cell">Alias</div>
+                    <div className="table-cell text-right">Division</div>
+                    <div className="table-cell text-right">LP</div>
+                    <div className="table-cell text-right">Winrate</div>
+                    <div className="table-cell text-right">Games</div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                ''
+              )}
               {!data.playerBySlug.mainAccount?.tier && allowEdit && (
                 <>
                   <div className="alert mt-4 rounded-none shadow-md">
