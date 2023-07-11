@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I gathered during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwind CSS, PostgreSQL as the database, and integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts and display their respective strengths.
+This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I gathered during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwind CSS, PostgreSQL as the database, the integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts displaying their respective strengths.
 
 ## Idea of this Project
 
@@ -63,3 +63,21 @@ pnpm migrate down
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Core Features
+
+### User Signup / Login
+
+The application provides user registration functionality, allowing individuals to sign up as either organizations or players. During the signup process, users must provide relevant information such as username, email address, and password. User authentication and authorization via session cookie combined with a database entry have been implemented to increase security while accessing the application.
+
+### Association Requests
+
+Organizations can send association requests to players for potential collaboration or partnership. This feature allows organizations to connect with players based on shared interests, team requirements, or any other criteria. Association requests include relevant details, and notifications are sent to the targeted players.
+
+### Accepting/Denying Association Requests
+
+Players have the ability to review and respond to incoming association requests. They can accept or deny the requests based on their preferences. Accepted associations result in a formal connection between the player and organization, enabling further collaboration within the application.
+
+### League of Legends Account Integration
+
+Players can link their League of Legends accounts to their profiles within the application. The integration with the Riot Games REST API allows the application to retrieve account data, such as player statistics, ranking information, and match history. This information is used to showcase the player's strengths and achievements within the League of Legends community. The data is stored inside the database to decrease of times, the RIOT API has to be called, since RIOT rate limits all of their API keys. Additionally a rate limiter has been implemented in the application as well, to further decrease the risk of a RIOT invalidating the API key.
