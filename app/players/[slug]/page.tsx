@@ -157,7 +157,7 @@ export default async function PlayerPage(props: Props) {
           <div className="mt-4">
             <h2 className="font-medium text-lg mb-2">Assigned Accounts</h2>
 
-            <div className="table border-collapse table-auto w-full">
+            <div className="table border-collapse table-auto w-full z-0">
               {data.playerBySlug.leagueAccounts.length > 0 ? (
                 <div className="hidden sm:table-header-group">
                   <div className="table-row text-xs pb-4">

@@ -148,7 +148,7 @@ export default function EditProfile(props: Props) {
       </button>
 
       {open && (
-        <div className="absolute top-0 left-0 right-0">
+        <div className="absolute top-0 left-0 right-0 z-10">
           <form className="flex flex-col items-center shadow-xl w-full max-w-4xl bg-base-100 p-4">
             <div className="flex justify-between items-center w-full">
               <h2 className="font-medium text-lg mb-2">Edit Profile</h2>
