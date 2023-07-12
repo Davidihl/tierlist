@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I gathered during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwind CSS, PostgreSQL as the database, the integration of a GraphQL API with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts displaying their respective strengths.
+This project was created during the UpLeveled.io bootcamp in July 2023 to showcase the knowledge I gathered during the course. The README also serves as documentation for the project, providing an overview of the technologies I used and short descriptions of the core features implemented. The project involves the development of a web application using Next.js framework, Tailwind CSS, PostgreSQL as the database, the integration of a GraphQL API (which handles all selects, inserts, updates and deletes in the database) with Apollo and a third-party REST API from Riot Games for fetching League of Legends account data. The application allows users to sign up and login as either organisations or players, facilitating association requests between them. Additionally, players can showcase their League of Legends accounts displaying their respective strengths.
 
 ## Idea of this Project
 

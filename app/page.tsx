@@ -11,7 +11,10 @@ export default function Home() {
             <h1 className="text-5xl font-bold mb-5 text-white">
               Connecting Talent. Amplifying Recognition. Shaping Esports.
             </h1>
-            <Link href="/players" className="btn btn-primary rounded-full z-50">
+            <Link
+              href="/players"
+              className="btn btn-primary rounded-full z-50 cursor-pointer"
+            >
               Browser Players
             </Link>
             <Image
