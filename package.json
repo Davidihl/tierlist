@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.6.1",
+    "@playwright/test": "^1.36.0",
     "@ts-safeql/eslint-plugin": "^1.1.4",
     "@types/bcrypt": "^5.0.0",
     "@types/react": "18.2.12",
