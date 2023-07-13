@@ -14,6 +14,10 @@ To support the functionalities of the platform, the following database setup was
 
 <img width="984" alt="Bildschirmfoto 2023-07-04 um 11 16 46" src="https://github.com/Davidihl/tierlist/assets/111972510/bfa02877-e97f-4eec-b852-12e04fce8798">
 
+## GraphQL
+
+Since part this project involves fetching data from an external REST API, I opted into using GraphQL for my project. GraphQL efficiently handles all the GET and POST requests within my application, establishing a seamless connection to a PostgreSQL database.
+
 ## Design using Tailwind CSS and DaisyUI
 
 The frontend was created with [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/), a plugin for Tailwind CSS. While not strictly adhering to Material Design, the UI tries incorporate certain principles inspired by it. This includes clean typography, the use of colors to convey hierarchy and interactivity, and the implementation of subtle animations and transitions to enhance user engagement.
