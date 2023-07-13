@@ -45,10 +45,10 @@ test('navigation test', async ({ page }) => {
   ).toBeVisible();
 
   // Click on Organisation
-  await page.getByRole('link', { name: 'Austrian Force Willhaben' }).click();
+  await page.getByRole('link', { name: 'Austrian Force' }).click();
   await expect(
     page.getByRole('heading', {
-      name: 'Austrian Force Willhaben',
+      name: 'Austrian Force',
       exact: true,
     }),
   ).toBeVisible();
