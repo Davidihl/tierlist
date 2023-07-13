@@ -11,6 +11,8 @@ jobs:
       PGDATABASE: tierlist
       PGUSERNAME: tierlist
       PGPASSWORD: tierlist
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      RIOT_API_KEY: RGAPI-43f64556-ca13-45d3-826b-d7d6562ba532
     steps:
       - name: Start preinstalled PostgreSQL on Ubuntu
         run: |
