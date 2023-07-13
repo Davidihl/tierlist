@@ -1,11 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import headsetReversed from '../public/headset_reversed.svg';
-import { getLeagueofLegendsData } from './api/leagueoflegends';
 
-export default async function Home() {
-  const test = await getLeagueofLegendsData('Jest');
-  console.log(test);
+export default function Home() {
   return (
     <main className="h-full">
       <div className="hero min-h-full">
