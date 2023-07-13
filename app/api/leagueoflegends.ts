@@ -13,7 +13,7 @@ const summonerLimiter = new RateLimiter({
   interval: 'second',
 });
 
-const leagueLimiter = new RateLimiter({
+export const leagueLimiter = new RateLimiter({
   tokensPerInterval: 20,
   interval: 'second',
 });
