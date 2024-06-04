@@ -85,3 +85,10 @@ Players have the ability to review and respond to incoming association requests.
 ### League of Legends Account Integration
 
 Players can link their League of Legends accounts to their profiles within the application. The integration with the Riot Games REST API allows the application to retrieve account data, such as player statistics, ranking information, and match history. This information is used to showcase the player's strengths and achievements within the League of Legends community. The data is stored inside the database to decrease of times, the RIOT API has to be called, since RIOT rate limits all of their API keys. Additionally a rate limiter has been implemented in the application as well, to further decrease the risk of an invalidation of the API key by RIOT.
+
+# Changelog
+
+## 2024-06-04
+
+- Updated packages
+- Updated Apollo Integration
