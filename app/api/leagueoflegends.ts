@@ -19,6 +19,7 @@ export const leagueLimiter = new RateLimiter({
 });
 
 // Call Summoner Endpoint
+// TODO: Change Endpoint to Account by game name / tagline -> get PUUID
 export async function callSummonerApi(summoner: string) {
   const remainingRequests = await summonerLimiter.removeTokens(1);
 
@@ -48,6 +49,10 @@ export async function callSummonerApi(summoner: string) {
 }
 
 // Call League of Legends Endpoint
+// TODO: Change Endpoint using PUUID
+//  - Create migration to add new field
+//  - add check for PUUID and fetch during update
+//  - modify mutation to store PUUID
 export async function callLeagueApi(encryptedSummoner: string) {
   const remainingRequests = await leagueLimiter.removeTokens(1);
 

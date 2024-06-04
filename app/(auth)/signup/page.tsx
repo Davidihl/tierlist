@@ -18,7 +18,7 @@ export default async function SignUpPage() {
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
 
-  // 3. Either redirect or render the login form
+  // Either redirect or render the login form
   if (session) {
     const sessionData = await getValidSessionByToken(sessionTokenCookie.value);
     const user = await getSlugFromToken(sessionData!.userId);
